@@ -32,6 +32,7 @@ namespace LedgerClient.ECL
         {
             AccountEntity entity = _mapper.Map<AccountEntity>(dto);
             Tools.Locator.AccountDAL.Update(entity);
+            dto.RowVersion = entity.RowVersion.ArrayCopy();
         }
 
         public void Delete(Account dto)

@@ -32,6 +32,7 @@ namespace LedgerClient.ECL
         {
             IdentityEntity entity = _mapper.Map<IdentityEntity>(dto);
             Tools.Locator.IdentityDAL.Update(entity);
+            dto.RowVersion = entity.RowVersion.ArrayCopy();
         }
         
         public void Delete(Identity dto)

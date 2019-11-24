@@ -127,6 +127,7 @@ namespace LedgerLib
 
             builder.Entity<AllotmentEntity>().HasIndex(x => x.PoolId).IsClustered(false);
             builder.Entity<AllotmentEntity>().HasIndex(x => x.CompanyId).IsClustered(false);
+            builder.Entity<AllotmentEntity>().HasOne(x => x.Company);
             builder.Entity<AllotmentEntity>().Property(x => x.Date).HasColumnType(Constants.Date);
             builder.Entity<AllotmentEntity>().Property(x => x.Amount).HasColumnType(Constants.MoneyFormat);
 

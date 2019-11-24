@@ -285,6 +285,13 @@ namespace LedgerClient.ViewModels
             Tools.Locator.StatusbarViewModel.Update();
         }
 
+        private void ManagePoolsClick()
+        {
+            var vm = Tools.Locator.PoolViewModel;
+            DialogSupport.ShowDialog<PoolWindow>(vm, Application.Current.MainWindow);
+            Tools.Locator.StatusbarViewModel.Update(SelectedAccount);
+        }
+
         private bool ImportCanClick()
         {
             var context = Tools.Locator.LedgerContext;

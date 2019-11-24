@@ -428,6 +428,15 @@ namespace LedgerLib.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("LedgerLib.Entities.AllotmentEntity", b =>
+                {
+                    b.HasOne("LedgerLib.Entities.CompanyEntity", "Company")
+                        .WithMany()
+                        .HasForeignKey("CompanyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("LedgerLib.Entities.IdentityEntity", b =>
                 {
                     b.HasOne("LedgerLib.Entities.CompanyEntity", "Company")

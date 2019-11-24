@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LedgerLib.Migrations
 {
     [DbContext(typeof(LedgerContext))]
-    [Migration("20191124153456_Initial")]
+    [Migration("20191124201333_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -426,6 +426,15 @@ namespace LedgerLib.Migrations
                     b.HasOne("LedgerLib.Entities.AccountTypeEntity", "AccountType")
                         .WithMany()
                         .HasForeignKey("AccountTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("LedgerLib.Entities.AllotmentEntity", b =>
+                {
+                    b.HasOne("LedgerLib.Entities.CompanyEntity", "Company")
+                        .WithMany()
+                        .HasForeignKey("CompanyId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

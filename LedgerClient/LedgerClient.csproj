@@ -86,6 +86,7 @@
     <None Remove="resources\recycle-32.png" />
     <None Remove="resources\remove-32.png" />
     <None Remove="resources\route-30.png" />
+    <None Remove="resources\save-32.png" />
     <None Remove="resources\script-32.png" />
     <None Remove="resources\search-32.png" />
     <None Remove="resources\server-64.png" />
@@ -218,6 +219,7 @@
     <Resource Include="resources\recycle-32.png" />
     <Resource Include="resources\remove-32.png" />
     <Resource Include="resources\route-30.png" />
+    <Resource Include="resources\save-32.png" />
     <Resource Include="resources\script-32.png" />
     <Resource Include="resources\search-32.png" />
     <Resource Include="resources\server-64.png" />

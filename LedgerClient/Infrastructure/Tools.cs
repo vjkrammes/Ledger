@@ -22,6 +22,21 @@ namespace LedgerClient.Infrastructure
 
         public static string GetShortTitle(ISettingsService settings) => $"{settings.ProductName} {settings.ProductVersion:0.00}";
 
+        public static string Hexify(byte[] array)
+        {
+            if (array is null)
+            {
+                throw new ArgumentNullException("array");
+            }
+            StringBuilder sb = new StringBuilder();
+            sb.Append($"[length={array.Length}]: 0x");
+            for (int i = 0; i < array.Length; i++)
+            {
+                sb.Append(array[i].ToString("x2"));
+            }
+            return sb.ToString();
+        }
+
         public static void ConcurrencyError(string entity, string operation)
         {
             string msg = $"The {entity} was changed by another user. The {operation} operation has been cancelled";

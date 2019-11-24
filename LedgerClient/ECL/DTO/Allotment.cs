@@ -55,6 +55,13 @@ namespace LedgerClient.ECL.DTO
             set => SetProperty(ref _rowVersion, value);
         }
 
+        private Company _company;
+        public Company Company
+        {
+            get => _company;
+            set => SetProperty(ref _company, value);
+        }
+
         public Allotment()
         {
             Id = 0;
@@ -64,6 +71,7 @@ namespace LedgerClient.ECL.DTO
             Description = string.Empty;
             Amount = 0M;
             RowVersion = null;
+            Company = null;
         }
 
         public Allotment Clone() => new Allotment
@@ -74,7 +82,8 @@ namespace LedgerClient.ECL.DTO
             Date = Date,
             Description = Description ?? string.Empty,
             Amount = Amount,
-            RowVersion = RowVersion?.ArrayCopy()
+            RowVersion = RowVersion?.ArrayCopy(),
+            Company = Company?.Clone()
         };
 
         public override bool Equals(object obj)

@@ -152,6 +152,19 @@ namespace LedgerClient.ViewModels
             }
         }
 
+        private RelayCommand _managePoolsCommand;
+        public ICommand ManagePoolsCommand
+        {
+            get
+            {
+                if (_managePoolsCommand is null)
+                {
+                    _managePoolsCommand = new RelayCommand(parm => ManagePoolsClick(), parm => AlwaysCanExecute());
+                }
+                return _managePoolsCommand;
+            }
+        }
+
         private RelayCommand _importCommand;
         public ICommand ImportCommand
         {

@@ -19,5 +19,7 @@ namespace LedgerLib.Entities
         public decimal Amount { get; set; }
         [Timestamp]
         public byte[] RowVersion { get; set; }
+
+        public CompanyEntity Company { get; set; }
     }
 }

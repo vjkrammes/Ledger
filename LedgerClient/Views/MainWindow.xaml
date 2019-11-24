@@ -78,7 +78,7 @@
             <Button Command="{Binding ManageAccountTypesCommand}" ToolTip="Manage Account Types" ToolTipService.ShowOnDisabled="True">
                 <Image Source="/resources/dotlist-32.png"/>
             </Button>
-            <Button ToolTip="Manage Pools" ToolTipService.ShowOnDisabled="True">
+            <Button Command="{Binding ManagePoolsCommand}" ToolTip="Manage Pools" ToolTipService.ShowOnDisabled="True">
                 <Image Source="/resources/moneybag-32.png"/>
             </Button>
             <Separator />

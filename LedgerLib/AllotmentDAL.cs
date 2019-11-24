@@ -14,6 +14,12 @@ namespace LedgerLib
     {
         public AllotmentDAL(LedgerContext context) : base(context) { }
 
+        public override void Insert(AllotmentEntity entity)
+        {
+            entity.Company = null;
+            base.Insert(entity);
+        }
+
         public override IEnumerable<AllotmentEntity> Get(Expression<Func<AllotmentEntity, bool>> pred = null)
         {
             return pred switch

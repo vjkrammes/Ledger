@@ -32,6 +32,7 @@ namespace LedgerClient.ECL
         {
             PoolEntity entity = _mapper.Map<PoolEntity>(dto);
             Tools.Locator.PoolDAL.Update(entity);
+            dto.RowVersion = entity.RowVersion.ArrayCopy();
         }
 
         public void Delete(Pool dto)

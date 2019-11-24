@@ -32,6 +32,7 @@ namespace LedgerClient.ECL
         {
             AllotmentEntity entity = _mapper.Map<AllotmentEntity>(dto);
             Tools.Locator.AllotmentDAL.Update(entity);
+            dto.RowVersion = entity.RowVersion.ArrayCopy();
         }
 
         public void Delete(Allotment dto)

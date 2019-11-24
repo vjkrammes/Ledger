@@ -40,24 +40,6 @@ namespace LedgerLib.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Allotments",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    PoolId = table.Column<int>(nullable: false),
-                    CompanyId = table.Column<int>(nullable: false),
-                    Date = table.Column<DateTime>(type: "date", nullable: false),
-                    Description = table.Column<string>(nullable: false),
-                    Amount = table.Column<decimal>(type: "decimal(12,2)", nullable: false),
-                    RowVersion = table.Column<byte[]>(rowVersion: true, nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Allotments", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Companies",
                 columns: table => new
                 {
@@ -167,6 +149,30 @@ namespace LedgerLib.Migrations
                         name: "FK_Accounts_AccountTypes_AccountTypeId",
                         column: x => x.AccountTypeId,
                         principalTable: "AccountTypes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Allotments",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    PoolId = table.Column<int>(nullable: false),
+                    CompanyId = table.Column<int>(nullable: false),
+                    Date = table.Column<DateTime>(type: "date", nullable: false),
+                    Description = table.Column<string>(nullable: false),
+                    Amount = table.Column<decimal>(type: "decimal(12,2)", nullable: false),
+                    RowVersion = table.Column<byte[]>(rowVersion: true, nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Allotments", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Allotments_Companies_CompanyId",
+                        column: x => x.CompanyId,
+                        principalTable: "Companies",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });

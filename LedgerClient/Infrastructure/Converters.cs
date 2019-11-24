@@ -13,6 +13,23 @@ using LedgerLib.Infrastructure;
 namespace LedgerClient.Infrastructure
 {
 
+    // convert from object to URI where if null, return null else return checkmark
+
+    [ValueConversion(typeof(object), typeof(Uri))]
+    public sealed class ObjectToCheckmarkConverter : IValueConverter
+    {
+
+        public object Convert(object value, Type t, object parm, CultureInfo lang)
+        {
+            return value == null ? null : new Uri(Constants.Checkmark, UriKind.Relative);
+        }
+
+        public object ConvertBack(object value, Type t, object parm, CultureInfo lang)
+        {
+            return DependencyProperty.UnsetValue;
+        }
+    }
+
     // convert from DateTime to either "Never" if default, or a compressed date/time string
 
     [ValueConversion(typeof(DateTime), typeof(string))]
@@ -368,6 +385,27 @@ namespace LedgerClient.Infrastructure
                 return null;
             }
             return v;
+        }
+
+        public object ConvertBack(object value, Type t, object parm, CultureInfo lang)
+        {
+            return DependencyProperty.UnsetValue;
+        }
+    }
+
+    // convert from string with CR/LF to string without CR/LF
+
+    [ValueConversion(typeof(string), typeof(string))]
+    public sealed class LongStringToStringConverter : IValueConverter
+    {
+
+        public object Convert(object value, Type t, object parm, CultureInfo lang)
+        {
+            if (!(value is string v))
+            {
+                return value;
+            }
+            return v.Replace("\r\n", " ");
         }
 
         public object ConvertBack(object value, Type t, object parm, CultureInfo lang)
