@@ -1,0 +1,288 @@
+﻿<Window x:Class="LedgerClient.Views.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:LedgerClient"
+        xmlns:vm="clr-namespace:LedgerClient.ViewModels"
+        xmlns:li="clr-namespace:LedgerClient.Infrastructure"
+        xmlns:lc="clr-namespace:LedgerClient.Controls"
+        xmlns:lu="clr-namespace:LedgerClient.UserControls"
+        mc:Ignorable="d"
+        d:DataContext="{d:DesignInstance Type=vm:MainViewModel, IsDesignTimeCreatable=False}" Icon="/resources/book-32.png"
+        Title="{Binding WindowTitle}" Height="768" Width="1200" WindowStyle="ThreeDBorderWindow" WindowStartupLocation="CenterScreen"
+        li:Behaviors.WindowLoadedBehaviour="{Binding WindowLoadedCommand}">
+    <Window.Resources>
+        <li:VisibilityToMenuHeaderConverter x:Key="HeaderConverter"/>
+        <li:VisibilityToMenuIconConverter x:Key="IconConverter"/>
+        <li:CountToVisibilityConverter x:Key="VisibilityConverter"/>
+        <li:CountToEnabledConverter x:Key="EnabledConverter"/>
+        <li:EncryptedStringWithSaltConverter x:Key="CryptoConverter"/>
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <!-- Banner -->
+            <RowDefinition Height="auto"/>
+            <!-- Toolbar -->
+            <RowDefinition Height="auto"/>
+            <!-- Status bar -->
+            <RowDefinition Height="auto"/>
+            <!-- The Rest -->
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <Border Grid.Row="0" Style="{DynamicResource BannerBorder}">
+            <TextBlock Style="{DynamicResource BannerText}" Text="{Binding Banner}"/>
+        </Border>
+        <ToolBar Grid.Row="1" Margin="5,0" Background="AliceBlue">
+            <ToolBar.Resources>
+                <Style TargetType="Image">
+                    <Setter Property="Height" Value="{DynamicResource IconHeight}"/>
+                    <Setter Property="Stretch" Value="Uniform"/>
+                </Style>
+            </ToolBar.Resources>
+            <ToolBar.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Icon Height">
+                        <MenuItem.Icon>
+                            <Image Source="/resources/height-32.png"/>
+                        </MenuItem.Icon>
+                        <MenuItem Header="Small" Command="{Binding IconHeightCommand}" CommandParameter="16.0">
+                            <MenuItem.Icon>
+                                <Image Source="/resources/small-32.png"/>
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <MenuItem Header="Medium" Command="{Binding IconHeightCommand}" CommandParameter="24.0">
+                            <MenuItem.Icon>
+                                <Image Source="/resources/medium-32.png"/>
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <MenuItem Header="Large" Command="{Binding IconHeightCommand}" CommandParameter="32.0">
+                            <MenuItem.Icon>
+                                <Image Source="/resources/large-32.png"/>
+                            </MenuItem.Icon>
+                        </MenuItem>
+                    </MenuItem>
+                    <MenuItem Header="{Binding StatusbarVisibility, Converter={StaticResource HeaderConverter}}" 
+                              Command="{Binding ToggleStatusbarCommand}">
+                        <MenuItem.Icon>
+                            <Image Source="{Binding StatusbarVisibility, Converter={StaticResource IconConverter}}"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                </ContextMenu>
+            </ToolBar.ContextMenu>
+            <Button Command="{Binding CancelCommand}" IsCancel="True"  ToolTip="Exit this Program (Esc)">
+                <Image Source="/resources/exit-32.png"/>
+            </Button>
+            <Separator />
+            <Label Content="Manage:"/>
+            <Button Command="{Binding ManageAccountTypesCommand}" ToolTip="Manage Account Types" ToolTipService.ShowOnDisabled="True">
+                <Image Source="/resources/dotlist-32.png"/>
+            </Button>
+            <Button ToolTip="Manage Pools" ToolTipService.ShowOnDisabled="True">
+                <Image Source="/resources/moneybag-32.png"/>
+            </Button>
+            <Separator />
+            <Label Content="Companies:"/>
+            <Grid>
+                <ComboBox ItemsSource="{Binding Companies}" SelectedValue="{Binding SelectedCompany, Mode=TwoWay, 
+                          UpdateSourceTrigger=PropertyChanged}" DisplayMemberPath="Name" Width="200"
+                          IsEnabled="{Binding Companies.Count, Converter={StaticResource EnabledConverter}}"
+                          VerticalContentAlignment="Center"/>
+                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Opacity="0.5" Text="No Companies Defined"
+                           Visibility="{Binding Companies.Count, Converter={StaticResource VisibilityConverter}}"/>
+            </Grid>
+            <Button Command="{Binding AddCompanyCommand}" ToolTip="Add a new Company" ToolTipService.ShowOnDisabled="True">
+                <Image Source="/resources/add-32.png"/>
+            </Button>
+            <Button Command="{Binding EditCompanyCommand}" ToolTip="Edit the selected Company" ToolTipService.ShowOnDisabled="True">
+                <Image Source="/resources/edit-32.png"/>
+            </Button>
+            <Button Command="{Binding DeleteCompanyCommand}" ToolTip="Delete the selected Company" ToolTipService.ShowOnDisabled="True">
+                <Image Source="/resources/remove-32.png"/>
+            </Button>
+            <Separator />
+            <Label Content="Accounts:"/>
+            <Grid>
+                <ComboBox ItemsSource="{Binding Accounts}" SelectedValue="{Binding SelectedAccount, Mode=TwoWay, 
+                          UpdateSourceTrigger=PropertyChanged}" Width="150" IsEnabled="{Binding Accounts.Count,
+                          Converter={StaticResource EnabledConverter}}" VerticalContentAlignment="Center"/>
+                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Opacity="0.5" Text="No Accounts Defined"
+                           Visibility="{Binding Accounts.Count, Converter={StaticResource VisibilityConverter}}"/>
+            </Grid>
+            <Button ToolTip="Add an Account" ToolTipService.ShowOnDisabled="True">
+                <Image Source="/resources/add-32.png"/>
+            </Button>
+            <Button ToolTip="Edit the selected Account" ToolTipService.ShowOnDisabled="True">
+                <Image Source="/resources/edit-32.png"/>
+            </Button>
+            <Button ToolTip="See Account Number History for this Account" ToolTipService.ShowOnDisabled="True">
+                <Image Source="/resources/inkwell-32.png"/>
+            </Button>
+            <Button ToolTip="Delete the selected Account" ToolTipService.ShowOnDisabled="True">
+                <Image Source="/resources/remove-32.png"/>
+            </Button>
+            <Separator />
+            <Button Command="{Binding ImportCommand}" ToolTip="Import from a Ledger 5 database" ToolTipService.ShowOnDisabled="True">
+                <Image Source="/resources/import-32.png"/>
+            </Button>
+            <Separator />
+            <Button ToolTip="Reports and exports" ToolTipService.ShowOnDisabled="True">
+                <Image Source="/resources/graph-32.png"/>
+            </Button>
+            <Button ToolTip="Back up the database" ToolTipService.ShowOnDisabled="True">
+                <Image Source="/resources/backup-database-32.png"/>
+            </Button>
+            <Button ToolTip="Change System colors" ToolTipService.ShowOnDisabled="True">
+                <Image Source="/resources/pallette-32.png"/>
+            </Button>
+            <Button ToolTip="About" ToolTipService.ShowOnDisabled="True">
+                <Image Source="/resources/about-26.png"/>
+            </Button>
+        </ToolBar>
+        <lu:Statusbar Grid.Row="2" Visibility="{Binding StatusbarVisibility}"/>
+        <Grid Grid.Row="3" Margin="5,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition Width="2*"/>
+            </Grid.ColumnDefinitions>
+            <DockPanel Grid.Column="0" Margin="5" LastChildFill="True">
+                <Border DockPanel.Dock="Top" Style="{DynamicResource BannerBorder}" Margin="0">
+                    <Grid>
+                        <TextBlock Style="{DynamicResource BannerText}" Text="Identities"/>
+                        <DockPanel HorizontalAlignment="Right" LastChildFill="False">
+                            <Button Command="{Binding DeleteIdentityCommand}" DockPanel.Dock="Right" Margin="3,0,0,0" 
+                                    ToolTip="Delete the selected Identity" ToolTipService.ShowOnDisabled="True">
+                                <Image Source="/resources/remove-32.png" Height="14"/>
+                            </Button>
+                            <Button Command="{Binding EditIdentityCommand}" DockPanel.Dock="Right" Margin="3,0,0,0" 
+                                    ToolTip="Edit the selected Identity" ToolTipService.ShowOnDisabled="True">
+                                <Image Source="/resources/edit-32.png" Height="14"/>
+                            </Button>
+                            <Button Command="{Binding AddIdentityCommand}" DockPanel.Dock="Right" Margin="3,0,0,0" 
+                                    ToolTip="Add a new Identity" ToolTipService.ShowOnDisabled="True">
+                                <Image Source="/resources/add-32.png" Height="14"/>
+                            </Button>
+                            <Button Command="{Binding CopyPasswordCommand}" DockPanel.Dock="Right" Margin="3,0,0,0" 
+                                    ToolTip="Copy the password for the selected Identity to the clipboard"
+                                    ToolTipService.ShowOnDisabled="True">
+                                <Image Source="/resources/key-32.png" Height="14"/>
+                            </Button>
+                        </DockPanel>
+                    </Grid>
+                </Border>
+                <Grid DockPanel.Dock="Bottom">
+                    <lc:ScrollListBox ItemsSource="{Binding Identities}" SelectedValue="{Binding SelectedIdentity, Mode=TwoWay, 
+                                      UpdateSourceTrigger=PropertyChanged}">
+                        <ListBox.ItemContainerStyle>
+                            <Style TargetType="ListBoxItem">
+                                <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                            </Style>
+                        </ListBox.ItemContainerStyle>
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Border BorderBrush="{DynamicResource Border}" BorderThickness="1" CornerRadius="3" x:Name="IDBorder">
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="auto"/>
+                                            <RowDefinition Height="auto"/>
+                                        </Grid.RowDefinitions>
+                                        <TextBlock Grid.Row="0" Grid.Column="0" Margin="3">
+                                            <TextBlock.Inlines>
+                                                <Run Text="{Binding Company.Name}"/>
+                                                <Run Text="("/>
+                                                <Run Text="{Binding URL}"/>
+                                                <Run Text=")"/>
+                                            </TextBlock.Inlines>
+                                        </TextBlock>
+                                        <TextBlock Grid.Row="1" Grid.Column="0" Margin="3">
+                                            <TextBlock.Text>
+                                                <MultiBinding Converter="{StaticResource CryptoConverter}">
+                                                    <Binding Path="UserId"/>
+                                                    <Binding Path="UserSalt"/>
+                                                </MultiBinding>
+                                            </TextBlock.Text>
+                                        </TextBlock>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                        <ListBox.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Header="Copy URL to clipboard" Command="{Binding CopyURLCommand}">
+                                    <MenuItem.Icon>
+                                        <Image Source="/resources/network-32.png"/>
+                                    </MenuItem.Icon>
+                                </MenuItem>
+                                <MenuItem Header="Copy password to clipboard" Command="{Binding CopyPasswordCommand}">
+                                    <MenuItem.Icon>
+                                        <Image Source="/resources/key-32.png"/>
+                                    </MenuItem.Icon>
+                                </MenuItem>
+                                <MenuItem Header="Clear clipboard" Command="{Binding ClearClipboardCommand}">
+                                    <MenuItem.Icon>
+                                        <Image Source="/resources/eraser-32.png"/>
+                                    </MenuItem.Icon>
+                                </MenuItem>
+                                <Separator />
+                                <MenuItem Header="Add Identity" Command="{Binding AddIdentityCommand}">
+                                    <MenuItem.Icon>
+                                        <Image Source="/resources/add-32.png"/>
+                                    </MenuItem.Icon>
+                                </MenuItem>
+                                <MenuItem Header="Edit" Command="{Binding EditIdentityCommand}">
+                                    <MenuItem.Icon>
+                                        <Image Source="/resources/edit-32.png"/>
+                                    </MenuItem.Icon>
+                                </MenuItem>
+                                <MenuItem Header="Deselect" Command="{Binding DeselectIdentityCommand}">
+                                    <MenuItem.Icon>
+                                        <Image Source="/resources/cancel-32.png"/>
+                                    </MenuItem.Icon>
+                                </MenuItem>
+                                <Separator />
+                                <MenuItem Header="Delete" Command="{Binding DeleteIdentityCommand}">
+                                    <MenuItem.Icon>
+                                        <Image Source="/resources/remove-32.png"/>
+                                    </MenuItem.Icon>
+                                </MenuItem>
+                            </ContextMenu>
+                        </ListBox.ContextMenu>
+                    </lc:ScrollListBox>
+                    <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Opacity="0.5" Text="No Identities Found"
+                               Visibility="{Binding Identities.Count, Converter={StaticResource VisibilityConverter}}"/>
+                </Grid>
+            </DockPanel>
+            <DockPanel Grid.Column="1" Margin="5" LastChildFill="True">
+                <Border DockPanel.Dock="Top" Style="{DynamicResource BannerBorder}" Margin="0">
+                    <TextBlock Style="{DynamicResource BannerText}" Text="Transactions"/>
+                </Border>
+                <Grid DockPanel.Dock="Bottom">
+                    <lc:ScrollListView DockPanel.Dock="Bottom" ItemsSource="{Binding Transactions}" SelectedValue="{Binding SelectedTransaction,
+                                   Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" AlternationCount="2"
+                                   Style="{DynamicResource AlternatingListView}">
+                        <ListView.ItemContainerStyle>
+                            <Style TargetType="ListViewItem">
+                                <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                            </Style>
+                        </ListView.ItemContainerStyle>
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Header="Date" DisplayMemberBinding="{Binding Date, StringFormat='d'}" Width="auto"/>
+                                <GridViewColumn Header="Balance" DisplayMemberBinding="{Binding Balance, StringFormat='c'}" Width="auto"/>
+                                <GridViewColumn Header="Payment" DisplayMemberBinding="{Binding Payment, StringFormat='c'}" Width="auto"/>
+                                <GridViewColumn Header="Reference" DisplayMemberBinding="{Binding Reference}" Width="auto"/>
+                            </GridView>
+                        </ListView.View>
+                        <ListView.ContextMenu>
+                            <ContextMenu>
+
+                            </ContextMenu>
+                        </ListView.ContextMenu>
+                    </lc:ScrollListView>
+                    <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Opacity="0.5" Text="No Transactions Found"
+                               Visibility="{Binding Transactions.Count, Converter={StaticResource VisibilityConverter}}"/>
+                </Grid>
+            </DockPanel>
+        </Grid>
+    </Grid>
+</Window>

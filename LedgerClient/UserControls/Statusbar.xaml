@@ -1,0 +1,77 @@
+﻿<UserControl x:Class="LedgerClient.UserControls.Statusbar"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:LedgerClient.UserControls"
+             xmlns:vm="clr-namespace:LedgerClient.ViewModels"
+             xmlns:li="clr-namespace:LedgerClient.Infrastructure"
+             mc:Ignorable="d" 
+             d:DataContext="{d:DesignInstance Type=vm:StatusbarViewModel, IsDesignTimeCreatable=False}"
+             d:DesignHeight="100" d:DesignWidth="1024">
+    <UserControl.Resources>
+        <li:DoublesToTooltipConverter x:Key="ToolTipConverter"/>
+        <li:DoubleToColorConverter x:Key="BackgroundConverter"/>
+        <li:LastCopyDateConverter x:Key="DateConverter"/>
+    </UserControl.Resources>
+    <Border Margin="5,0" BorderBrush="{DynamicResource Border}" BorderThickness="1" Background="AliceBlue" Padding="0,2">
+        <StatusBar Background="AliceBlue" VerticalAlignment="Center" VerticalContentAlignment="Center">
+            <StatusBar.Resources>
+                <Style TargetType="Image">
+                    <Setter Property="Height" Value="{DynamicResource IconHeight}"/>
+                    <Setter Property="Stretch" Value="Uniform"/>
+                </Style>
+                <Style TargetType="Label">
+                    <Setter Property="VerticalAlignment" Value="Center"/>
+                    <Setter Property="VerticalContentAlignment" Value="Center"/>
+                </Style>
+                <Style TargetType="TextBlock">
+                    <Setter Property="VerticalAlignment" Value="Center"/>
+                </Style>
+            </StatusBar.Resources>
+            <Label Content="Database:"/>
+            <Border Width="100" Background="{Binding HowFull, Converter={StaticResource BackgroundConverter}}">
+                <Border.ToolTip>
+                    <MultiBinding Converter="{StaticResource ToolTipConverter}">
+                        <Binding Path="DatabaseSize"/>
+                        <Binding Path="Quota"/>
+                    </MultiBinding>
+                </Border.ToolTip>
+                <TextBlock HorizontalAlignment="Center" Foreground="White" Text="{Binding HowFull, StringFormat='p'}"/>
+            </Border>
+            <Separator />
+            <Image Source="/resources/book-32.png" ToolTip="Accounts"/>
+            <TextBlock Text="{Binding AccountCount, StringFormat='n0'}"/>
+            <Separator />
+            <Image Source="/resources/document-32.png" ToolTip="Account Numbers"/>
+            <TextBlock Text="{Binding AccountNumberCount, StringFormat='n0'}"/>
+            <Separator />
+            <Image Source="/resources/dotlist-32.png" ToolTip="Account Types"/>
+            <TextBlock Text="{Binding AccountTypeCount, StringFormat='n0'}"/>
+            <Separator />
+            <Image Source="/resources/money-32.png" ToolTip="Allotments"/>
+            <TextBlock Text="{Binding AllotmentCount, StringFormat='n0'}"/>
+            <Separator />
+            <Image Source="/resources/company-32.png" ToolTip="Companies"/>
+            <TextBlock Text="{Binding CompanyCount, StringFormat='n0'}"/>
+            <Separator />
+            <Image Source="/resources/user-32.png" ToolTip="Identities"/>
+            <TextBlock Text="{Binding IdentityCount, StringFormat='n0'}"/>
+            <Separator />
+            <Image Source="/resources/moneybag-32.png" ToolTip="Pools"/>
+            <TextBlock Text="{Binding PoolCount, StringFormat='n0'}"/>
+            <Separator />
+            <Image Source="/resources/all-32.png" ToolTip="Transactions"/>
+            <TextBlock Text="{Binding TransactionCount, StringFormat='n0'}"/>
+            <Separator />
+            <Label Content="This Account:"/>
+            <TextBlock Text="{Binding AccountTotal, StringFormat='c2'}"/>
+            <Separator />
+            <Label Content="All Accounts:"/>
+            <TextBlock Text="{Binding GrandTotal, StringFormat='c2'}"/>
+            <Separator />
+            <Label Content="Last Password Copy:"/>
+            <TextBlock Text="{Binding LastCopyDate, Converter={StaticResource DateConverter}}"/>
+        </StatusBar>
+    </Border>
+</UserControl>
