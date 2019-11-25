@@ -61,25 +61,33 @@
                 <ColumnDefinition />
                 <ColumnDefinition />
                 <ColumnDefinition />
+                <ColumnDefinition />
             </Grid.ColumnDefinitions>
             <Button Grid.Column="0" HorizontalAlignment="Center" Command="{Binding AddCommand}" IsDefault="True" 
-                    Width="{Binding ActualWidth, ElementName=btnCancel}">
+                    Width="{Binding ActualWidth, ElementName=btnRecalculate}">
                 <StackPanel Orientation="Horizontal">
                     <Image Source="/resources/add-32.png" Margin="1" Height="16"/>
                     <TextBlock Margin="1,1,3,1" Text="Add"/>
                 </StackPanel>
             </Button>
             <Button Grid.Column="1" HorizontalAlignment="Center" Command="{Binding SaveChangesCommand}"
-                    Width="{Binding ActualWidth, ElementName=btnCancel}">
+                    Width="{Binding ActualWidth, ElementName=btnRecalculate}">
                 <StackPanel Orientation="Horizontal">
                     <Image Source="/resources/save-32.png" Margin="1" Height="16"/>
                     <TextBlock Margin="1,1,3,1" Text="Save"/>
                 </StackPanel>
             </Button>
-            <Button Grid.Column="2" HorizontalAlignment="Center" Command="{Binding CancelChangesCommand}" Name="btnCancel">
+            <Button Grid.Column="2" HorizontalAlignment="Center" Command="{Binding CancelChangesCommand}" 
+                    Width="{Binding ActualWidth, ElementName=btnRecalculate}">
                 <StackPanel Orientation="Horizontal">
                     <Image Source="/resources/cancel-32.png" Margin="1" Height="16"/>
                     <TextBlock Margin="1,1,3,1" Text="Cancel"/>
+                </StackPanel>
+            </Button>
+            <Button Grid.Column="3" HorizontalAlignment="Center" Command="{Binding RecalculateCommand}" Name="btnRecalculate">
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="/resources/calc-32.png" Margin="1" Height="16"/>
+                    <TextBlock Margin="1,1,3,1" Text="Recalculate"/>
                 </StackPanel>
             </Button>
         </Grid>

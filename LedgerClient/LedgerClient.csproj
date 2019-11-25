@@ -61,7 +61,6 @@
     <None Remove="resources\item-32.png" />
     <None Remove="resources\key-32.png" />
     <None Remove="resources\large-32.png" />
-    <None Remove="resources\ledger-1920.jpg" />
     <None Remove="resources\link-32.png" />
     <None Remove="resources\lock-32.png" />
     <None Remove="resources\map-32.png" />
@@ -194,7 +193,6 @@
     <Resource Include="resources\item-32.png" />
     <Resource Include="resources\key-32.png" />
     <Resource Include="resources\large-32.png" />
-    <Resource Include="resources\ledger-1920.jpg" />
     <Resource Include="resources\link-32.png" />
     <Resource Include="resources\lock-32.png" />
     <Resource Include="resources\map-32.png" />

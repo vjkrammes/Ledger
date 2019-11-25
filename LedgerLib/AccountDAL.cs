@@ -14,6 +14,49 @@ namespace LedgerLib
     {
         public AccountDAL(LedgerContext context) : base(context) { }
 
+        public AccountEntity Create(AccountEntity account, byte[] salt, string number)
+        {
+            using var transaction = _context.Database.BeginTransaction();
+            if (account.Id <= 0)                // insert account and create new accountnumber
+            {
+                var at = account.AccountType;
+                account.AccountType = null;
+                _dbset.Add(account);
+                _context.SaveChanges();
+                account.AccountType = at;
+                AccountNumberEntity an = new AccountNumberEntity
+                {
+                    AccountId = account.Id,
+                    StartDate = default,
+                    StopDate = DateTime.MaxValue,
+                    Salt = salt,
+                    Number = number
+                };
+                _context.AccountNumbers.Add(an);
+                _context.SaveChanges();
+                account.AccountNumber = an;
+            }
+            else                                // update existing accountnumber and create a new one
+            {
+                AccountNumberEntity an = account.AccountNumber;
+                an.StopDate = DateTime.Now;
+                _context.AccountNumbers.Update(an);
+                an = new AccountNumberEntity
+                {
+                    AccountId = account.Id,
+                    StartDate = DateTime.Now,
+                    StopDate = DateTime.MaxValue,
+                    Salt = salt,
+                    Number = number
+                };
+                _context.AccountNumbers.Add(an);
+                _context.SaveChanges();
+                account.AccountNumber = an;
+            }
+            transaction.Commit();
+            return account;
+        }
+
         public override IEnumerable<AccountEntity> Get(Expression<Func<AccountEntity, bool>> pred = null)
         {
             List<AccountEntity> entities = pred switch

@@ -8,6 +8,7 @@ namespace LedgerClient.ECL.Interfaces
 {
     public interface IAllotmentECL : IECL<AllotmentEntity, Allotment>
     {
+        void DeleteAll(int pid);
         IEnumerable<Allotment> GetForPool(int pid);
         IEnumerable<Allotment> GetForCompany(int cid);
         Allotment Read(int id);

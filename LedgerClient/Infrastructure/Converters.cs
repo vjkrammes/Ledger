@@ -12,6 +12,43 @@ using LedgerLib.Infrastructure;
 
 namespace LedgerClient.Infrastructure
 {
+    // convert from bool to its inverse
+
+    [ValueConversion(typeof(bool), typeof(bool))]
+    public sealed class BoolToInverseConverter : IValueConverter
+    {
+
+        public object Convert(object value, Type t, object parm, CultureInfo lang)
+        {
+            return !(bool)value;
+        }
+
+        public object ConvertBack(object value, Type t, object parm, CultureInfo lang)
+        {
+            return DependencyProperty.UnsetValue;
+        }
+    }
+
+    // convert from DueDateType to display
+
+    [ValueConversion(typeof(DueDateType), typeof(string))]
+    public sealed class DueDateTypeConverter : IValueConverter
+    {
+
+        public object Convert(object value, Type t, object parm, CultureInfo lang)
+        {
+            if (!(value is DueDateType ddt))
+            {
+                return string.Empty;
+            }
+            return ddt.GetDescriptionFromEnumValue();
+        }
+
+        public object ConvertBack(object value, Type t, object parm, CultureInfo lang)
+        {
+            return DependencyProperty.UnsetValue;
+        }
+    }
 
     // convert from object to URI where if null, return null else return checkmark
 
@@ -325,7 +362,11 @@ namespace LedgerClient.Infrastructure
 
         public object ConvertBack(object value, Type t, object parm, CultureInfo lang)
         {
-            return DependencyProperty.UnsetValue;
+            if (!(value is string v) || !int.TryParse(v, out int val))
+            {
+                return 0;
+            }
+            return val;
         }
     }
 

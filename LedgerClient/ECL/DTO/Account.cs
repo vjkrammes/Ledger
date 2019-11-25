@@ -94,6 +94,7 @@ namespace LedgerClient.ECL.DTO
             Month = 0;
             Day = 0;
             IsPayable = false;
+            Comments = string.Empty;
             AccountType = null;
             AccountNumber = null;
             RowVersion = null;
@@ -108,6 +109,7 @@ namespace LedgerClient.ECL.DTO
             Month = Month,
             Day = Day,
             IsPayable = IsPayable,
+            Comments = Comments ?? string.Empty,
             AccountType = AccountType?.Clone(),
             AccountNumber = AccountNumber?.Clone(),
             RowVersion = RowVersion?.ArrayCopy()

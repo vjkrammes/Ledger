@@ -20,14 +20,26 @@ namespace LedgerLib
             base.Insert(entity);
         }
 
+        public void DeleteAll(int pid)
+        {
+            var allotments = _dbset.Where(x => x.PoolId == pid);
+            if (allotments.Any())
+            {
+                _dbset.RemoveRange(allotments);
+                _context.SaveChanges();
+            }
+        }
+
         public override IEnumerable<AllotmentEntity> Get(Expression<Func<AllotmentEntity, bool>> pred = null)
         {
             return pred switch
             {
                 null => _dbset
+                        .Include(x => x.Company)
                         .OrderByDescending(x => x.Date)
                         .Select(x => x).AsNoTracking().ToList(),
                 _ => _dbset
+                        .Include(x => x.Company)
                         .Where(pred)
                         .OrderByDescending(x => x.Date)
                         .Select(x => x).AsNoTracking().ToList()

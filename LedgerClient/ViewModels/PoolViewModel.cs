@@ -1,14 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using LedgerClient.Infrastructure;
-using LedgerClient.ECL.DTO;
-using Microsoft.EntityFrameworkCore;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Windows.Input;
+
+using LedgerClient.ECL.DTO;
 using LedgerClient.ECL.Interfaces;
-using LedgerLib.Infrastructure;
+using LedgerClient.Infrastructure;
 using LedgerClient.Views;
+
+using LedgerLib.Infrastructure;
+
+using Microsoft.EntityFrameworkCore;
 
 namespace LedgerClient.ViewModels
 {
@@ -110,6 +112,19 @@ namespace LedgerClient.ViewModels
                     _cancelChangesCommand = new RelayCommand(parm => CancelChangesClick(), parm => IsEditing());
                 }
                 return _cancelChangesCommand;
+            }
+        }
+
+        private RelayCommand _recalculateCommand;
+        public ICommand RecalculateCommand
+        {
+            get
+            {
+                if (_recalculateCommand is null)
+                {
+                    _recalculateCommand = new RelayCommand(parm => RecalculateClick(), parm => PoolsExist());
+                }
+                return _recalculateCommand;
             }
         }
 
@@ -254,6 +269,21 @@ namespace LedgerClient.ViewModels
             Clear();
         }
 
+        private bool PoolsExist() => Pools.Any();
+
+        private void RecalculateClick()
+        {
+            try
+            {
+                Tools.Locator.PoolRecalculator.Recalculate();
+            }
+            catch (Exception ex)
+            {
+                PopupManager.Popup("Failed to recalculate Pools", Constants.DBE, ex.Innermost(), PopupButtons.Ok, PopupImage.Error);
+            }
+            LoadPools(true);
+        }
+
         private bool DeleteCanClick() => SelectedPool != null && !_allotmentECL.PoolHasAllotments(SelectedPool.Id);
 
         private void DeleteClick()
@@ -344,6 +374,16 @@ namespace LedgerClient.ViewModels
         {
             _poolECL = pecl;
             _allotmentECL = aecl;
+            try
+            {
+                Tools.Locator.PoolRecalculator.Recalculate();
+            }
+            catch (Exception ex)
+            {
+                PopupManager.Popup("Failed to recalculate Pools", Constants.DBE, ex.Innermost(), PopupButtons.Ok, PopupImage.Error);
+                Cancel();
+                return;
+            }
             LoadPools();
             Date = DateTime.Now;
         }

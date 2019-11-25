@@ -61,6 +61,58 @@ namespace LedgerClient.ViewModels
             }
         }
 
+        private RelayCommand _addAccountCommand;
+        public ICommand AddAccountCommand
+        {
+            get
+            {
+                if (_addAccountCommand is null)
+                {
+                    _addAccountCommand = new RelayCommand(parm => AddAccountClick(), parm => CompanySelected());
+                }
+                return _addAccountCommand;
+            }
+        }
+
+        private RelayCommand _editAccountCommand;
+        public ICommand EditAccountCommand
+        {
+            get
+            {
+                if (_editAccountCommand is null)
+                {
+                    _editAccountCommand = new RelayCommand(parm => EditAccountClick(), parm => AccountSelected());
+                }
+                return _editAccountCommand;
+            }
+        }
+
+        private RelayCommand _viewHistoryCommand;
+        public ICommand ViewHistoryCommand
+        {
+            get
+            {
+                if (_viewHistoryCommand is null)
+                {
+                    _viewHistoryCommand = new RelayCommand(parm => ViewHistoryClick(), parm => ViewHistoryCanClick());
+                }
+                return _viewHistoryCommand;
+            }
+        }
+
+        private RelayCommand _deleteAccountCommand;
+        public ICommand DeleteAccountCommand
+        {
+            get
+            {
+                if (_deleteAccountCommand is null)
+                {
+                    _deleteAccountCommand = new RelayCommand(parm => DeleteAccountClick(), parm => DeleteAccountCanClick());
+                }
+                return _deleteAccountCommand;
+            }
+        }
+
         private RelayCommand _copyURLCommand;
         public ICommand CopyURLCommand
         {

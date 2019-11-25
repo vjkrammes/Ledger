@@ -8,6 +8,7 @@ namespace LedgerClient.ECL.Interfaces
 {
     public interface IAccountECL : IECL<AccountEntity, Account>
     {
+        Account Create(Account account, string number);
         IEnumerable<Account> GetForCompany(int cid);
         IEnumerable<Account> GetForAccountType(int atid);
         Account Read(int id);

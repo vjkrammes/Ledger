@@ -20,12 +20,7 @@ namespace LedgerClient.ViewModels
             Application.Current.MainWindow.Close();
         }
 
-        private void ManageAccountTypesClick()
-        {
-            AccountTypeViewModel vm = Tools.Locator.AccountTypeViewModel;
-            DialogSupport.ShowDialog<AccountTypeWindow>(vm, Application.Current.MainWindow);
-            Tools.Locator.StatusbarViewModel.Update(SelectedAccount);
-        }
+        #region Company Methods
 
         private void AddCompanyClick()
         {
@@ -148,6 +143,110 @@ namespace LedgerClient.ViewModels
             }
             Tools.Locator.StatusbarViewModel.Update(SelectedAccount);
         }
+
+        #endregion
+
+        #region Account Methods
+
+        private void AddAccountClick()
+        {
+            if (SelectedCompany is null)
+            {
+                return;
+            }
+            var vm = Tools.Locator.AccountViewModel;
+            vm.Company = SelectedCompany;
+            if (DialogSupport.ShowDialog<AccountWindow>(vm, Application.Current.MainWindow) != true)
+            {
+                return;
+            }
+            Account a = new Account
+            {
+                CompanyId = SelectedCompany.Id,
+                AccountTypeId = vm.SelectedType.Id,
+                DueDateType = vm.SelectedDueDateType,
+                Month = vm.Month,
+                Day = vm.Day,
+                IsPayable = vm.IsPayable,
+                Comments = vm.Comments ?? string.Empty,
+                AccountType = vm.SelectedType
+            };
+            try
+            {
+                a = Tools.Locator.AccountECL.Create(a, vm.Number);
+            }
+            catch (Exception ex)
+            {
+                PopupManager.Popup("Failed to create new Account", Constants.DBE, ex.Innermost(), PopupButtons.Ok, PopupImage.Error);
+                return;
+            }
+            Accounts.Insert(0, a);
+            SelectedAccount = a;
+            Tools.Locator.StatusbarViewModel.Update(SelectedAccount);
+        }
+
+        private bool AccountSelected() => SelectedAccount != null;
+
+        private void EditAccountClick()
+        {
+            if (SelectedAccount is null)
+            {
+                return;
+            }
+            var vm = Tools.Locator.AccountViewModel;
+            vm.Company = SelectedCompany;
+            vm.Account = SelectedAccount;
+            if (DialogSupport.ShowDialog<AccountWindow>(vm, Application.Current.MainWindow) != true)
+            {
+                LoadAccounts(); // account number may have changed
+                return;
+            }
+            Account save = SelectedAccount.Clone();
+            SelectedAccount.AccountTypeId = vm.SelectedType.Id;
+            SelectedAccount.AccountType = vm.SelectedType;
+            SelectedAccount.DueDateType = vm.SelectedDueDateType;
+            SelectedAccount.Month = vm.Month;
+            SelectedAccount.Day = vm.Day;
+            SelectedAccount.Comments = vm.Comments ?? string.Empty;
+            SelectedAccount.IsPayable = vm.IsPayable;
+            try
+            {
+                Tools.Locator.AccountECL.Update(SelectedAccount);
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                SelectedAccount = save.Clone();
+                Tools.ConcurrencyError("Account", "Update");
+            }
+            LoadAccounts(true);
+            Tools.Locator.StatusbarViewModel.Update(SelectedAccount);
+        }
+
+        private bool ViewHistoryCanClick() => 
+            SelectedAccount != null && Tools.Locator.AccountNumberECL.AccountHasAccountNumbers(SelectedAccount.Id);
+
+        private void ViewHistoryClick()
+        {
+            if (SelectedAccount is null)
+            {
+                return;
+            }
+            var vm = Tools.Locator.HistoryViewModel;
+            vm.Account = SelectedAccount;
+            DialogSupport.ShowDialog<HistoryWindow>(vm, Application.Current.MainWindow);
+        }
+
+        private bool DeleteAccountCanClick() =>
+            SelectedAccount != null && !Tools.Locator.TransactionECL.AccountHasTransactions(SelectedAccount.Id);
+
+        private void DeleteAccountClick()
+        {
+
+        }
+
+        #endregion
+
+        #region Identity Methods
 
         private bool IdentitySelected() => SelectedIdentity != null;
 
@@ -285,12 +384,27 @@ namespace LedgerClient.ViewModels
             Tools.Locator.StatusbarViewModel.Update();
         }
 
+        #endregion
+
+        #region Manage Methods
+
+        private void ManageAccountTypesClick()
+        {
+            AccountTypeViewModel vm = Tools.Locator.AccountTypeViewModel;
+            DialogSupport.ShowDialog<AccountTypeWindow>(vm, Application.Current.MainWindow);
+            Tools.Locator.StatusbarViewModel.Update(SelectedAccount);
+        }
+
         private void ManagePoolsClick()
         {
             var vm = Tools.Locator.PoolViewModel;
             DialogSupport.ShowDialog<PoolWindow>(vm, Application.Current.MainWindow);
             Tools.Locator.StatusbarViewModel.Update(SelectedAccount);
         }
+
+        #endregion
+
+        #region Import Methods
 
         private bool ImportCanClick()
         {
@@ -303,6 +417,10 @@ namespace LedgerClient.ViewModels
         {
 
         }
+
+        #endregion
+
+        #region Miscellaneous Methods
 
         private void IconHeight(object parm)
         {
@@ -321,6 +439,10 @@ namespace LedgerClient.ViewModels
             Tools.Locator.StatusbarViewModel.StatusbarVisibility = StatusbarVisibility;
         }
 
+        #endregion
+
+        #region Window Loaded
+
         private void WindowLoaded()
         {
             ISettingsService settings = Tools.Locator.Settings;
@@ -333,5 +455,7 @@ namespace LedgerClient.ViewModels
             LoadCompanies(false);
             Tools.Locator.StatusbarViewModel.Update();
         }
+
+        #endregion
     }
 }

@@ -191,7 +191,7 @@ namespace LedgerClient.ViewModels
             if (Pool.Balance - Amount < 0M)
             {
                 string msg = "Adding this allotment will reduce the Balance of this Pool to less than zero. Continue?";
-                if (PopupManager.Popup("Continue with negative balance?","Negative Balance",msg,PopupButtons.YesNo, PopupImage.Question)
+                if (PopupManager.Popup("Continue with negative balance?", "Negative Balance", msg, PopupButtons.YesNo, PopupImage.Question)
                     != PopupResult.Yes)
                 {
                     return;
@@ -247,7 +247,63 @@ namespace LedgerClient.ViewModels
 
         private void SaveChangesClick()
         {
-
+            if (SelectedAllotment is null || SelectedCompany is null || Amount < 0M)
+            {
+                return;
+            }
+            Allotment a = SelectedAllotment.Clone();
+            a.CompanyId = SelectedCompany.Id;
+            a.Company = SelectedCompany;
+            a.Date = Date ?? (default);
+            a.Amount = Amount;
+            a.Description = Description ?? string.Empty;
+            try
+            {
+                _allotmentECL.Update(a);
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                Tools.ConcurrencyError("Allotment", "Update");
+                Clear();
+                SelectedAllotment = null;
+                return;
+            }
+            catch (Exception ex)
+            {
+                PopupManager.Popup("Failed to update Allotment", Constants.DBE, ex.Innermost(), PopupButtons.Ok, PopupImage.Error);
+                Clear();
+                SelectedAllotment = null;
+                return;
+            }
+            Allotments.Remove(SelectedAllotment);
+            SelectedAllotment = null;
+            int ix = 0;
+            while (ix < Allotments.Count && Allotments[ix] > a)
+            {
+                ix++;
+            }
+            Allotments.Insert(ix, a);
+            SelectedAllotment = a;
+            SelectedAllotment = null;
+            Pool.Balance = Pool.Amount - Allotments.Sum(x => x.Amount);
+            try
+            {
+                _poolECL.Update(Pool);
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                Tools.ConcurrencyError("Pool", "Update");
+                Clear();
+                return;
+            }
+            catch (Exception ex)
+            {
+                PopupManager.Popup("Failed to update Pool", Constants.DBE, ex.Innermost(), PopupButtons.Ok, PopupImage.Error);
+                Clear();
+                SelectedAllotment = null;
+                return;
+            }
+            Clear();
         }
 
         private bool IsEditing() => _editing;
@@ -262,14 +318,99 @@ namespace LedgerClient.ViewModels
 
         private void DeleteClick()
         {
-
+            if (SelectedAllotment is null)
+            {
+                return;
+            }
+            try
+            {
+                _allotmentECL.Delete(SelectedAllotment);
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                Tools.ConcurrencyError("Allotment", "Delete");
+                Clear();
+                SelectedAllotment = null;
+                return;
+            }
+            catch (Exception ex)
+            {
+                PopupManager.Popup("Failed to delete Allotment", Constants.DBE, ex.Innermost(), PopupButtons.Ok, PopupImage.Error);
+                Clear();
+                SelectedAllotment = null;
+                return;
+            }
+            Pool.Balance += SelectedAllotment.Amount;
+            Allotments.Remove(SelectedAllotment);
+            SelectedAllotment = null;
+            try
+            {
+                _poolECL.Update(Pool);
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                Tools.ConcurrencyError("Pool", "Update");
+                Clear();
+                return;
+            }
+            catch (Exception ex)
+            {
+                PopupManager.Popup("Failed to update Pool", Constants.DBE, ex.Innermost(), PopupButtons.Ok, PopupImage.Error);
+            }
+            Clear();
         }
 
         private bool AllotmentsExist() => Allotments != null && Allotments.Any();
 
         private void DeleteAllClick()
         {
+            if (!Allotments.Any())
+            {
+                return;
+            }
+            if (PopupManager.Popup("Delete all Allotments?", "Delete Allotments", PopupButtons.YesNo, PopupImage.Question) != PopupResult.Yes)
+            {
+                Clear();
+                SelectedAllotment = null;
+                return;
+            }
+            try
+            {
+                _allotmentECL.DeleteAll(Pool.Id);
 
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                Tools.ConcurrencyError("Allotments", "Delete");
+                Clear();
+                SelectedAllotment = null;
+                return;
+            }
+            catch (Exception ex)
+            {
+
+                PopupManager.Popup("Failed to delete Allotments", Constants.DBE, ex.Innermost(), PopupButtons.Ok, PopupImage.Error);
+                Clear();
+                SelectedAllotment = null;
+                return;
+            }
+            Allotments.Clear();
+            Pool.Balance = Pool.Amount;
+            try
+            {
+                _poolECL.Update(Pool);
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                Tools.ConcurrencyError("Pool", "Update");
+                Clear();
+                return;
+            }
+            catch (Exception ex)
+            {
+                PopupManager.Popup("Failed to update Pool", Constants.DBE, ex.Innermost(), PopupButtons.Ok, PopupImage.Error);
+            }
+            Clear();
         }
 
         private void WindowLoaded()

@@ -119,6 +119,21 @@
                         </GridViewColumn>
                     </GridView>
                 </ListView.View>
+                <ListView.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Delete" Command="{Binding DeleteCommand}">
+                            <MenuItem.Icon>
+                                <Image Source="/resources/remove-32.png"/>
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <Separator />
+                        <MenuItem Header="Delete All" Command="{Binding DeleteAllCommand}">
+                            <MenuItem.Icon>
+                                <Image Source="/resources/clear-32.png"/>
+                            </MenuItem.Icon>
+                        </MenuItem>
+                    </ContextMenu>
+                </ListView.ContextMenu>
             </lc:ScrollListView>
             <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Opacity="0.5" Text="No Allotments Found"
                        Visibility="{Binding Allotments.Count, Converter={StaticResource VisibilityConverter}}"/>

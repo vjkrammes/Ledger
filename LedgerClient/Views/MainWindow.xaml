@@ -19,6 +19,10 @@
         <li:CountToEnabledConverter x:Key="EnabledConverter"/>
         <li:EncryptedStringWithSaltConverter x:Key="CryptoConverter"/>
     </Window.Resources>
+    <Window.InputBindings>
+        <KeyBinding Command="{Binding CopyPasswordCommand}" Key="P" Modifiers="Alt"/>
+        <KeyBinding Command="{Binding CopyURLCommand}" Key="U" Modifiers="Alt"/>
+    </Window.InputBindings>
     <Grid>
         <Grid.RowDefinitions>
             <!-- Banner -->
@@ -109,16 +113,16 @@
                 <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Opacity="0.5" Text="No Accounts Defined"
                            Visibility="{Binding Accounts.Count, Converter={StaticResource VisibilityConverter}}"/>
             </Grid>
-            <Button ToolTip="Add an Account" ToolTipService.ShowOnDisabled="True">
+            <Button Command="{Binding AddAccountCommand}" ToolTip="Add an Account" ToolTipService.ShowOnDisabled="True">
                 <Image Source="/resources/add-32.png"/>
             </Button>
-            <Button ToolTip="Edit the selected Account" ToolTipService.ShowOnDisabled="True">
+            <Button Command="{Binding EditAccountCommand}" ToolTip="Edit the selected Account" ToolTipService.ShowOnDisabled="True">
                 <Image Source="/resources/edit-32.png"/>
             </Button>
-            <Button ToolTip="See Account Number History for this Account" ToolTipService.ShowOnDisabled="True">
+            <Button Command="{Binding ViewHistoryCommand}" ToolTip="See Number History for this Account" ToolTipService.ShowOnDisabled="True">
                 <Image Source="/resources/inkwell-32.png"/>
             </Button>
-            <Button ToolTip="Delete the selected Account" ToolTipService.ShowOnDisabled="True">
+            <Button Command="{Binding DeleteAccountCommand}" ToolTip="Delete the selected Account" ToolTipService.ShowOnDisabled="True">
                 <Image Source="/resources/remove-32.png"/>
             </Button>
             <Separator />
@@ -162,8 +166,13 @@
                                     ToolTip="Add a new Identity" ToolTipService.ShowOnDisabled="True">
                                 <Image Source="/resources/add-32.png" Height="14"/>
                             </Button>
+                            <Button Command="{Binding CopyURLCommand}" DockPanel.Dock="Right" Margin="3,0,0,0"
+                                    ToolTip="Copy the URL for the selected Identity to the clipboard (Alt-U)"
+                                    ToolTipService.ShowOnDisabled="True">
+                                <Image Source="/resources/network-32.png" Height="14"/>
+                            </Button>
                             <Button Command="{Binding CopyPasswordCommand}" DockPanel.Dock="Right" Margin="3,0,0,0" 
-                                    ToolTip="Copy the password for the selected Identity to the clipboard"
+                                    ToolTip="Copy the password for the selected Identity to the clipboard (Alt-P)"
                                     ToolTipService.ShowOnDisabled="True">
                                 <Image Source="/resources/key-32.png" Height="14"/>
                             </Button>

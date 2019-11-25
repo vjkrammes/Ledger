@@ -11,6 +11,8 @@
         [Description("Annually")]
         Annually = 3,
         [Description("Service Related")]
-        ServiceRelated = 4
+        ServiceRelated = 4,
+        [Description("Not Applicable")]
+        NA = 5
     }
 }

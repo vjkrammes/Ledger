@@ -71,9 +71,11 @@ namespace LedgerClient.Infrastructure
 
         private void InitializeViewModels(IServiceCollection services)
         {
+            services.AddTransient<AccountViewModel>();
             services.AddTransient<AccountTypeViewModel>();
             services.AddTransient<AllotmentViewModel>();
             services.AddTransient<CompanyViewModel>();
+            services.AddTransient<HistoryViewModel>();
             services.AddTransient<IdentityViewModel>();
             services.AddSingleton<MainViewModel>();
             services.AddTransient<PasswordViewModel>();
@@ -89,6 +91,7 @@ namespace LedgerClient.Infrastructure
 
         public IConfiguration Configuration { get => _provider.GetRequiredService<IConfiguration>(); }
         public IPasswordManager PasswordManager { get => _provider.GetRequiredService<IPasswordManager>(); }
+        public IPoolRecalculator PoolRecalculator { get => _provider.GetRequiredService<IPoolRecalculator>(); }
         public IServiceProvider Provider { get => _provider; }
         public ISettingsService Settings { get => _provider.GetRequiredService<ISettingsService>(); }
         public IStringCypherService StringCypher { get => _provider.GetRequiredService<IStringCypherService>(); }
@@ -97,8 +100,10 @@ namespace LedgerClient.Infrastructure
         #region ViewModels
 
         public AccountTypeViewModel AccountTypeViewModel { get => _provider.GetRequiredService<AccountTypeViewModel>(); }
+        public AccountViewModel AccountViewModel { get => _provider.GetRequiredService<AccountViewModel>(); }
         public AllotmentViewModel AllotmentViewModel { get => _provider.GetRequiredService<AllotmentViewModel>(); }
         public CompanyViewModel CompanyViewModel { get => _provider.GetRequiredService<CompanyViewModel>(); }
+        public HistoryViewModel HistoryViewModel { get => _provider.GetRequiredService<HistoryViewModel>(); }
         public IdentityViewModel IdentityViewModel { get => _provider.GetRequiredService<IdentityViewModel>(); }
         public MainViewModel MainViewModel { get => _provider.GetRequiredService<MainViewModel>(); }
         public PasswordViewModel PasswordViewModel { get => _provider.GetRequiredService<PasswordViewModel>(); }
@@ -150,6 +155,7 @@ namespace LedgerClient.Infrastructure
                     services.AddSingleton(ConfigurationFactory.Create());
                     services.AddSingleton<IPasswordManager, PasswordManager>();
                     services.AddTransient<IStringCypherService, StringCypherService>();
+                    services.AddTransient<IPoolRecalculator, PoolRecalculator>();
                     InitializeMapper(services);
                     InitializeDAL(services);
                     InitializeECL(services);

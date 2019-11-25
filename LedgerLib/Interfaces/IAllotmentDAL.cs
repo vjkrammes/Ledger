@@ -6,6 +6,7 @@ namespace LedgerLib.Interfaces
 {
     public interface IAllotmentDAL : IDAL<AllotmentEntity>
     {
+        void DeleteAll(int pid);
         IEnumerable<AllotmentEntity> GetForPool(int pid);
         IEnumerable<AllotmentEntity> GetForCompany(int cid);
         AllotmentEntity Read(int id);

@@ -51,6 +51,7 @@ namespace LedgerClient.Infrastructure
             }
             StringBuilder sb = new StringBuilder();
             sb.Append(acct.AccountType?.Description ?? "Unknown");
+            sb.Append(" ");
             string accountnumber = Locator.StringCypher.Decrypt(acctnum.Number, Locator.PasswordManager.Get(), acctnum.Salt);
             var numpart = accountnumber.Length < 4 ? accountnumber : accountnumber[^4..];
             sb.Append(numpart);

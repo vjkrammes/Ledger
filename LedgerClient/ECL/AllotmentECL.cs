@@ -41,6 +41,8 @@ namespace LedgerClient.ECL
             Tools.Locator.AllotmentDAL.Delete(entity);
         }
 
+        public void DeleteAll(int pid) => Tools.Locator.AllotmentDAL.DeleteAll(pid);
+
         public IEnumerable<Allotment> Get(Expression<Func<AllotmentEntity, bool>> pred = null)
         {
             var entities = Tools.Locator.AllotmentDAL.Get(pred);
