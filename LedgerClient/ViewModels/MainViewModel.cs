@@ -1,8 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Windows;
+
 using LedgerClient.Infrastructure;
+
 using LedgerLib.Infrastructure;
 
 namespace LedgerClient.ViewModels
@@ -14,6 +14,8 @@ namespace LedgerClient.ViewModels
             Pallette.SetSystemColors();
             Application.Current.Resources[Constants.IconHeight] = Tools.Locator.Settings.IconHeight;
             WindowTitle = string.Empty; // null title will throw an exception
+            PopupManager.SetMaxWidth(400);
+            PopupManager.SetWindowIcon(new Uri("/resources/book-32.png", UriKind.Relative));
         }
     }
 }

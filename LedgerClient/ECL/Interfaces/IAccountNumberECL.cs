@@ -8,6 +8,7 @@ namespace LedgerClient.ECL.Interfaces
 {
     public interface IAccountNumberECL : IECL<AccountNumberEntity, AccountNumber>
     {
+        void DeleteForAccount(int aid);
         IEnumerable<AccountNumber> GetForAccount(int aid);
         AccountNumber Read(int id);
         AccountNumber Current(int aid);

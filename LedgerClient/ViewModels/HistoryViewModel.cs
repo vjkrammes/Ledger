@@ -7,6 +7,7 @@ using LedgerClient.Infrastructure;
 using LedgerClient.ECL.DTO;
 using LedgerClient.ECL.Interfaces;
 using LedgerLib.Infrastructure;
+using LedgerClient.Views;
 
 namespace LedgerClient.ViewModels
 {
@@ -68,6 +69,19 @@ namespace LedgerClient.ViewModels
 
         #region Commands
 
+        private RelayCommand _viewNumberCommand;
+        public ICommand ViewNumberCommand
+        {
+            get
+            {
+                if (_viewNumberCommand is null)
+                {
+                    _viewNumberCommand = new RelayCommand(parm => ViewNumberClick(), parm => NumberSelected());
+                }
+                return _viewNumberCommand;
+            }
+        }
+
         private RelayCommand _windowLoadedCommand;
         public ICommand WindowLoadedCommand
         {
@@ -84,6 +98,20 @@ namespace LedgerClient.ViewModels
         #endregion
 
         #region Command Methods
+
+        private bool NumberSelected() => SelectedNumber != null;
+
+        private void ViewNumberClick()
+        {
+            if (SelectedNumber is null)
+            {
+                return;
+            }
+            var vm = Tools.Locator.AccountNumberViewModel;
+            vm.AccountNumber = SelectedNumber;
+            DialogSupport.ShowDialog<AccountNumberWindow>(vm);
+            SelectedNumber = null;
+        }
 
         private void WindowLoaded()
         {

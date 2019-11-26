@@ -4,6 +4,16 @@
     <OutputType>WinExe</OutputType>
     <TargetFramework>netcoreapp3.0</TargetFramework>
     <UseWPF>true</UseWPF>
+    <ApplicationIcon>ledger.ico</ApplicationIcon>
+    <PackageId>Ledger</PackageId>
+    <Authors>V. James Krammes</Authors>
+    <Company>VJK Solutions</Company>
+    <Product>Ledger</Product>
+    <Description>A demonstration Windows desktop application that is designed to manage accounts and identities, including tracking bill payment.</Description>
+    <Copyright>© Copyright 2016-2019 VJK Solutions.</Copyright>
+    <PackageLicenseFile>License.txt</PackageLicenseFile>
+    <RepositoryUrl>https://github.com/vjkrammes/Ledger</RepositoryUrl>
+    <RepositoryType>Git</RepositoryType>
   </PropertyGroup>
 
   <ItemGroup>
@@ -113,6 +123,10 @@
     <None Remove="resources\wifi-32.png" />
     <None Remove="resources\x-32.png" />
     <None Remove="resources\yin-yang-45.png" />
+    <None Include="..\License.txt">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
   </ItemGroup>
 
   <ItemGroup>

@@ -14,6 +14,13 @@ namespace LedgerLib
     {
         public AccountNumberDAL(LedgerContext context) : base(context) { }
 
+        public void DeleteForAccount(int aid)
+        {
+            var numbers = _dbset.Where(x => x.AccountId == aid).Select(x => x).ToList();
+            _dbset.RemoveRange(numbers);
+            _context.SaveChanges();
+        }
+
         public override IEnumerable<AccountNumberEntity> Get(Expression<Func<AccountNumberEntity, bool>> pred = null)
         {
             return pred switch

@@ -160,5 +160,8 @@ namespace LedgerClient.ViewModels
                 }
             }
         }
+
+        private IEnumerable<int> GetOrphanedAccountNumbers() => 
+            (from a in Tools.Locator.LedgerContext.AccountNumbers select a.AccountId).Distinct().ToList();
     }
 }

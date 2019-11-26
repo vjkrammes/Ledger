@@ -78,6 +78,15 @@
                     </GridViewColumn>
                 </GridView>
             </ListView.View>
+            <ListView.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="View" Command="{Binding ViewNumberCommand}">
+                        <MenuItem.Icon>
+                            <Image Source="/resources/view-32.png"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                </ContextMenu>
+            </ListView.ContextMenu>
         </ListView>
         <Button Grid.Row="3" Margin="5" HorizontalAlignment="Center" Command="{Binding CancelCommand}" IsCancel="True">
             <StackPanel Orientation="Horizontal">

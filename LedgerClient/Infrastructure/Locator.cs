@@ -71,6 +71,7 @@ namespace LedgerClient.Infrastructure
 
         private void InitializeViewModels(IServiceCollection services)
         {
+            services.AddTransient<AccountNumberViewModel>();
             services.AddTransient<AccountViewModel>();
             services.AddTransient<AccountTypeViewModel>();
             services.AddTransient<AllotmentViewModel>();
@@ -78,6 +79,7 @@ namespace LedgerClient.Infrastructure
             services.AddTransient<HistoryViewModel>();
             services.AddTransient<IdentityViewModel>();
             services.AddSingleton<MainViewModel>();
+            services.AddTransient<PalletteViewModel>();
             services.AddTransient<PasswordViewModel>();
             services.AddTransient<PoolViewModel>();
             services.AddTransient<PopupViewModel>();
@@ -99,6 +101,7 @@ namespace LedgerClient.Infrastructure
 
         #region ViewModels
 
+        public AccountNumberViewModel AccountNumberViewModel { get => _provider.GetRequiredService<AccountNumberViewModel>(); }
         public AccountTypeViewModel AccountTypeViewModel { get => _provider.GetRequiredService<AccountTypeViewModel>(); }
         public AccountViewModel AccountViewModel { get => _provider.GetRequiredService<AccountViewModel>(); }
         public AllotmentViewModel AllotmentViewModel { get => _provider.GetRequiredService<AllotmentViewModel>(); }
@@ -106,6 +109,7 @@ namespace LedgerClient.Infrastructure
         public HistoryViewModel HistoryViewModel { get => _provider.GetRequiredService<HistoryViewModel>(); }
         public IdentityViewModel IdentityViewModel { get => _provider.GetRequiredService<IdentityViewModel>(); }
         public MainViewModel MainViewModel { get => _provider.GetRequiredService<MainViewModel>(); }
+        public PalletteViewModel PalletteViewModel { get => _provider.GetRequiredService<PalletteViewModel>(); }
         public PasswordViewModel PasswordViewModel { get => _provider.GetRequiredService<PasswordViewModel>(); }
         public PoolViewModel PoolViewModel { get => _provider.GetRequiredService<PoolViewModel>(); }
         public PopupViewModel PopupViewModel { get => _provider.GetRequiredService<PopupViewModel>(); }

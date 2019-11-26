@@ -41,6 +41,13 @@ namespace LedgerClient.ViewModels
             set => SetProperty(ref _shortTitle, value);
         }
 
+        private ObservableCollection<int> _orphanedAccountNumbers;
+        public ObservableCollection<int> OrphanedAccountNumbers
+        {
+            get => _orphanedAccountNumbers;
+            set => SetProperty(ref _orphanedAccountNumbers, value);
+        }
+
         private ObservableCollection<Company> _companies;
         public ObservableCollection<Company> Companies
         {

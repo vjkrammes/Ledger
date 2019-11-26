@@ -60,6 +60,10 @@ namespace LedgerLib.Infrastructure
         public const string True = "true";
         public const string Reload = "reload";
         public const string Load = "load";
+        public const string Count = "Count";
+        public const string Indexer = "Item[]";
+        public const string Keys = "Keys";
+        public const string Values = "Values";
 
         public const string Date = "date";
         public const string Datetime2 = "datetime2";
@@ -69,5 +73,7 @@ namespace LedgerLib.Infrastructure
         public const string Checkmark = "/resources/checkmark-32.png";
 
         public const string DBE = "Database Error";
+
+        public const string DuplicateKey = "An item with the same key has already been added.";
     }
 }

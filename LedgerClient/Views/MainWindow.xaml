@@ -85,6 +85,11 @@
             <Button Command="{Binding ManagePoolsCommand}" ToolTip="Manage Pools" ToolTipService.ShowOnDisabled="True">
                 <Image Source="/resources/moneybag-32.png"/>
             </Button>
+            <Button Command="{Binding CleanUpOrphanedAccountNumbersCommand}" ToolTip="Remove Orphaned Account Numbers" 
+                    ToolTipService.ShowOnDisabled="True" IsEnabled="{Binding OrphanedAccountNumbers.Count, 
+                    Converter={StaticResource EnabledConverter}}">
+                <Image Source="/resources/document-32.png"/>
+            </Button>
             <Separator />
             <Label Content="Companies:"/>
             <Grid>
@@ -133,13 +138,13 @@
             <Button ToolTip="Reports and exports" ToolTipService.ShowOnDisabled="True">
                 <Image Source="/resources/graph-32.png"/>
             </Button>
-            <Button ToolTip="Back up the database" ToolTipService.ShowOnDisabled="True">
+            <Button Command="{Binding BackupCommand}" ToolTip="Back up the database" ToolTipService.ShowOnDisabled="True">
                 <Image Source="/resources/backup-database-32.png"/>
             </Button>
-            <Button ToolTip="Change System colors" ToolTipService.ShowOnDisabled="True">
+            <Button Command="{Binding PalletteCommand}" ToolTip="Change System colors" ToolTipService.ShowOnDisabled="True">
                 <Image Source="/resources/pallette-32.png"/>
             </Button>
-            <Button ToolTip="About" ToolTipService.ShowOnDisabled="True">
+            <Button Command="{Binding AboutCommand}" ToolTip="About" ToolTipService.ShowOnDisabled="True">
                 <Image Source="/resources/about-26.png"/>
             </Button>
         </ToolBar>

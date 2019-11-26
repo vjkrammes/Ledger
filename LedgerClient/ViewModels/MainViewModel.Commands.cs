@@ -22,6 +22,33 @@ namespace LedgerClient.ViewModels
             }
         }
 
+        private RelayCommand _managePoolsCommand;
+        public ICommand ManagePoolsCommand
+        {
+            get
+            {
+                if (_managePoolsCommand is null)
+                {
+                    _managePoolsCommand = new RelayCommand(parm => ManagePoolsClick(), parm => AlwaysCanExecute());
+                }
+                return _managePoolsCommand;
+            }
+        }
+
+        private RelayCommand _cleanUpOrphanedAccountNumbersCommand;
+        public ICommand CleanUpOrphanedAccountNumbersCommand
+        {
+            get
+            {
+                if (_cleanUpOrphanedAccountNumbersCommand is null)
+                {
+                    _cleanUpOrphanedAccountNumbersCommand = new RelayCommand(parm => CleanUpOrphanedAccountNumbersClick(),
+                        parm => CleanUpOrphanedAccountNumbersCanClick());
+                }
+                return _cleanUpOrphanedAccountNumbersCommand;
+            }
+        }
+
         private RelayCommand _addCompanyCommand;
         public ICommand AddCompanyCommand
         {
@@ -204,19 +231,6 @@ namespace LedgerClient.ViewModels
             }
         }
 
-        private RelayCommand _managePoolsCommand;
-        public ICommand ManagePoolsCommand
-        {
-            get
-            {
-                if (_managePoolsCommand is null)
-                {
-                    _managePoolsCommand = new RelayCommand(parm => ManagePoolsClick(), parm => AlwaysCanExecute());
-                }
-                return _managePoolsCommand;
-            }
-        }
-
         private RelayCommand _importCommand;
         public ICommand ImportCommand
         {
@@ -253,6 +267,45 @@ namespace LedgerClient.ViewModels
                     _toggleStatusbarCommand = new RelayCommand(parm => ToggleStatusbar(), parm => AlwaysCanExecute());
                 }
                 return _toggleStatusbarCommand;
+            }
+        }
+
+        private RelayCommand _backupCommand;
+        public ICommand BackupCommand
+        {
+            get
+            {
+                if (_backupCommand is null)
+                {
+                    _backupCommand = new RelayCommand(parm => BackupClick(), parm => AlwaysCanExecute());
+                }
+                return _backupCommand;
+            }
+        }
+
+        private RelayCommand _palletteCommand;
+        public ICommand PalletteCommand
+        {
+            get
+            {
+                if (_palletteCommand is null)
+                {
+                    _palletteCommand = new RelayCommand(parm => PalletteClick(), parm => AlwaysCanExecute());
+                }
+                return _palletteCommand;
+            }
+        }
+
+        private RelayCommand _aboutCommand;
+        public ICommand AboutCommand
+        {
+            get
+            {
+                if (_aboutCommand is null)
+                {
+                    _aboutCommand = new RelayCommand(parm => AboutClick(), parm => AlwaysCanExecute());
+                }
+                return _aboutCommand;
             }
         }
 

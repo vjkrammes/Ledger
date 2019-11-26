@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Windows;
@@ -241,7 +242,49 @@ namespace LedgerClient.ViewModels
 
         private void DeleteAccountClick()
         {
-
+            if (!DeleteAccountCanClick())
+            {
+                return;
+            }
+            int accountid = SelectedAccount.Id;
+            if (Tools.Locator.AccountNumberECL.AccountHasAccountNumbers(SelectedAccount.Id))
+            {
+                string msg = "Delete this account? All Account Number history will be lost.";
+                if (PopupManager.Popup("Delete This Account?","Delete Account?",msg,PopupButtons.YesNo, PopupImage.Question) !=
+                    PopupResult.Yes)
+                {
+                    return;
+                }
+            }
+            try
+            {
+                Tools.Locator.AccountECL.Delete(SelectedAccount);
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                Tools.ConcurrencyError("Account", "Delete");
+                return;
+            }
+            catch (Exception ex)
+            {
+                PopupManager.Popup("Failed to delete Account", Constants.DBE, ex.Innermost(), PopupButtons.Ok, PopupImage.Error);
+                return;
+            }
+            Accounts.Remove(SelectedAccount);
+            SelectedAccount = Accounts.Any() ? Accounts[0] : null;
+            try
+            {
+                Tools.Locator.AccountNumberECL.DeleteForAccount(accountid);
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                Tools.ConcurrencyError("Account Number", "Delete");
+            }
+            catch (Exception ex)
+            {
+                PopupManager.Popup("Failed to delete Account Numbers", Constants.DBE, ex.Innermost(), PopupButtons.Ok, PopupImage.Error);
+            }
+            Tools.Locator.StatusbarViewModel.Update(SelectedAccount);
         }
 
         #endregion
@@ -402,6 +445,46 @@ namespace LedgerClient.ViewModels
             Tools.Locator.StatusbarViewModel.Update(SelectedAccount);
         }
 
+        private bool CleanUpOrphanedAccountNumbersCanClick() => OrphanedAccountNumbers != null && OrphanedAccountNumbers.Any();
+
+        private void CleanUpOrphanedAccountNumbersClick()
+        {
+            if (!OrphanedAccountNumbers.Any())
+            {
+                return;
+            }
+            using (var wc = new WaitCursor())
+            {
+                foreach (var accountnumber in OrphanedAccountNumbers)
+                {
+                    try
+                    {
+                        Tools.Locator.AccountNumberECL.DeleteForAccount(accountnumber);
+                    }
+                    catch (DbUpdateConcurrencyException)
+                    {
+                        Tools.ConcurrencyError("Account Number", "Delete");
+                    }
+                    catch (Exception ex)
+                    {
+                        PopupManager.Popup($"Failed to delete Account Numbers for Account #{accountnumber}", Constants.DBE,
+                            ex.Innermost(), PopupButtons.Ok, PopupImage.Warning);
+                    }
+                }
+            }
+            Tools.Locator.StatusbarViewModel.Update(SelectedAccount);
+            OrphanedAccountNumbers = new ObservableCollection<int>(GetOrphanedAccountNumbers());
+            if (OrphanedAccountNumbers.Any())
+            {
+                PopupManager.Popup("Some Orphaned account numbers remain", "Not All Deleted", PopupButtons.Ok, PopupImage.Information);
+            }
+            else
+            {
+                PopupManager.Popup("All Orphaned Account Numbers have been Deleted", "All Deleted", PopupButtons.Ok,
+                    PopupImage.Information);
+            }
+        }
+
         #endregion
 
         #region Import Methods
@@ -439,6 +522,21 @@ namespace LedgerClient.ViewModels
             Tools.Locator.StatusbarViewModel.StatusbarVisibility = StatusbarVisibility;
         }
 
+        private void BackupClick()
+        {
+
+        }
+
+        private void PalletteClick()
+        {
+            DialogSupport.ShowDialog<PalletteWindow>(Tools.Locator.PalletteViewModel, Application.Current.MainWindow);
+        }
+
+        private void AboutClick()
+        {
+
+        }
+
         #endregion
 
         #region Window Loaded
@@ -454,6 +552,13 @@ namespace LedgerClient.ViewModels
             Authenticate(settings);
             LoadCompanies(false);
             Tools.Locator.StatusbarViewModel.Update();
+            OrphanedAccountNumbers = new ObservableCollection<int>(GetOrphanedAccountNumbers());
+            if (OrphanedAccountNumbers.Any())
+            {
+                string msg = "Orphaned Account Numbers can be removed by using the button on the tool bar";
+                PopupManager.Popup("Orphaned Account Numbers Exist.", "Orphaned Account Numbers", msg, PopupButtons.Ok, 
+                    PopupImage.Information);
+            }
         }
 
         #endregion

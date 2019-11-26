@@ -41,6 +41,8 @@ namespace LedgerClient.ECL
             Tools.Locator.AccountNumberDAL.Delete(entity);
         }
 
+        public void DeleteForAccount(int aid) => Tools.Locator.AccountNumberDAL.DeleteForAccount(aid);
+
         public IEnumerable<AccountNumber> Get(Expression<Func<AccountNumberEntity, bool>> pred = null)
         {
             var entities = Tools.Locator.AccountNumberDAL.Get(pred);
