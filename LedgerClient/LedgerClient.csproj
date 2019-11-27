@@ -7,10 +7,10 @@
     <ApplicationIcon>ledger.ico</ApplicationIcon>
     <PackageId>Ledger</PackageId>
     <Authors>V. James Krammes</Authors>
-    <Company>VJK Solutions</Company>
+    <Company>VJK Solutions, LLC</Company>
     <Product>Ledger</Product>
     <Description>A demonstration Windows desktop application that is designed to manage accounts and identities, including tracking bill payment.</Description>
-    <Copyright>© Copyright 2016-2019 VJK Solutions.</Copyright>
+    <Copyright>© Copyright 2016-2019 VJK Solutions, LLC.</Copyright>
     <PackageLicenseFile>License.txt</PackageLicenseFile>
     <RepositoryUrl>https://github.com/vjkrammes/Ledger</RepositoryUrl>
     <RepositoryType>Git</RepositoryType>
@@ -76,6 +76,7 @@
     <None Remove="resources\map-32.png" />
     <None Remove="resources\medium-32.png" />
     <None Remove="resources\memory-24.png" />
+    <None Remove="resources\minus-32-2.png" />
     <None Remove="resources\mirror-32.png" />
     <None Remove="resources\money-32.png" />
     <None Remove="resources\moneybag-32.png" />
@@ -86,6 +87,7 @@
     <None Remove="resources\pallette-32.png" />
     <None Remove="resources\pepper-32.png" />
     <None Remove="resources\phone-32.png" />
+    <None Remove="resources\plus-32.png" />
     <None Remove="resources\printer-32.png" />
     <None Remove="resources\project-32.png" />
     <None Remove="resources\protocol-32.png" />
@@ -212,6 +214,7 @@
     <Resource Include="resources\map-32.png" />
     <Resource Include="resources\medium-32.png" />
     <Resource Include="resources\memory-24.png" />
+    <Resource Include="resources\minus-32-2.png" />
     <Resource Include="resources\mirror-32.png" />
     <Resource Include="resources\money-32.png" />
     <Resource Include="resources\moneybag-32.png" />
@@ -222,6 +225,7 @@
     <Resource Include="resources\pallette-32.png" />
     <Resource Include="resources\pepper-32.png" />
     <Resource Include="resources\phone-32.png" />
+    <Resource Include="resources\plus-32.png" />
     <Resource Include="resources\printer-32.png" />
     <Resource Include="resources\project-32.png" />
     <Resource Include="resources\protocol-32.png" />

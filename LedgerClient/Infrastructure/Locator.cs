@@ -71,11 +71,13 @@ namespace LedgerClient.Infrastructure
 
         private void InitializeViewModels(IServiceCollection services)
         {
+            services.AddTransient<AboutViewModel>();
             services.AddTransient<AccountNumberViewModel>();
             services.AddTransient<AccountViewModel>();
             services.AddTransient<AccountTypeViewModel>();
             services.AddTransient<AllotmentViewModel>();
             services.AddTransient<CompanyViewModel>();
+            services.AddTransient<ExplorerViewModel>();
             services.AddTransient<HistoryViewModel>();
             services.AddTransient<IdentityViewModel>();
             services.AddSingleton<MainViewModel>();
@@ -92,6 +94,7 @@ namespace LedgerClient.Infrastructure
         #region Properties
 
         public IConfiguration Configuration { get => _provider.GetRequiredService<IConfiguration>(); }
+        public IExplorerService ExplorerService { get => _provider.GetRequiredService<IExplorerService>(); }
         public IPasswordManager PasswordManager { get => _provider.GetRequiredService<IPasswordManager>(); }
         public IPoolRecalculator PoolRecalculator { get => _provider.GetRequiredService<IPoolRecalculator>(); }
         public IServiceProvider Provider { get => _provider; }
@@ -101,11 +104,13 @@ namespace LedgerClient.Infrastructure
 
         #region ViewModels
 
+        public AboutViewModel AboutViewModel { get => _provider.GetRequiredService<AboutViewModel>(); }
         public AccountNumberViewModel AccountNumberViewModel { get => _provider.GetRequiredService<AccountNumberViewModel>(); }
         public AccountTypeViewModel AccountTypeViewModel { get => _provider.GetRequiredService<AccountTypeViewModel>(); }
         public AccountViewModel AccountViewModel { get => _provider.GetRequiredService<AccountViewModel>(); }
         public AllotmentViewModel AllotmentViewModel { get => _provider.GetRequiredService<AllotmentViewModel>(); }
         public CompanyViewModel CompanyViewModel { get => _provider.GetRequiredService<CompanyViewModel>(); }
+        public ExplorerViewModel ExplorerViewModel { get => _provider.GetRequiredService<ExplorerViewModel>(); }
         public HistoryViewModel HistoryViewModel { get => _provider.GetRequiredService<HistoryViewModel>(); }
         public IdentityViewModel IdentityViewModel { get => _provider.GetRequiredService<IdentityViewModel>(); }
         public MainViewModel MainViewModel { get => _provider.GetRequiredService<MainViewModel>(); }
@@ -154,18 +159,25 @@ namespace LedgerClient.Infrastructure
                 if (!_initialized)
                 {
                     ServiceCollection services = new ServiceCollection();
+
                     services.AddDbContext<LedgerContext>(ServiceLifetime.Transient);
-                    services.AddSingleton<ISettingsService, SettingsService>();
+
                     services.AddSingleton(ConfigurationFactory.Create());
+                    services.AddTransient<IExplorerService, ExplorerService>();
                     services.AddSingleton<IPasswordManager, PasswordManager>();
-                    services.AddTransient<IStringCypherService, StringCypherService>();
                     services.AddTransient<IPoolRecalculator, PoolRecalculator>();
+                    services.AddSingleton<ISettingsService, SettingsService>();
+                    services.AddTransient<IStringCypherService, StringCypherService>();
+
                     InitializeMapper(services);
                     InitializeDAL(services);
                     InitializeECL(services);
                     InitializeViewModels(services);
+
                     _provider = services.BuildServiceProvider();
+
                     Application.Current.Resources[Constants.Locator] = this;
+
                     _initialized = true;
                 }
             }

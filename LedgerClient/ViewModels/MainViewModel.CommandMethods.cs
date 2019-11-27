@@ -1,15 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
 using System.Windows;
+
 using LedgerClient.ECL.DTO;
 using LedgerClient.Infrastructure;
 using LedgerClient.Views;
-using LedgerLib;
+
 using LedgerLib.Infrastructure;
 using LedgerLib.Interfaces;
+
 using Microsoft.EntityFrameworkCore;
 
 namespace LedgerClient.ViewModels
@@ -524,7 +524,8 @@ namespace LedgerClient.ViewModels
 
         private void BackupClick()
         {
-
+            var vm = Tools.Locator.ExplorerViewModel;
+            DialogSupport.ShowDialog<ExplorerWindow>(vm, Application.Current.MainWindow);
         }
 
         private void PalletteClick()
@@ -534,7 +535,7 @@ namespace LedgerClient.ViewModels
 
         private void AboutClick()
         {
-
+            DialogSupport.ShowDialog<AboutWindow>(Tools.Locator.AboutViewModel, Application.Current.MainWindow);
         }
 
         #endregion
