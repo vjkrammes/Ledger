@@ -76,6 +76,7 @@ namespace LedgerClient.Infrastructure
             services.AddTransient<AccountViewModel>();
             services.AddTransient<AccountTypeViewModel>();
             services.AddTransient<AllotmentViewModel>();
+            services.AddTransient<BackupViewModel>();
             services.AddTransient<CompanyViewModel>();
             services.AddTransient<ExplorerViewModel>();
             services.AddTransient<HistoryViewModel>();
@@ -87,6 +88,7 @@ namespace LedgerClient.Infrastructure
             services.AddTransient<PopupViewModel>();
             services.AddTransient<QAViewModel>();
             services.AddSingleton<StatusbarViewModel>();
+            services.AddTransient<TransactionViewModel>();
         }
 
         #endregion
@@ -109,6 +111,7 @@ namespace LedgerClient.Infrastructure
         public AccountTypeViewModel AccountTypeViewModel { get => _provider.GetRequiredService<AccountTypeViewModel>(); }
         public AccountViewModel AccountViewModel { get => _provider.GetRequiredService<AccountViewModel>(); }
         public AllotmentViewModel AllotmentViewModel { get => _provider.GetRequiredService<AllotmentViewModel>(); }
+        public BackupViewModel BackupViewModel { get => _provider.GetRequiredService<BackupViewModel>(); }
         public CompanyViewModel CompanyViewModel { get => _provider.GetRequiredService<CompanyViewModel>(); }
         public ExplorerViewModel ExplorerViewModel { get => _provider.GetRequiredService<ExplorerViewModel>(); }
         public HistoryViewModel HistoryViewModel { get => _provider.GetRequiredService<HistoryViewModel>(); }
@@ -120,6 +123,7 @@ namespace LedgerClient.Infrastructure
         public PopupViewModel PopupViewModel { get => _provider.GetRequiredService<PopupViewModel>(); }
         public QAViewModel QAViewModel { get => _provider.GetRequiredService<QAViewModel>(); }
         public StatusbarViewModel StatusbarViewModel { get => _provider.GetRequiredService<StatusbarViewModel>(); }
+        public TransactionViewModel TransactionViewModel { get => _provider.GetRequiredService<TransactionViewModel>(); }
 
         #endregion
 

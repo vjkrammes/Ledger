@@ -26,6 +26,7 @@ namespace LedgerClient.ECL
             AllotmentEntity entity = _mapper.Map<AllotmentEntity>(dto);
             Tools.Locator.AllotmentDAL.Insert(entity);
             dto.Id = entity.Id;
+            dto.RowVersion = entity.RowVersion.ArrayCopy();
         }
 
         public void Update(Allotment dto)

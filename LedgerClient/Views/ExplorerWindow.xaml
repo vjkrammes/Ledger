@@ -20,7 +20,8 @@
         <Border Grid.Row="0"  Style="{DynamicResource BannerBorder}">
             <TextBlock Style="{DynamicResource BannerText}" Text="{Binding Banner}"/>
         </Border>
-        <TreeView Grid.Row="1" Margin="5" ItemsSource="{Binding Root}" SelectedItemChanged="TreeView_SelectedItemChanged">
+        <TreeView Grid.Row="1" Margin="5" ItemsSource="{Binding Root}" SelectedItemChanged="TreeView_SelectedItemChanged"
+                  FontSize="14" FontFamily="Helvetica">
             <TreeView.ItemContainerStyle>
                 <Style TargetType="TreeViewItem">
                     <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>

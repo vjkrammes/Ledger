@@ -66,8 +66,8 @@ namespace LedgerClient.ViewModels
             set => SetProperty(ref _root, value);
         }
 
-        private TreeViewItem _selectedItem;
-        public TreeViewItem SelectedItem
+        private ExplorerItem _selectedItem;
+        public ExplorerItem SelectedItem
         {
             get => _selectedItem;
             set => SetProperty(ref _selectedItem, value);
@@ -98,11 +98,11 @@ namespace LedgerClient.ViewModels
 
         public override bool OkCanExecute()
         {
-            if (SelectedItem is null || SelectedItem.Tag is null || !(SelectedItem.Tag is ExplorerItem item))
+            if (SelectedItem is null)
             {
                 return false;
             }
-            return item.Type switch
+            return SelectedItem.Type switch
             {
                 ExplorerItemType.Drive => true,
                 ExplorerItemType.Directory => IsFolderPicker,
@@ -113,12 +113,12 @@ namespace LedgerClient.ViewModels
 
         private void WindowLoaded()
         {
-            RootItem = new ExplorerItem
+            RootItem = new ExplorerItem(!IsFolderPicker)
             {
                 Name = "This Computer",
                 Type = ExplorerItemType.ThisComputer
             };
-            foreach (var item in ExplorerItem.Drives(_explorer.GetDrives()))
+            foreach (var item in ExplorerItem.Drives(_explorer.GetDrives(), !IsFolderPicker))
             {
                 item.Children.Add(ExplorerItem.Placeholder);
                 RootItem.Children.Add(item);

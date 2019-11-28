@@ -76,7 +76,7 @@
     <None Remove="resources\map-32.png" />
     <None Remove="resources\medium-32.png" />
     <None Remove="resources\memory-24.png" />
-    <None Remove="resources\minus-32-2.png" />
+    <None Remove="resources\minus-32.png" />
     <None Remove="resources\mirror-32.png" />
     <None Remove="resources\money-32.png" />
     <None Remove="resources\moneybag-32.png" />
@@ -214,7 +214,7 @@
     <Resource Include="resources\map-32.png" />
     <Resource Include="resources\medium-32.png" />
     <Resource Include="resources\memory-24.png" />
-    <Resource Include="resources\minus-32-2.png" />
+    <Resource Include="resources\minus-32.png" />
     <Resource Include="resources\mirror-32.png" />
     <Resource Include="resources\money-32.png" />
     <Resource Include="resources\moneybag-32.png" />

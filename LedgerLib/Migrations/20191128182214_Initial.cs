@@ -94,6 +94,7 @@ namespace LedgerLib.Migrations
                     Foreground = table.Column<string>(maxLength: 50, nullable: false),
                     IconHeight = table.Column<double>(nullable: false),
                     ShowStatusBar = table.Column<bool>(nullable: false),
+                    BackupDirectory = table.Column<string>(nullable: false),
                     PasswordSalt = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
                     PasswordHash = table.Column<byte[]>(type: "varbinary(max)", nullable: true)
                 },

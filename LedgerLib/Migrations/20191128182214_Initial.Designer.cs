@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LedgerLib.Migrations
 {
     [DbContext(typeof(LedgerContext))]
-    [Migration("20191124201333_Initial")]
+    [Migration("20191128182214_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -344,6 +344,10 @@ namespace LedgerLib.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(50)")
                         .HasMaxLength(50);
+
+                    b.Property<string>("BackupDirectory")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Border")
                         .IsRequired()

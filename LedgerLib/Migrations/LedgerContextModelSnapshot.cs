@@ -343,6 +343,10 @@ namespace LedgerLib.Migrations
                         .HasColumnType("nvarchar(50)")
                         .HasMaxLength(50);
 
+                    b.Property<string>("BackupDirectory")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Border")
                         .IsRequired()
                         .HasColumnType("nvarchar(50)")

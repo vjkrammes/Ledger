@@ -2,7 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
-
+using System.Windows.Media;
 using LedgerClient.ECL.DTO;
 using LedgerClient.Infrastructure;
 using LedgerClient.Views;
@@ -289,6 +289,221 @@ namespace LedgerClient.ViewModels
 
         #endregion
 
+        #region Transaction Methods
+
+        private bool AddTransactionCanClick() => SelectedAccount != null && SelectedAccount.IsPayable;
+
+        private void AddTransactionClick()
+        {
+            if (!AddTransactionCanClick())
+            {
+                return;
+            }
+            var vm = Tools.Locator.TransactionViewModel;
+            if (DialogSupport.ShowDialog<TransactionWindow>(vm, Application.Current.MainWindow) != true)
+            {
+                SelectedTransaction = null;
+                return;
+            }
+            if (vm.Payment > vm.Balance)
+            {
+                PopupManager.Popup("Payment is greater than Balance", "Invalid Transaction", PopupButtons.Ok, PopupImage.Stop);
+                SelectedTransaction = null;
+                return;
+            }
+            Transaction t = new Transaction
+            {
+                AccountId = SelectedAccount.Id,
+                Date = vm.Date ?? (default),
+                Balance = vm.Balance,
+                Payment = vm.Payment,
+                Reference = vm.Reference ?? string.Empty
+            };
+            try
+            {
+                Tools.Locator.TransactionECL.Insert(t);
+            }
+            catch (Exception ex)
+            {
+                PopupManager.Popup("Failed to insert new Transaction", Constants.DBE, ex.Innermost(), PopupButtons.Ok, PopupImage.Error);
+                SelectedTransaction = null;
+                return;
+            }
+            AddTransaction(t);
+            Tools.Locator.StatusbarViewModel.Update(SelectedAccount);
+        }
+
+        private bool TransactionSelected() => SelectedTransaction != null;
+
+        private void ChangeDateClick()
+        {
+
+        }
+
+        private void ChangeBalanceClick()
+        {
+            if (SelectedTransaction is null)
+            {
+                return;
+            }
+            var vm = Tools.Locator.QAViewModel;
+            vm.Question = "Balance:";
+            vm.Answer = SelectedTransaction.Balance.ToString();
+            vm.AnswerRequired = true;
+            vm.BorderBrush = Application.Current.Resources[Constants.Border] as SolidColorBrush;
+            if (DialogSupport.ShowDialog<QAWindow>(vm, Application.Current.MainWindow) != true)
+            {
+                SelectedTransaction = null;
+                return;
+            }
+            if (string.IsNullOrEmpty(vm.Answer) || !decimal.TryParse(vm.Answer, out decimal newbalance))
+            {
+                SelectedTransaction = null;
+                return;
+            }
+            if (newbalance < SelectedTransaction.Payment)
+            {
+                PopupManager.Popup("New Balance is less than Payment", "Invalid Balance", PopupButtons.Ok, PopupImage.Stop);
+                SelectedTransaction = null;
+                return;
+            }
+            Transaction t = SelectedTransaction.Clone();
+            t.Balance = newbalance;
+            try
+            {
+                Tools.Locator.TransactionECL.Update(t);
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                Tools.ConcurrencyError("Transaction", "Update");
+                SelectedTransaction = null;
+                return;
+            }
+            catch (Exception ex)
+            {
+                PopupManager.Popup("Failed to update Transaction", Constants.DBE, ex.Innermost(), PopupButtons.Ok, PopupImage.Error);
+                SelectedTransaction = null;
+                return;
+            }
+            Transactions.Remove(SelectedTransaction);
+            AddTransaction(t);
+            Tools.Locator.StatusbarViewModel.Update(SelectedAccount);
+        }
+
+        private void ChangePaymentClick()
+        {
+            if (SelectedTransaction is null)
+            {
+                return;
+            }
+            var vm = Tools.Locator.QAViewModel;
+            vm.Question = "Payment:";
+            vm.Answer = SelectedTransaction.Payment.ToString();
+            vm.AnswerRequired = true;
+            vm.BorderBrush = Application.Current.Resources[Constants.Border] as SolidColorBrush;
+            if (DialogSupport.ShowDialog<QAWindow>(vm, Application.Current.MainWindow) != true)
+            {
+                SelectedTransaction = null;
+                return;
+            }
+            if (string.IsNullOrEmpty(vm.Answer) || !decimal.TryParse(vm.Answer, out decimal newpayment))
+            {
+                SelectedTransaction = null;
+                return;
+            }
+            Transaction t = SelectedTransaction.Clone();
+            t.Payment = newpayment;
+            try
+            {
+                Tools.Locator.TransactionECL.Update(t);
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                Tools.ConcurrencyError("Transaction", "Update");
+                SelectedTransaction = null;
+                return;
+            }
+            catch (Exception ex)
+            {
+                PopupManager.Popup("Failed to update Transaction", Constants.DBE, ex.Innermost(), PopupButtons.Ok, PopupImage.Error);
+                SelectedTransaction = null;
+                return;
+            }
+            Transactions.Remove(SelectedTransaction);
+            AddTransaction(t);
+            Tools.Locator.StatusbarViewModel.Update(SelectedAccount);
+        }
+
+        private void ChangeReferenceClick()
+        {
+            if (SelectedTransaction is null)
+            {
+                return;
+            }
+            var vm = Tools.Locator.QAViewModel;
+            vm.Question = "Reference:";
+            vm.Answer = SelectedTransaction.Reference ?? string.Empty;
+            vm.AnswerRequired = false;
+            vm.BorderBrush = Application.Current.Resources[Constants.Border] as SolidColorBrush;
+            if (DialogSupport.ShowDialog<QAWindow>(vm, Application.Current.MainWindow) != true)
+            {
+                SelectedTransaction = null;
+                return;
+            }
+            Transaction t = SelectedTransaction.Clone();
+            t.Reference = vm.Answer ?? string.Empty;
+            try
+            {
+                Tools.Locator.TransactionECL.Update(t);
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                Tools.ConcurrencyError("Transaction", "Update");
+                SelectedTransaction = null;
+                return;
+            }
+            catch (Exception ex)
+            {
+                PopupManager.Popup("Failed to update Transaction", Constants.DBE, ex.Innermost(), PopupButtons.Ok, PopupImage.Error);
+                SelectedTransaction = null;
+                return;
+            }
+            Transactions.Remove(SelectedTransaction);
+            AddTransaction(t);
+            Tools.Locator.StatusbarViewModel.Update(SelectedAccount);
+        }
+
+        private void DeselectTransactionClick() => SelectedTransaction = null;
+
+        private void DeleteTransactionClick()
+        {
+            if (SelectedTransaction is null)
+            {
+                return;
+            }
+            try
+            {
+                Tools.Locator.TransactionECL.Delete(SelectedTransaction);
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                Tools.ConcurrencyError("Transaction", "Update");
+                SelectedTransaction = null;
+                return;
+            }
+            catch (Exception ex)
+            {
+                PopupManager.Popup("Failed to delete transaction", Constants.DBE, ex.Innermost(), PopupButtons.Ok, PopupImage.Error);
+                SelectedTransaction = null;
+                return;
+            }
+            Transactions.Remove(SelectedTransaction);
+            SelectedTransaction = null;
+            Tools.Locator.StatusbarViewModel.Update(SelectedAccount);
+        }
+
+        #endregion
+
         #region Identity Methods
 
         private bool IdentitySelected() => SelectedIdentity != null;
@@ -507,12 +722,11 @@ namespace LedgerClient.ViewModels
 
         private void IconHeight(object parm)
         {
-            if (!(parm is string h) || !double.TryParse(h, out double height))
+            if (parm is string h && double.TryParse(h, out double height))
             {
-                return;
+                Tools.Locator.Settings.IconHeight = height;
+                Application.Current.Resources[Constants.IconHeight] = height;
             }
-            Tools.Locator.Settings.IconHeight = height;
-            Application.Current.Resources[Constants.IconHeight] = height;
         }
 
         private void ToggleStatusbar()
@@ -524,8 +738,7 @@ namespace LedgerClient.ViewModels
 
         private void BackupClick()
         {
-            var vm = Tools.Locator.ExplorerViewModel;
-            DialogSupport.ShowDialog<ExplorerWindow>(vm, Application.Current.MainWindow);
+            DialogSupport.ShowDialog<BackupWindow>(Tools.Locator.BackupViewModel, Application.Current.MainWindow);
         }
 
         private void PalletteClick()

@@ -64,7 +64,22 @@ namespace LedgerClient.Models
         public bool IsExpanded
         {
             get => _isExpanded;
-            set => SetProperty(ref _isExpanded, value);
+            set
+            {
+                SetProperty(ref _isExpanded, value);
+                if (Children != null)
+                {
+                    if (IsExpanded)
+                    {
+                        LoadChildren();
+                    }
+                    else
+                    {
+                        Children.Clear();
+                        Children.Add(Placeholder);
+                    }
+                }
+            }
         }
 
         private IList<ExplorerItem> _children;
@@ -74,11 +89,47 @@ namespace LedgerClient.Models
             set => SetProperty(ref _children, value);
         }
 
+        private readonly bool _includeFiles = true;
+
         #endregion
 
         #region Methods
 
         public override string ToString() => Name;
+
+        private void LoadChildren()
+        {
+            if (Children != null)
+            {
+                Children.Clear();
+                switch (Type)
+                {
+                    case ExplorerItemType.Drive:
+                    case ExplorerItemType.Directory:
+                        foreach (var dir in Directories(Tools.Locator.ExplorerService.GetDirectories(Path), _includeFiles))
+                        {
+                            dir.Children.Add(Placeholder);
+                            Children.Add(dir);
+                        }
+                        if (_includeFiles)
+                        {
+                            foreach (var file in Files(Tools.Locator.ExplorerService.GetFiles(Path), _includeFiles))
+                            {
+                                file.Children.Add(Placeholder);
+                                Children.Add(file);
+                            }
+                        }
+                        break;
+                    case ExplorerItemType.ThisComputer:
+                        foreach (var drive in Drives(Tools.Locator.ExplorerService.GetDrives(), _includeFiles))
+                        {
+                            drive.Children.Add(Placeholder);
+                            Children.Add(drive);
+                        }
+                        break;
+                }
+            }
+        }
 
         #endregion
 
@@ -94,10 +145,15 @@ namespace LedgerClient.Models
             Size = 0L;
             IsSelected = false;
             IsExpanded = false;
-            Children = new ObservableCollection<ExplorerItem>();
+            Children = new List<ExplorerItem>();
+            _includeFiles = true;
         }
 
+        public ExplorerItem(bool includefiles) : this() => _includeFiles = includefiles;
+
         public ExplorerItem(string directory) : this() => _name = directory;
+
+        public ExplorerItem(string directory, bool includefiles) : this(includefiles) => _name = directory;
 
         public ExplorerItem(DirectoryInfo dirinfo) : this()
         {
@@ -107,7 +163,24 @@ namespace LedgerClient.Models
             Root = dirinfo.Root.Name;
         }
 
+        public ExplorerItem(DirectoryInfo dirinfo, bool includefiles) : this(includefiles)
+        {
+            Type = ExplorerItemType.Directory;
+            Name = dirinfo.Name;
+            Path = dirinfo.FullName;
+            Root = dirinfo.Root.Name;
+        }
+
         public ExplorerItem(FileInfo fileinfo) : this()
+        {
+            Type = ExplorerItemType.File;
+            Name = fileinfo.Name;
+            Path = fileinfo.FullName;
+            Extension = fileinfo.Extension;
+            Size = fileinfo.Length;
+        }
+
+        public ExplorerItem(FileInfo fileinfo, bool includefiles) : this(includefiles)
         {
             Type = ExplorerItemType.File;
             Name = fileinfo.Name;
@@ -130,38 +203,52 @@ namespace LedgerClient.Models
             Path = driveinfo.Name;
         }
 
+        public ExplorerItem(DriveInfo driveinfo, bool includefiles) : this(includefiles)
+        {
+            Type = ExplorerItemType.Drive;
+            if (driveinfo.Name.EndsWith("\\"))
+            {
+                Name = driveinfo.Name[..^1];
+            }
+            else
+            {
+                Name = driveinfo.Name;
+            }
+            Path = driveinfo.Name;
+        }
+
         #endregion
 
         #region Factory Methods
 
         public static ExplorerItem Placeholder { get => new ExplorerItem { Type = ExplorerItemType.Placeholder }; }
 
-        public static IEnumerable<ExplorerItem> Directories(IEnumerable<DirectoryInfo> directories)
+        public static IEnumerable<ExplorerItem> Directories(IEnumerable<DirectoryInfo> directories, bool includefiles = true)
         {
             List<ExplorerItem> ret = new List<ExplorerItem>();
             foreach (var directory in directories)
             {
-                ret.Add(new ExplorerItem(directory));
+                ret.Add(new ExplorerItem(directory, includefiles));
             }
             return ret;
         }
 
-        public static IEnumerable<ExplorerItem> Files(IEnumerable<FileInfo> files)
+        public static IEnumerable<ExplorerItem> Files(IEnumerable<FileInfo> files, bool includefiles = true)
         {
             List<ExplorerItem> ret = new List<ExplorerItem>();
             foreach (var file in files)
             {
-                ret.Add(new ExplorerItem(file));
+                ret.Add(new ExplorerItem(file, includefiles));
             }
             return ret;
         }
 
-        public static IEnumerable<ExplorerItem> Drives(IEnumerable<DriveInfo> drives)
+        public static IEnumerable<ExplorerItem> Drives(IEnumerable<DriveInfo> drives, bool includefiles = true)
         {
             List<ExplorerItem> ret = new List<ExplorerItem>();
             foreach (var drive in drives)
             {
-                ret.Add(new ExplorerItem(drive));
+                ret.Add(new ExplorerItem(drive, includefiles));
             }
             return ret;
         }

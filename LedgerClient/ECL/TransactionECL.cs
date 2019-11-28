@@ -26,6 +26,7 @@ namespace LedgerClient.ECL
             TransactionEntity entity = _mapper.Map<TransactionEntity>(dto);
             Tools.Locator.TransactionDAL.Insert(entity);
             dto.Id = entity.Id;
+            dto.RowVersion = entity.RowVersion.ArrayCopy();
         }
 
         public void Update(Transaction dto)

@@ -138,6 +138,97 @@ namespace LedgerClient.ViewModels
             }
         }
 
+        private RelayCommand _addTransactionCommand;
+        public ICommand AddTransactionCommand
+        {
+            get
+            {
+                if (_addTransactionCommand is null)
+                {
+                    _addTransactionCommand = new RelayCommand(parm => AddTransactionClick(), parm => AddTransactionCanClick());
+                }
+                return _addTransactionCommand;
+            }
+        }
+
+        private RelayCommand _changeDateCommand;
+        public ICommand ChangeDateCommand
+        {
+            get
+            {
+                if (_changeDateCommand is null)
+                {
+                    _changeDateCommand = new RelayCommand(parm => ChangeDateClick(), parm => TransactionSelected());
+                }
+                return _changeDateCommand;
+            }
+        }
+
+        private RelayCommand _changeBalanceCommand;
+        public ICommand ChangeBalanceCommand
+        {
+            get
+            {
+                if (_changeBalanceCommand is null)
+                {
+                    _changeBalanceCommand = new RelayCommand(parm => ChangeBalanceClick(), parm => TransactionSelected());
+                }
+                return _changeBalanceCommand;
+            }
+        }
+
+        private RelayCommand _changePaymentCommand;
+        public ICommand ChangePaymentCommand
+        {
+            get
+            {
+                if (_changePaymentCommand is null)
+                {
+                    _changePaymentCommand = new RelayCommand(parm => ChangePaymentClick(), parm => TransactionSelected());
+                }
+                return _changePaymentCommand;
+            }
+        }
+
+        private RelayCommand _changeReferenceCommand;
+        public ICommand ChangeReferenceCommand
+        {
+            get
+            {
+                if (_changeReferenceCommand is null)
+                {
+                    _changeReferenceCommand = new RelayCommand(parm => ChangeReferenceClick(), parm => TransactionSelected());
+                }
+                return _changeReferenceCommand;
+            }
+        }
+
+        private RelayCommand _deselectTransactionCommand;
+        public ICommand DeselectTransactionCommand
+        {
+            get
+            {
+                if (_deselectTransactionCommand is null)
+                {
+                    _deselectTransactionCommand = new RelayCommand(parm => DeselectTransactionClick(), parm => TransactionSelected());
+                }
+                return _deselectTransactionCommand;
+            }
+        }
+
+        private RelayCommand _deleteTransactionCommand;
+        public ICommand DeleteTransactionCommand
+        {
+            get
+            {
+                if (_deleteTransactionCommand is null)
+                {
+                    _deleteTransactionCommand = new RelayCommand(parm => DeleteTransactionClick(), parm => TransactionSelected());
+                }
+                return _deleteTransactionCommand;
+            }
+        }
+
         private RelayCommand _copyURLCommand;
         public ICommand CopyURLCommand
         {

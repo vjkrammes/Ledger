@@ -15,6 +15,7 @@ namespace LedgerLib.Interfaces
         string Foreground { get; set; }
         double IconHeight { get; set; }
         bool ShowStatusbar { get; set; }
+        string BackupDirectory { get; set; }
         byte[] PasswordSalt { get; set; }
         byte[] PasswordHash { get; set; }
 

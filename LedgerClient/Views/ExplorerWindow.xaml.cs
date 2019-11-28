@@ -1,6 +1,6 @@
 ﻿using System.Windows;
-using System.Windows.Controls;
 
+using LedgerClient.Models;
 using LedgerClient.ViewModels;
 
 namespace LedgerClient.Views
@@ -17,7 +17,10 @@ namespace LedgerClient.Views
 
         private void TreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
-            ((ExplorerViewModel)DataContext).SelectedItem = e.NewValue as TreeViewItem;
+            if (e.NewValue is ExplorerItem item)
+            {
+                ((ExplorerViewModel)DataContext).SelectedItem = item;
+            }
         }
     }
 }

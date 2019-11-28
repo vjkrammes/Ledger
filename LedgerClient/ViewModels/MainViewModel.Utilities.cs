@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Windows;
 using LedgerClient.ECL.DTO;
+using LedgerClient.ECL.Interfaces;
 using LedgerClient.Infrastructure;
 using LedgerClient.Views;
 using LedgerLib.Infrastructure;
@@ -161,7 +162,31 @@ namespace LedgerClient.ViewModels
             }
         }
 
-        private IEnumerable<int> GetOrphanedAccountNumbers() => 
-            (from a in Tools.Locator.LedgerContext.AccountNumbers select a.AccountId).Distinct().ToList();
+        private IEnumerable<int> GetOrphanedAccountNumbers()
+        {
+            List<int> ret = new List<int>();
+            IAccountECL ecl = Tools.Locator.AccountECL;
+            var ids = (from a in Tools.Locator.LedgerContext.AccountNumbers select a.AccountId).Distinct().ToList();
+            foreach (var id in ids)
+            {
+                if (ecl.Read(id) == null)
+                {
+                    ret.Add(id);
+                }
+            }
+            return ret;
+        }
+
+        private void AddTransaction(Transaction t)
+        {
+            int ix = 0;
+            while (ix < Transactions.Count && Transactions[ix] > t)
+            {
+                ix++;
+            }
+            Transactions.Insert(ix, t);
+            SelectedTransaction = t;
+            SelectedTransaction = null;
+        }
     }
 }

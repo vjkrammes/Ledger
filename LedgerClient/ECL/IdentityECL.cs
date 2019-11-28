@@ -26,6 +26,7 @@ namespace LedgerClient.ECL
             IdentityEntity entity = _mapper.Map<IdentityEntity>(dto);
             Tools.Locator.IdentityDAL.Insert(entity);
             dto.Id = entity.Id;
+            dto.RowVersion = entity.RowVersion.ArrayCopy();
         }
 
         public void Update(Identity dto)

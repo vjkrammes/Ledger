@@ -119,6 +119,19 @@ namespace LedgerClient.Models
             }
         }
 
+        public string BackupDirectory
+        {
+            get => _settings.BackupDirectory;
+            set
+            {
+                if (_settings.BackupDirectory != value)
+                {
+                    _settings.BackupDirectory = value;
+                    Persist();
+                }
+            }
+        }
+
         public byte[] PasswordSalt
         {
             get => _settings.PasswordSalt;

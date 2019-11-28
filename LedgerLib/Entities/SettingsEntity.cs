@@ -27,6 +27,8 @@ namespace LedgerLib.Entities
         public double IconHeight { get; set; }
         [Required]
         public bool ShowStatusBar { get; set; }
+        [Required]
+        public string BackupDirectory { get; set; }
         public byte[] PasswordSalt { get; set; }
         public byte[] PasswordHash { get; set; }
 
@@ -44,6 +46,7 @@ namespace LedgerLib.Entities
                 Foreground = "White",
                 IconHeight = Constants.DefaultIconHeight,
                 ShowStatusBar = true,
+                BackupDirectory = string.Empty,
                 PasswordSalt = null,
                 PasswordHash = null
             };

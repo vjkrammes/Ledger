@@ -26,6 +26,7 @@ namespace LedgerClient.ECL
             AccountTypeEntity entity = _mapper.Map<AccountTypeEntity>(dto);
             Tools.Locator.AccountTypeDAL.Insert(entity);
             dto.Id = entity.Id;
+            dto.RowVersion = entity.RowVersion.ArrayCopy();
         }
 
         public void Update(AccountType dto)

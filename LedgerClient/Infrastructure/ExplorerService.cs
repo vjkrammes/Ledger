@@ -1,8 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
 using LedgerClient.Interfaces;
+
+using LedgerLib.Infrastructure;
 
 namespace LedgerClient.Infrastructure
 {
@@ -11,10 +14,17 @@ namespace LedgerClient.Infrastructure
         public IEnumerable<FileInfo> GetFiles(string path)
         {
             List<FileInfo> ret = new List<FileInfo>();
-            var files = Directory.GetFiles(path, "*.*");
-            foreach (var file in files)
+            try
             {
-                ret.Add(new FileInfo(file));
+                var files = Directory.GetFiles(path, "*.*");
+                foreach (var file in files)
+                {
+                    ret.Add(new FileInfo(file));
+                }
+            }
+            catch (Exception ex)
+            {
+                PopupManager.Popup($"Error accessing path '{path}'", Constants.IOE, ex.Innermost(), PopupButtons.Ok, PopupImage.Error);
             }
             return ret;
         }
@@ -22,10 +32,17 @@ namespace LedgerClient.Infrastructure
         public IEnumerable<DirectoryInfo> GetDirectories(string path)
         {
             List<DirectoryInfo> ret = new List<DirectoryInfo>();
-            var directories = Directory.GetDirectories(path);
-            foreach (var directory in directories)
+            try
             {
-                ret.Add(new DirectoryInfo(directory));
+                var directories = Directory.GetDirectories(path);
+                foreach (var directory in directories)
+                {
+                    ret.Add(new DirectoryInfo(directory));
+                }
+            }
+            catch (Exception ex)
+            {
+                PopupManager.Popup($"Error accessing path '{path}'", Constants.IOE, ex.Innermost(), PopupButtons.Ok, PopupImage.Error);
             }
             return ret;
         }

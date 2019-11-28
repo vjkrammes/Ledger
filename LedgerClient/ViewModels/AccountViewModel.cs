@@ -193,6 +193,19 @@ namespace LedgerClient.ViewModels
             }
         }
 
+        private RelayCommand _manageTypesCommand;
+        public ICommand ManageTypesCommand
+        {
+            get
+            {
+                if (_manageTypesCommand is null)
+                {
+                    _manageTypesCommand = new RelayCommand(parm => ManageTypesClick(), parm => AlwaysCanExecute());
+                }
+                return _manageTypesCommand;
+            }
+        }
+
         private RelayCommand _windowLoadedCommand;
         public ICommand WindowLoadedCommand
         {
@@ -272,6 +285,13 @@ namespace LedgerClient.ViewModels
                 PopupManager.Popup("Failed to create new Account Number", Constants.DBE, ex.Innermost(), PopupButtons.Ok, PopupImage.Error);
                 return;
             }
+        }
+
+        private void ManageTypesClick()
+        {
+            var vm = Tools.Locator.AccountTypeViewModel;
+            DialogSupport.ShowDialog<AccountTypeWindow>(vm);
+            LoadAccountTypes();
         }
 
         private void WindowLoaded()

@@ -26,6 +26,7 @@ namespace LedgerClient.ECL
             PoolEntity entity = _mapper.Map<PoolEntity>(dto);
             Tools.Locator.PoolDAL.Insert(entity);
             dto.Id = entity.Id;
+            dto.RowVersion = entity.RowVersion.ArrayCopy();
         }
 
         public void Update(Pool dto)

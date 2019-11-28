@@ -100,6 +100,27 @@ namespace LedgerLib
             return dbid != 0;
         }
 
+        public void Backup(string filename)
+        {
+            var config = ConfigurationFactory.Create();
+            var conn = Database.GetDbConnection();
+            if (!(conn is SqlConnection connection))
+            {
+                return;
+            }
+            using var command = new SqlCommand("backup database @n to disk = @l with init;")
+            {
+                CommandType = CommandType.Text,
+                Connection = connection
+            };
+            command.Parameters.Add(new 
+                SqlParameter { ParameterName = "n", SqlDbType = SqlDbType.NVarChar, Value = config[Constants.DatabaseConfig] });
+            command.Parameters.Add(new SqlParameter { ParameterName = "l", SqlDbType = SqlDbType.NVarChar, Value = filename });
+            connection.Open();
+            command.ExecuteNonQuery();
+            connection.Close();
+        }
+
         #endregion
 
         #region Overrides

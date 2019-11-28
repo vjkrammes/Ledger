@@ -26,6 +26,7 @@ namespace LedgerClient.ECL
             CompanyEntity entity = _mapper.Map<CompanyEntity>(dto);
             Tools.Locator.CompanyDAL.Insert(entity);
             dto.Id = entity.Id;
+            dto.RowVersion = entity.RowVersion.ArrayCopy();
         }
 
         public void Update(Company dto)

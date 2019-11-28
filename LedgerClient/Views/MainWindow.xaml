@@ -20,8 +20,12 @@
         <li:EncryptedStringWithSaltConverter x:Key="CryptoConverter"/>
     </Window.Resources>
     <Window.InputBindings>
+        <KeyBinding Command="{Binding AddIdentityCommand}" Key="I" Modifiers="Alt"/>
         <KeyBinding Command="{Binding CopyPasswordCommand}" Key="P" Modifiers="Alt"/>
         <KeyBinding Command="{Binding CopyURLCommand}" Key="U" Modifiers="Alt"/>
+        <KeyBinding Command="{Binding AddTransactionCommand}" Key="OemPlus"/>
+        <KeyBinding Command="{Binding AddTransactionCommand}" Key="Add"/>
+        <KeyBinding Command="{Binding AddTransactionCommand}" Key="Insert"/>
     </Window.InputBindings>
     <Grid>
         <Grid.RowDefinitions>
@@ -163,12 +167,16 @@
                                     ToolTip="Delete the selected Identity" ToolTipService.ShowOnDisabled="True">
                                 <Image Source="/resources/remove-32.png" Height="14"/>
                             </Button>
+                            <Button Command="{Binding DeselectIdentityCommand}" DockPanel.Dock="Right" Margin="3,0,0,0"
+                                    ToolTip="Deselect Identity" ToolTipService.ShowOnDisabled="True">
+                                <Image Source="/resources/cancel-32.png" Height="14"/>
+                            </Button>
                             <Button Command="{Binding EditIdentityCommand}" DockPanel.Dock="Right" Margin="3,0,0,0" 
                                     ToolTip="Edit the selected Identity" ToolTipService.ShowOnDisabled="True">
                                 <Image Source="/resources/edit-32.png" Height="14"/>
                             </Button>
                             <Button Command="{Binding AddIdentityCommand}" DockPanel.Dock="Right" Margin="3,0,0,0" 
-                                    ToolTip="Add a new Identity" ToolTipService.ShowOnDisabled="True">
+                                    ToolTip="Add a new Identity (Alt-I)" ToolTipService.ShowOnDisabled="True">
                                 <Image Source="/resources/add-32.png" Height="14"/>
                             </Button>
                             <Button Command="{Binding CopyURLCommand}" DockPanel.Dock="Right" Margin="3,0,0,0"
@@ -185,8 +193,12 @@
                     </Grid>
                 </Border>
                 <Grid DockPanel.Dock="Bottom">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="377*"/>
+                        <ColumnDefinition Width="9*"/>
+                    </Grid.ColumnDefinitions>
                     <lc:ScrollListBox ItemsSource="{Binding Identities}" SelectedValue="{Binding SelectedIdentity, Mode=TwoWay, 
-                                      UpdateSourceTrigger=PropertyChanged}">
+                                      UpdateSourceTrigger=PropertyChanged}" Grid.ColumnSpan="2">
                         <ListBox.ItemContainerStyle>
                             <Style TargetType="ListBoxItem">
                                 <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
@@ -262,13 +274,45 @@
                             </ContextMenu>
                         </ListBox.ContextMenu>
                     </lc:ScrollListBox>
-                    <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Opacity="0.5" Text="No Identities Found"
-                               Visibility="{Binding Identities.Count, Converter={StaticResource VisibilityConverter}}"/>
+                    <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" Opacity="0.5" Text="No Identities Found"
+                               Visibility="{Binding Identities.Count, Converter={StaticResource VisibilityConverter}}" Margin="141,0,0,0"/>
                 </Grid>
             </DockPanel>
             <DockPanel Grid.Column="1" Margin="5" LastChildFill="True">
                 <Border DockPanel.Dock="Top" Style="{DynamicResource BannerBorder}" Margin="0">
-                    <TextBlock Style="{DynamicResource BannerText}" Text="Transactions"/>
+                    <Grid>
+                        <TextBlock Style="{DynamicResource BannerText}" Text="Transactions"/>
+                        <DockPanel HorizontalAlignment="Right" LastChildFill="False">
+                            <Button DockPanel.Dock="Right" Command="{Binding DeleteTransactionCommand}" Margin="3,0,0,0"
+                                    ToolTip="Delete the selected Transaction" ToolTipService.ShowOnDisabled="True">
+                                <Image Source="/resources/remove-32.png" Height="14"/>
+                            </Button>
+                            <Button DockPanel.Dock="Right" Command="{Binding DeselectTransactionCommand}" Margin="3,0,0,0"
+                                    ToolTip="Deselect Transaction" ToolTipService.ShowOnDisabled="True">
+                                <Image Source="/resources/cancel-32.png" Height="14"/>
+                            </Button>
+                            <Button DockPanel.Dock="Right" Command="{Binding ChangeReferenceCommand}" Margin="3,0,0,0"
+                                    ToolTip="Edit the Reference for the selected Transaction" ToolTipService.ShowOnDisabled="True">
+                                <Image Source="/resources/edit-32.png" Height="14"/>
+                            </Button>
+                            <Button DockPanel.Dock="Right" Command="{Binding ChangePaymentCommand}" Margin="3,0,0,0"
+                                    ToolTip="Change the Payment for the selected Transaction" ToolTipService.ShowOnDisabled="True">
+                                <Image Source="/resources/money-32.png" Height="14"/>
+                            </Button>
+                            <Button DockPanel.Dock="Right" Command="{Binding ChangeBalanceCommand}" Margin="3,0,0,0"
+                                    ToolTip="Change the Balance for the selected Transaction" ToolTipService.ShowOnDisabled="True">
+                                <Image Source="/resources/moneybag-32.png" Height="14"/>
+                            </Button>
+                            <Button DockPanel.Dock="Right" Command="{Binding ChangeDateCommand}" Margin="3,0,0,0"
+                                    ToolTip="Change the Date for the selected Transaction" ToolTipService.ShowOnDisabled="True">
+                                <Image Source="/resources/calendar-32.png" Height="14"/>
+                            </Button>
+                            <Button DockPanel.Dock="Right" Command="{Binding AddTransactionCommand1}" Margin="3,0,0,0"
+                                    ToolTip="Add a new Transaction (+)" ToolTipService.ShowOnDisabled="True">
+                                <Image Source="/resources/add-32.png" Height="14"/>
+                            </Button>
+                        </DockPanel>
+                    </Grid>
                 </Border>
                 <Grid DockPanel.Dock="Bottom">
                     <lc:ScrollListView DockPanel.Dock="Bottom" ItemsSource="{Binding Transactions}" SelectedValue="{Binding SelectedTransaction,
@@ -289,7 +333,42 @@
                         </ListView.View>
                         <ListView.ContextMenu>
                             <ContextMenu>
-
+                                <MenuItem Header="New" Command="{Binding AddTransactionCommand}">
+                                    <MenuItem.Icon>
+                                        <Image Source="/resources/add-32.png"/>
+                                    </MenuItem.Icon>
+                                </MenuItem>
+                                <MenuItem Header="Change Date" Command="{Binding ChangeDateCommand}">
+                                    <MenuItem.Icon>
+                                        <Image Source="/resources/calendar-32.png"/>
+                                    </MenuItem.Icon>
+                                </MenuItem>
+                                <MenuItem Header="Change Balance" Command="{Binding ChangeBalanceCommand}">
+                                    <MenuItem.Icon>
+                                        <Image Source="/resources/moneybag-32.png"/>
+                                    </MenuItem.Icon>
+                                </MenuItem>
+                                <MenuItem Header="Change Payment" Command="{Binding ChangePaymentCommand}">
+                                    <MenuItem.Icon>
+                                        <Image Source="/resources/money-32.png"/>
+                                    </MenuItem.Icon>
+                                </MenuItem>
+                                <MenuItem Header="Change Reference" Command="{Binding ChangeReferenceCommand}">
+                                    <MenuItem.Icon>
+                                        <Image Source="/resources/edit-32.png"/>
+                                    </MenuItem.Icon>
+                                </MenuItem>
+                                <MenuItem Header="Deselect" Command="{Binding DeselectTransactionCommand}">
+                                    <MenuItem.Icon>
+                                        <Image Source="/resources/cancel-32.png"/>
+                                    </MenuItem.Icon>
+                                </MenuItem>
+                                <Separator />
+                                <MenuItem Header="Delete" Command="{Binding DeleteTransactionCommand}">
+                                    <MenuItem.Icon>
+                                        <Image Source="/resources/remove-32.png"/>
+                                    </MenuItem.Icon>
+                                </MenuItem>
                             </ContextMenu>
                         </ListView.ContextMenu>
                     </lc:ScrollListView>

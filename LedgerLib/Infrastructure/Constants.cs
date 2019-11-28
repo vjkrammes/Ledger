@@ -73,6 +73,7 @@ namespace LedgerLib.Infrastructure
         public const string Checkmark = "/resources/checkmark-32.png";
 
         public const string DBE = "Database Error";
+        public const string IOE = "I/O Error";
 
         public const string DuplicateKey = "An item with the same key has already been added.";
     }
