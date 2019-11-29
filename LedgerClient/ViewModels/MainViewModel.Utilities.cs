@@ -188,5 +188,9 @@ namespace LedgerClient.ViewModels
             SelectedTransaction = t;
             SelectedTransaction = null;
         }
+
+        private bool ValidateMoney(string value) => decimal.TryParse(value, out decimal _);
+
+        private bool ValidateDate(DateTime? value) => value.HasValue ? value.Value.Date <= DateTime.Now.Date : false;
     }
 }

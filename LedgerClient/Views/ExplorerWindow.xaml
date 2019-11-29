@@ -11,6 +11,9 @@
         li:DialogCloser.DialogResult="{Binding DialogResult}" li:Behaviors.WindowLoadedBehaviour="{Binding WindowLoadedCommand}"
         Title="Explorer" Height="400" Width="500" WindowStyle="ThreeDBorderWindow" SizeToContent="Height" 
         WindowStartupLocation="CenterScreen">
+    <Window.Resources>
+        <li:ExplorerItemTypeConverter x:Key="IconConverter"/>
+    </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
@@ -21,7 +24,7 @@
             <TextBlock Style="{DynamicResource BannerText}" Text="{Binding Banner}"/>
         </Border>
         <TreeView Grid.Row="1" Margin="5" ItemsSource="{Binding Root}" SelectedItemChanged="TreeView_SelectedItemChanged"
-                  FontSize="14" FontFamily="Helvetica">
+                  FontSize="18" FontFamily="Helvetica">
             <TreeView.ItemContainerStyle>
                 <Style TargetType="TreeViewItem">
                     <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
@@ -36,7 +39,10 @@
             </TreeView.ItemContainerStyle>
             <TreeView.ItemTemplate>
                 <HierarchicalDataTemplate ItemsSource="{Binding Children}">
-                    <TextBlock Text="{Binding Name}"/>
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="{Binding Type, Converter={StaticResource IconConverter}}" Height="16"/>
+                        <TextBlock Margin="5,0,0,0" Text="{Binding Name}"/>
+                    </StackPanel>
                 </HierarchicalDataTemplate>
             </TreeView.ItemTemplate>
         </TreeView>

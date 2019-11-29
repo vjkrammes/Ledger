@@ -63,11 +63,11 @@ namespace LedgerLib
             {
                 null => _dbset
                         .Include(x => x.AccountType)
-                        .Select(x => x).AsNoTracking().ToList(),
+                        .AsNoTracking().ToList(),
                 _ => _dbset
                         .Include(x => x.AccountType)
                         .Where(pred)
-                        .Select(x => x).AsNoTracking().ToList()
+                        .AsNoTracking().ToList()
             };
             DateTime now = DateTime.Now;
             foreach (var entity in entities)

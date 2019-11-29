@@ -26,11 +26,11 @@ namespace LedgerLib
             {
                 null => _dbset
                         .Include(x => x.Company)
-                        .Select(x => x).AsNoTracking().ToList(),
+                        .AsNoTracking().ToList(),
                 _ => _dbset
                         .Include(x => x.Company)
                         .Where(pred)
-                        .Select(x => x).AsNoTracking().ToList()
+                        .AsNoTracking().ToList()
             };
         }
 

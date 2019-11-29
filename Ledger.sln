@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LedgerClient", "LedgerClien
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LedgerLib", "LedgerLib\LedgerLib.csproj", "{FC80C59D-74C9-48CD-AB82-243A3BE31D00}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ledger.Tests", "Ledger.Tests\Ledger.Tests.csproj", "{A8006A9D-E3D5-4333-99A1-5EAE6B96C9E1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ledger.Tests", "Ledger.Tests\Ledger.Tests.csproj", "{A8006A9D-E3D5-4333-99A1-5EAE6B96C9E1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

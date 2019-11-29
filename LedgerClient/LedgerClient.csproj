@@ -55,6 +55,7 @@
     <None Remove="resources\exit-32.png" />
     <None Remove="resources\firewall-32.png" />
     <None Remove="resources\flash-32.png" />
+    <None Remove="resources\folder-32.png" />
     <None Remove="resources\gauge-32.png" />
     <None Remove="resources\glasses-32.png" />
     <None Remove="resources\graph-32.png" />
@@ -70,6 +71,7 @@
     <None Remove="resources\inkwell-32.png" />
     <None Remove="resources\item-32.png" />
     <None Remove="resources\key-32.png" />
+    <None Remove="resources\key-640.png" />
     <None Remove="resources\large-32.png" />
     <None Remove="resources\link-32.png" />
     <None Remove="resources\lock-32.png" />
@@ -193,6 +195,7 @@
     <Resource Include="resources\exit-32.png" />
     <Resource Include="resources\firewall-32.png" />
     <Resource Include="resources\flash-32.png" />
+    <Resource Include="resources\folder-32.png" />
     <Resource Include="resources\gauge-32.png" />
     <Resource Include="resources\glasses-32.png" />
     <Resource Include="resources\graph-32.png" />
@@ -208,6 +211,7 @@
     <Resource Include="resources\inkwell-32.png" />
     <Resource Include="resources\item-32.png" />
     <Resource Include="resources\key-32.png" />
+    <Resource Include="resources\key-640.png" />
     <Resource Include="resources\large-32.png" />
     <Resource Include="resources\link-32.png" />
     <Resource Include="resources\lock-32.png" />

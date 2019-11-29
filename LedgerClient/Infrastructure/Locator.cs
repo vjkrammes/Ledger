@@ -6,11 +6,14 @@ using AutoMapper;
 using LedgerClient.ECL;
 using LedgerClient.ECL.DTO;
 using LedgerClient.ECL.Interfaces;
+using LedgerClient.HistoryViewModels;
 using LedgerClient.Interfaces;
 using LedgerClient.Models;
 using LedgerClient.ViewModels;
+
 using LedgerLib;
 using LedgerLib.Entities;
+using LedgerLib.HistoryDAL;
 using LedgerLib.Infrastructure;
 using LedgerLib.Interfaces;
 
@@ -57,6 +60,17 @@ namespace LedgerClient.Infrastructure
             services.AddTransient<ITransactionDAL, TransactionDAL>();
         }
 
+        private void InitializeHistoryDAL(IServiceCollection services)
+        {
+            services.AddTransient<IAccountHistoryDAL, AccountHistoryDAL>();
+            services.AddTransient<IAccountNumberHistoryDAL, AccountNumberHistoryDAL>();
+            services.AddTransient<IAccountTypeHistoryDAL, AccountTypeHistoryDAL>();
+            services.AddTransient<IAllotmentHistoryDAL, AllotmentHistoryDAL>();
+            services.AddTransient<IPayeeHistoryDAL, PayeeHistoryDAL>();
+            services.AddTransient<IPoolHistoryDAL, PoolHistoryDAL>();
+            services.AddTransient<ITransactionHistoryDAL, TransactionHistoryDAL>();
+        }
+
         private void InitializeECL(IServiceCollection services)
         {
             services.AddTransient<IAccountECL, AccountECL>();
@@ -78,10 +92,11 @@ namespace LedgerClient.Infrastructure
             services.AddTransient<AllotmentViewModel>();
             services.AddTransient<BackupViewModel>();
             services.AddTransient<CompanyViewModel>();
+            services.AddTransient<DateViewModel>();
             services.AddTransient<ExplorerViewModel>();
-            services.AddTransient<HistoryViewModel>();
             services.AddTransient<IdentityViewModel>();
             services.AddSingleton<MainViewModel>();
+            services.AddTransient<NumberHistoryViewModel>();
             services.AddTransient<PalletteViewModel>();
             services.AddTransient<PasswordViewModel>();
             services.AddTransient<PoolViewModel>();
@@ -89,6 +104,11 @@ namespace LedgerClient.Infrastructure
             services.AddTransient<QAViewModel>();
             services.AddSingleton<StatusbarViewModel>();
             services.AddTransient<TransactionViewModel>();
+        }
+
+        private void InitializeHistoryViewModels(ServiceCollection services)
+        {
+            services.AddTransient<HistoryViewModel>();
         }
 
         #endregion
@@ -113,10 +133,11 @@ namespace LedgerClient.Infrastructure
         public AllotmentViewModel AllotmentViewModel { get => _provider.GetRequiredService<AllotmentViewModel>(); }
         public BackupViewModel BackupViewModel { get => _provider.GetRequiredService<BackupViewModel>(); }
         public CompanyViewModel CompanyViewModel { get => _provider.GetRequiredService<CompanyViewModel>(); }
+        public DateViewModel DateViewModel { get => _provider.GetRequiredService<DateViewModel>(); }
         public ExplorerViewModel ExplorerViewModel { get => _provider.GetRequiredService<ExplorerViewModel>(); }
-        public HistoryViewModel HistoryViewModel { get => _provider.GetRequiredService<HistoryViewModel>(); }
         public IdentityViewModel IdentityViewModel { get => _provider.GetRequiredService<IdentityViewModel>(); }
         public MainViewModel MainViewModel { get => _provider.GetRequiredService<MainViewModel>(); }
+        public NumberHistoryViewModel NumberHistoryViewModel { get => _provider.GetRequiredService<NumberHistoryViewModel>(); }
         public PalletteViewModel PalletteViewModel { get => _provider.GetRequiredService<PalletteViewModel>(); }
         public PasswordViewModel PasswordViewModel { get => _provider.GetRequiredService<PasswordViewModel>(); }
         public PoolViewModel PoolViewModel { get => _provider.GetRequiredService<PoolViewModel>(); }
@@ -124,6 +145,12 @@ namespace LedgerClient.Infrastructure
         public QAViewModel QAViewModel { get => _provider.GetRequiredService<QAViewModel>(); }
         public StatusbarViewModel StatusbarViewModel { get => _provider.GetRequiredService<StatusbarViewModel>(); }
         public TransactionViewModel TransactionViewModel { get => _provider.GetRequiredService<TransactionViewModel>(); }
+
+        #endregion
+
+        #region History View Models
+
+        public HistoryViewModel HistoryViewModel { get => _provider.GetRequiredService<HistoryViewModel>(); }
 
         #endregion
 
@@ -138,6 +165,18 @@ namespace LedgerClient.Infrastructure
         public IPoolDAL PoolDAL { get => _provider.GetRequiredService<IPoolDAL>(); }
         public ISettingsDAL SettingsDAL { get => _provider.GetRequiredService<ISettingsDAL>(); }
         public ITransactionDAL TransactionDAL { get => _provider.GetRequiredService<ITransactionDAL>(); }
+
+        #endregion
+
+        #region History DALs
+
+        public IAccountHistoryDAL AccountHistoryDAL { get => _provider.GetRequiredService<IAccountHistoryDAL>(); }
+        public IAccountNumberHistoryDAL AccountNumberHistoryDAL { get => _provider.GetRequiredService<IAccountNumberHistoryDAL>(); }
+        public IAccountTypeHistoryDAL AccountTypeHistoryDAL { get => _provider.GetRequiredService<IAccountTypeHistoryDAL>(); }
+        public IAllotmentHistoryDAL AllotmentHistoryDAL { get => _provider.GetRequiredService<IAllotmentHistoryDAL>(); }
+        public IPayeeHistoryDAL PayeeHistoryDAL { get => _provider.GetRequiredService<IPayeeHistoryDAL>(); }
+        public IPoolHistoryDAL PoolHistoryDAL { get => _provider.GetRequiredService<IPoolHistoryDAL>(); }
+        public ITransactionHistoryDAL TransactionHistoryDAL { get => _provider.GetRequiredService<ITransactionHistoryDAL>(); }
 
         #endregion
 
@@ -165,6 +204,7 @@ namespace LedgerClient.Infrastructure
                     ServiceCollection services = new ServiceCollection();
 
                     services.AddDbContext<LedgerContext>(ServiceLifetime.Transient);
+                    services.AddDbContext<HistoryContext>(ServiceLifetime.Transient);
 
                     services.AddSingleton(ConfigurationFactory.Create());
                     services.AddTransient<IExplorerService, ExplorerService>();
@@ -175,8 +215,10 @@ namespace LedgerClient.Infrastructure
 
                     InitializeMapper(services);
                     InitializeDAL(services);
+                    InitializeHistoryDAL(services);
                     InitializeECL(services);
                     InitializeViewModels(services);
+                    InitializeHistoryViewModels(services);
 
                     _provider = services.BuildServiceProvider();
 

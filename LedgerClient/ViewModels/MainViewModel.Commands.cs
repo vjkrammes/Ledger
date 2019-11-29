@@ -320,16 +320,16 @@ namespace LedgerClient.ViewModels
             }
         }
 
-        private RelayCommand _importCommand;
-        public ICommand ImportCommand
+        private RelayCommand _historyCommand;
+        public ICommand HistoryCommand
         {
             get
             {
-                if (_importCommand is null)
+                if (_historyCommand is null)
                 {
-                    _importCommand = new RelayCommand(parm => ImportClick(), parm => ImportCanClick());
+                    _historyCommand = new RelayCommand(parm => HistoryClick(), parm => HistoryExists());
                 }
-                return _importCommand;
+                return _historyCommand;
             }
         }
 

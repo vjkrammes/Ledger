@@ -20,11 +20,11 @@ namespace LedgerLib
             {
                 null => _dbset
                         .OrderBy(x => x.Description)
-                        .Select(x => x).AsNoTracking().ToList(),
+                        .AsNoTracking().ToList(),
                 _ => _dbset
                         .Where(pred)
                         .OrderBy(x => x.Description)
-                        .Select(x => x).AsNoTracking().ToList()
+                        .AsNoTracking().ToList()
             };
         }
 

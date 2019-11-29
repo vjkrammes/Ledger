@@ -37,12 +37,12 @@ namespace LedgerLib
                 null => _dbset
                         .Include(x => x.Company)
                         .OrderByDescending(x => x.Date)
-                        .Select(x => x).AsNoTracking().ToList(),
+                        .AsNoTracking().ToList(),
                 _ => _dbset
                         .Include(x => x.Company)
                         .Where(pred)
                         .OrderByDescending(x => x.Date)
-                        .Select(x => x).AsNoTracking().ToList()
+                        .AsNoTracking().ToList()
             };
         }
 

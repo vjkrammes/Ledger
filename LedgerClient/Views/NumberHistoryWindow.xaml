@@ -1,4 +1,4 @@
-﻿<Window x:Class="LedgerClient.Views.HistoryWindow"
+﻿<Window x:Class="LedgerClient.Views.NumberHistoryWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -7,7 +7,7 @@
         xmlns:vm="clr-namespace:LedgerClient.ViewModels"
         xmlns:li="clr-namespace:LedgerClient.Infrastructure"
         mc:Ignorable="d"
-        d:DataContext="{d:DesignInstance Type=vm:HistoryViewModel, IsDesignTimeCreatable=False}" Icon="/resources/document-32.png"
+        d:DataContext="{d:DesignInstance Type=vm:NumberHistoryViewModel, IsDesignTimeCreatable=False}" Icon="/resources/document-32.png"
         Title="Account Number History" Height="400" Width="600" ResizeMode="CanMinimize" WindowStartupLocation="CenterScreen" 
         WindowStyle="ThreeDBorderWindow" li:DialogCloser.DialogResult="{Binding DialogResult}">
     <Window.Resources>

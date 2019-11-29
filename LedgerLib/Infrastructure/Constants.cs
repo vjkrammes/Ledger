@@ -48,7 +48,7 @@ namespace LedgerLib.Infrastructure
 
         public const string DefaultServer = @".\SQLEXPRESS";
         public const string DefaultDatabase = "Ledger";
-        public const string OldDatabase = "Ledger5";
+        public const string DefaultHistoryDatabase = "Ledger5";
 
         public const string ServerConfig = "Database:Server";
         public const string DatabaseConfig = "Database:Database";
@@ -56,6 +56,13 @@ namespace LedgerLib.Infrastructure
         public const string PoolingConfig = "Database:Pooling";
         public const string TrustedConnectionConfig = "Database:TrustedConnection";
         public const string MARSConfig = "Database:MARS";
+
+        public const string HistoryServerConfig = "History:Server";
+        public const string HistoryDatabaseConfig = "History:Database";
+        public const string HistoryTimeoutConfig = "History:Timeout";
+        public const string HistoryPoolingConfig = "History:Pooling";
+        public const string HistoryTrustedConnectionConfig = "History:TrustedConnection";
+        public const string HistroyMARSConfig = "History:MARS";
 
         public const string True = "true";
         public const string Reload = "reload";
@@ -67,6 +74,7 @@ namespace LedgerLib.Infrastructure
 
         public const string Date = "date";
         public const string Datetime2 = "datetime2";
+        public const string HistoryMoneyFormat = "decimal(15,2)";
         public const string MoneyFormat = "decimal(12,2)";
         public const string Varbinary = "varbinary(max)";
 

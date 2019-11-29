@@ -60,8 +60,8 @@ namespace LedgerLib
         {
             return pred switch
             {
-                null => _dbset.Select(x => x).AsNoTracking().ToList(),
-                _ => _dbset.Where(pred).Select(x => x).AsNoTracking().ToList()
+                null => _dbset.AsNoTracking().ToList(),
+                _ => _dbset.Where(pred).AsNoTracking().ToList()
             };
         }
     }

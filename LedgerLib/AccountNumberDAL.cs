@@ -16,7 +16,7 @@ namespace LedgerLib
 
         public void DeleteForAccount(int aid)
         {
-            var numbers = _dbset.Where(x => x.AccountId == aid).Select(x => x).ToList();
+            var numbers = _dbset.Where(x => x.AccountId == aid).ToList();
             _dbset.RemoveRange(numbers);
             _context.SaveChanges();
         }
@@ -27,11 +27,11 @@ namespace LedgerLib
             {
                 null => _dbset
                         .OrderByDescending(x => x.StopDate)
-                        .Select(x => x).AsNoTracking().ToList(),
+                        .AsNoTracking().ToList(),
                 _ => _dbset
                         .Where(pred)
                         .OrderByDescending(x => x.StopDate)
-                        .Select(x => x).AsNoTracking().ToList()
+                        .AsNoTracking().ToList()
             };
         }
 

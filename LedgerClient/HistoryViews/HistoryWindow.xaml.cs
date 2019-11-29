@@ -10,7 +10,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace LedgerClient.Views
+namespace LedgerClient.HistoryViews
 {
     /// <summary>
     /// Interaction logic for HistoryWindow.xaml

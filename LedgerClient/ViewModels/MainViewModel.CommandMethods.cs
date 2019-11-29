@@ -232,9 +232,9 @@ namespace LedgerClient.ViewModels
             {
                 return;
             }
-            var vm = Tools.Locator.HistoryViewModel;
+            var vm = Tools.Locator.NumberHistoryViewModel;
             vm.Account = SelectedAccount;
-            DialogSupport.ShowDialog<HistoryWindow>(vm, Application.Current.MainWindow);
+            DialogSupport.ShowDialog<NumberHistoryWindow>(vm, Application.Current.MainWindow);
         }
 
         private bool DeleteAccountCanClick() =>
@@ -337,7 +337,41 @@ namespace LedgerClient.ViewModels
 
         private void ChangeDateClick()
         {
-
+            if (SelectedTransaction is null)
+            {
+                return;
+            }
+            var vm = Tools.Locator.DateViewModel;
+            vm.Prompt = "Transaction Date:";
+            vm.Date = SelectedTransaction.Date;
+            vm.Border = Application.Current.Resources[Constants.Border] as SolidColorBrush;
+            vm.Validator = ValidateDate;
+            if (DialogSupport.ShowDialog<DateWindow>(vm, Application.Current.MainWindow) != true)
+            {
+                SelectedTransaction = null;
+                return;
+            }
+            Transaction t = SelectedTransaction.Clone();
+            t.Date = vm.Date.Value;
+            try
+            {
+                Tools.Locator.TransactionECL.Update(t);
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                Tools.ConcurrencyError("Transaction", "Update");
+                SelectedTransaction = null;
+                return;
+            }
+            catch (Exception ex)
+            {
+                PopupManager.Popup("Failed to update Transaction", Constants.DBE, ex.Innermost(), PopupButtons.Ok, PopupImage.Error);
+                SelectedTransaction = null;
+                return;
+            }
+            Transactions.Remove(t);
+            AddTransaction(t);
+            Tools.Locator.StatusbarViewModel.Update(SelectedAccount);
         }
 
         private void ChangeBalanceClick()
@@ -351,6 +385,7 @@ namespace LedgerClient.ViewModels
             vm.Answer = SelectedTransaction.Balance.ToString();
             vm.AnswerRequired = true;
             vm.BorderBrush = Application.Current.Resources[Constants.Border] as SolidColorBrush;
+            vm.Validator = ValidateMoney;
             if (DialogSupport.ShowDialog<QAWindow>(vm, Application.Current.MainWindow) != true)
             {
                 SelectedTransaction = null;
@@ -401,6 +436,7 @@ namespace LedgerClient.ViewModels
             vm.Answer = SelectedTransaction.Payment.ToString();
             vm.AnswerRequired = true;
             vm.BorderBrush = Application.Current.Resources[Constants.Border] as SolidColorBrush;
+            vm.Validator = ValidateMoney;
             if (DialogSupport.ShowDialog<QAWindow>(vm, Application.Current.MainWindow) != true)
             {
                 SelectedTransaction = null;
@@ -702,18 +738,13 @@ namespace LedgerClient.ViewModels
 
         #endregion
 
-        #region Import Methods
+        #region Ledger5 History Methods
 
-        private bool ImportCanClick()
+        private bool HistoryExists() => Tools.Locator.LedgerContext.DatabaseExists(Constants.DefaultHistoryDatabase) == true;
+
+        private void HistoryClick()
         {
-            var context = Tools.Locator.LedgerContext;
-            var ret = context.DatabaseExists(Constants.OldDatabase); // DatabaseExists return bool?
-            return ret == true;
-        }
-
-        private void ImportClick()
-        {
-
+            //var vm = Tools.Locator.HistoryViewModel;
         }
 
         #endregion

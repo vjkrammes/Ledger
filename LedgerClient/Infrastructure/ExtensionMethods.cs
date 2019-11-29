@@ -28,6 +28,14 @@ namespace LedgerClient.Infrastructure
                 .SingleOrDefault() is DescriptionAttribute attr) ? value.ToString() : attr.Description;
         }
 
+        public static Uri GetIconFromEnumValue<T>(this T value) where T : Enum
+        {
+            return !(typeof(T)
+                .GetField(value.ToString())
+                .GetCustomAttributes(typeof(ExplorerIconAttribute), false)
+                .SingleOrDefault() is ExplorerIconAttribute attr) ? null : new Uri(attr.ExplorerIcon, UriKind.Relative);
+        }
+
         public static bool ArrayEquals<T>(this T[] array1, T[] array2)
         {
             if (ReferenceEquals(array1, array2))

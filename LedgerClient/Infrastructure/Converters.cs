@@ -12,6 +12,28 @@ using LedgerLib.Infrastructure;
 
 namespace LedgerClient.Infrastructure
 {
+
+    // convert from ExplorerItemType to icon uri
+
+    [ValueConversion(typeof(ExplorerItemType), typeof(Uri))]
+    public sealed class ExplorerItemTypeConverter : IValueConverter
+    {
+
+        public object Convert(object value, Type t, object parm, CultureInfo lang)
+        {
+            if (!(value is ExplorerItemType v))
+            {
+                return null;
+            }
+            return v.GetIconFromEnumValue();
+        }
+
+        public object ConvertBack(object value, Type t, object parm, CultureInfo lang)
+        {
+            return DependencyProperty.UnsetValue;
+        }
+    }
+
     // convert from bool to its inverse
 
     [ValueConversion(typeof(bool), typeof(bool))]

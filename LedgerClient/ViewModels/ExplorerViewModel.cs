@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Linq;
-using LedgerClient.Infrastructure;
-using LedgerClient.Models;
-using LedgerClient.Interfaces;
-using System.Collections.ObjectModel;
-using System.Windows;
+﻿using System.Collections.ObjectModel;
 using System.Windows.Input;
-using System.Windows.Controls;
+
+using LedgerClient.Infrastructure;
+using LedgerClient.Interfaces;
+using LedgerClient.Models;
 
 namespace LedgerClient.ViewModels
 {
@@ -124,55 +119,6 @@ namespace LedgerClient.ViewModels
                 RootItem.Children.Add(item);
             }
             RootItem.IsExpanded = true;
-        }
-
-        #endregion
-
-        #region Utility Methods
-
-        private void ItemCollapsed(object sender, RoutedEventArgs e)
-        {
-            if (!(sender is ExplorerItem item))
-            {
-                return;
-            }
-            item.Children.Clear();
-            item.Children.Add(ExplorerItem.Placeholder);
-        }
-
-        private void ItemExpanded(object sender, RoutedEventArgs e)
-        {
-            if (!(sender is ExplorerItem item))
-            {
-                return;
-            }
-            if (item.Children.Count == 1 || item.Children[0].Type == ExplorerItemType.Placeholder)
-            {
-                item.Children.Clear();
-                switch (item.Type)
-                {
-                    case ExplorerItemType.ThisComputer:
-                        foreach (var drive in ExplorerItem.Drives(_explorer.GetDrives()))
-                        {
-                            item.Children.Add(drive);
-                        }
-                        break;
-                    case ExplorerItemType.Drive:
-                    case ExplorerItemType.Directory:
-                        foreach (var dir in ExplorerItem.Directories(_explorer.GetDirectories(item.Path)))
-                        {
-                            item.Children.Add(dir);
-                        }
-                        if (!IsFolderPicker)
-                        {
-                            foreach (var file in ExplorerItem.Files(_explorer.GetFiles(item.Path)))
-                            {
-                                item.Children.Add(file);
-                            }
-                        }
-                        break;
-                }
-            }
         }
 
         #endregion

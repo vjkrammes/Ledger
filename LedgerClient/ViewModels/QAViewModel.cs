@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Media;
 
 using LedgerClient.Infrastructure;
@@ -39,17 +40,35 @@ namespace LedgerClient.ViewModels
             set => SetProperty(ref _borderBrush, value);
         }
 
+        public Func<string, bool> Validator { get; set; }
+
         #endregion
 
         #region Command Methods
 
-        public override bool OkCanExecute() => AnswerRequired ? !string.IsNullOrEmpty(Answer) : true;
+        public override bool OkCanExecute()
+        {
+            if (AnswerRequired && string.IsNullOrEmpty(Answer))
+            {
+                return false; 
+            }
+            if (!AnswerRequired && string.IsNullOrEmpty(Answer) && Validator is null)
+            {
+                return true;
+            }
+            if (Validator is null)
+            {
+                return true;
+            }
+            return Validator(Answer);
+        }
 
         #endregion
 
         public QAViewModel()
         {
             BorderBrush = Application.Current.Resources[Constants.Border] as SolidColorBrush ?? Brushes.Black;
+            Validator = null;
         }
     }
 }

@@ -19,7 +19,7 @@
                 <GradientStop Color="LightGreen" Offset="1"/>
             </LinearGradientBrush>
         </Border.Background>
-        <Grid>
+        <Grid ClipToBounds="True">
             <Grid.Resources>
                 <Style TargetType="TextBlock">
                     <Setter Property="FontFamily" Value="Helvetica"/>

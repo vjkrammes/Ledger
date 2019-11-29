@@ -135,8 +135,8 @@
                 <Image Source="/resources/remove-32.png"/>
             </Button>
             <Separator />
-            <Button Command="{Binding ImportCommand}" ToolTip="Import from a Ledger 5 database" ToolTipService.ShowOnDisabled="True">
-                <Image Source="/resources/import-32.png"/>
+            <Button Command="{Binding HistoryCommand}" ToolTip="View History in a Ledger 5 database" ToolTipService.ShowOnDisabled="True">
+                <Image Source="/resources/script-32.png"/>
             </Button>
             <Separator />
             <Button ToolTip="Reports and exports" ToolTipService.ShowOnDisabled="True">

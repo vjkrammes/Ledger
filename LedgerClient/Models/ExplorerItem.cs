@@ -76,7 +76,10 @@ namespace LedgerClient.Models
                     else
                     {
                         Children.Clear();
-                        Children.Add(Placeholder);
+                        if (Type == ExplorerItemType.Directory || Type == ExplorerItemType.Drive)
+                        {
+                            Children.Add(Placeholder);
+                        }
                     }
                 }
             }
