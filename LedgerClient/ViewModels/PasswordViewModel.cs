@@ -101,7 +101,7 @@ namespace LedgerClient.ViewModels
 
         public override void OK()
         {
-            Tools.Locator.PasswordManager.Set(Password1);
+            Tools.Locator.PasswordManager.Set(Password1, Constants.LedgerPassword);
             base.OK();
         }
 

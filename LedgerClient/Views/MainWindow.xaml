@@ -307,7 +307,7 @@
                                     ToolTip="Change the Date for the selected Transaction" ToolTipService.ShowOnDisabled="True">
                                 <Image Source="/resources/calendar-32.png" Height="14"/>
                             </Button>
-                            <Button DockPanel.Dock="Right" Command="{Binding AddTransactionCommand1}" Margin="3,0,0,0"
+                            <Button DockPanel.Dock="Right" Command="{Binding AddTransactionCommand}" Margin="3,0,0,0"
                                     ToolTip="Add a new Transaction (+)" ToolTipService.ShowOnDisabled="True">
                                 <Image Source="/resources/add-32.png" Height="14"/>
                             </Button>

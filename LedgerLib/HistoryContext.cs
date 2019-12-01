@@ -55,6 +55,8 @@ namespace LedgerLib
 
             builder.Entity<AccountHistoryEntity>().HasIndex(x => x.PayeeId).IsClustered(false);
             builder.Entity<AccountHistoryEntity>().HasIndex(x => x.AccountTypeId).IsClustered(false);
+            builder.Entity<AccountHistoryEntity>().HasOne(x => x.AccountType);
+            builder.Entity<AccountHistoryEntity>().HasMany(x => x.AccountNumbers);
 
             builder.Entity<AccountNumberHistoryEntity>().HasIndex(x => x.AccountId).IsClustered(false);
             builder.Entity<AccountNumberHistoryEntity>().Property(x => x.StartDate).HasColumnType(Constants.Datetime2);
@@ -64,6 +66,7 @@ namespace LedgerLib
 
             builder.Entity<AllotmentHistoryEntity>().HasIndex(x => x.PoolId).IsClustered(false);
             builder.Entity<AllotmentHistoryEntity>().HasIndex(x => x.PayeeId).IsClustered(false);
+            builder.Entity<AllotmentHistoryEntity>().HasOne(x => x.Payee);
             builder.Entity<AllotmentHistoryEntity>().Property(x => x.Date).HasColumnType(Constants.Datetime2);
             builder.Entity<AllotmentHistoryEntity>().Property(x => x.Amount).HasColumnType(Constants.HistoryMoneyFormat);
 

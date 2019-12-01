@@ -2,7 +2,7 @@
 {
     public interface IPasswordManager
     {
-        void Set(string password);
-        string Get();
+        void Set(string password, int index);
+        string Get(int index);
     }
 }

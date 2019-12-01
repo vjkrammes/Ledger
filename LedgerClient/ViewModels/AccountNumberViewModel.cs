@@ -4,6 +4,7 @@ using System.Windows.Input;
 using LedgerClient.ECL.DTO;
 using LedgerClient.Infrastructure;
 using LedgerClient.Interfaces;
+using LedgerLib.Infrastructure;
 
 namespace LedgerClient.ViewModels
 {
@@ -26,7 +27,8 @@ namespace LedgerClient.ViewModels
                 }
                 else
                 {
-                    Number = _crypto.Decrypt(AccountNumber.Number, Tools.Locator.PasswordManager.Get(), AccountNumber.Salt);
+                    Number = _crypto.Decrypt(AccountNumber.Number, Tools.Locator.PasswordManager.Get(Constants.LedgerPassword), 
+                        AccountNumber.Salt);
                 }
             }
         }

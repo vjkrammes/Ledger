@@ -4,6 +4,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Media;
 using LedgerClient.ECL.DTO;
+using LedgerClient.History.Views;
 using LedgerClient.Infrastructure;
 using LedgerClient.Views;
 
@@ -561,8 +562,8 @@ namespace LedgerClient.ViewModels
             {
                 return;
             }
-            Clipboard.SetText(Tools.Locator.StringCypher.Decrypt(SelectedIdentity.Password, Tools.Locator.PasswordManager.Get(),
-                SelectedIdentity.PasswordSalt));
+            Clipboard.SetText(Tools.Locator.StringCypher.Decrypt(SelectedIdentity.Password, 
+                Tools.Locator.PasswordManager.Get(Constants.LedgerPassword), SelectedIdentity.PasswordSalt));
             Tools.Locator.StatusbarViewModel.LastCopyDate = DateTime.Now;
         }
 
@@ -649,7 +650,7 @@ namespace LedgerClient.ViewModels
             {
                 return;
             }
-            var user = Tools.Locator.StringCypher.Decrypt(SelectedIdentity.UserId, Tools.Locator.PasswordManager.Get(),
+            var user = Tools.Locator.StringCypher.Decrypt(SelectedIdentity.UserId, Tools.Locator.PasswordManager.Get(Constants.LedgerPassword),
                 SelectedIdentity.UserSalt);
             string msg = $"Delete Identity '{user}' from Company {SelectedIdentity.Company.Name}?";
             if (PopupManager.Popup(msg, "Delete Identity?", PopupButtons.YesNo, PopupImage.Question) != PopupResult.Yes)
@@ -744,7 +745,9 @@ namespace LedgerClient.ViewModels
 
         private void HistoryClick()
         {
-            //var vm = Tools.Locator.HistoryViewModel;
+            var vm = Tools.Locator.HistoryViewModel;
+            DialogSupport.ShowDialog<HistoryWindow>(vm, Application.Current.MainWindow);
+            Tools.Locator.StatusbarViewModel.Update(SelectedAccount);
         }
 
         #endregion

@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -10,7 +11,7 @@ namespace LedgerClient.Infrastructure
     {
         private readonly byte[] _key;            // 256 bits
         private readonly byte[] _iv;             // 128 bits
-        private byte[] _password;
+        private readonly Dictionary<int, byte[]> _passwords = new Dictionary<int, byte[]>();
 
         public PasswordManager()
         {
@@ -21,7 +22,7 @@ namespace LedgerClient.Infrastructure
             rng.GetBytes(_iv);
         }
 
-        public void Set(string pw)
+        public void Set(string pw, int index)
         {
             byte[] pwbytes = Encoding.UTF8.GetBytes(pw);
             using RijndaelManaged key = new RijndaelManaged()
@@ -34,12 +35,12 @@ namespace LedgerClient.Infrastructure
             using CryptoStream cs = new CryptoStream(ms, encryptor, CryptoStreamMode.Write);
             cs.Write(pwbytes, 0, pwbytes.Length);
             cs.FlushFinalBlock();
-            _password = ms.ToArray();
+            _passwords[index] = ms.ToArray();
         }
 
-        public string Get()
+        public string Get(int index)
         {
-            if (_password is null)
+            if (_passwords.Count == 0 || !_passwords.ContainsKey(index))
             {
                 return string.Empty;
             }
@@ -49,9 +50,9 @@ namespace LedgerClient.Infrastructure
                 BlockSize = 128
             };
             using ICryptoTransform decryptor = key.CreateDecryptor(_key, _iv);
-            using MemoryStream ms = new MemoryStream(_password);
+            using MemoryStream ms = new MemoryStream(_passwords[index]);
             using CryptoStream cs = new CryptoStream(ms, decryptor, CryptoStreamMode.Read);
-            byte[] ptbytes = new byte[_password.Length];
+            byte[] ptbytes = new byte[_passwords[index].Length];
             int dbc = cs.Read(ptbytes, 0, ptbytes.Length);
             return Encoding.UTF8.GetString(ptbytes, 0, dbc);
         }

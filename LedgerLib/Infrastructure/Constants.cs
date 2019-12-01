@@ -23,6 +23,9 @@ namespace LedgerLib.Infrastructure
         public const int HashLength = 64;       // bytes, not bits
         public const int SaltLength = 64;       // same
 
+        public const int LedgerPassword = 0;
+        public const int Ledger5Password = 1;
+
         // Error exit codes, next = 907
 
         public const int MigrationFailed = 901;

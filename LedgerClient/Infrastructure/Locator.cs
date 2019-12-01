@@ -6,7 +6,7 @@ using AutoMapper;
 using LedgerClient.ECL;
 using LedgerClient.ECL.DTO;
 using LedgerClient.ECL.Interfaces;
-using LedgerClient.HistoryViewModels;
+using LedgerClient.History.ViewModels;
 using LedgerClient.Interfaces;
 using LedgerClient.Models;
 using LedgerClient.ViewModels;
@@ -22,6 +22,10 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace LedgerClient.Infrastructure
 {
+    //
+    // This class is the funnel through which all Dependency Injection flows
+    //
+
     public class Locator
     {
         private readonly ServiceProvider _provider;
@@ -109,6 +113,7 @@ namespace LedgerClient.Infrastructure
         private void InitializeHistoryViewModels(ServiceCollection services)
         {
             services.AddTransient<HistoryViewModel>();
+            services.AddTransient<Ledger5PasswordViewModel>();
         }
 
         #endregion
@@ -151,6 +156,7 @@ namespace LedgerClient.Infrastructure
         #region History View Models
 
         public HistoryViewModel HistoryViewModel { get => _provider.GetRequiredService<HistoryViewModel>(); }
+        public Ledger5PasswordViewModel Ledger5PasswordViewModel { get => _provider.GetRequiredService<Ledger5PasswordViewModel>(); }
 
         #endregion
 

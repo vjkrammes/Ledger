@@ -1,8 +1,8 @@
 ﻿using System.Windows;
 
-using LedgerClient.HistoryViewModels;
+using LedgerClient.History.ViewModels;
 
-namespace LedgerClient.HistoryViews
+namespace LedgerClient.History.Views
 {
     /// <summary>
     /// Interaction logic for Ledger5PasswordWindow.xaml

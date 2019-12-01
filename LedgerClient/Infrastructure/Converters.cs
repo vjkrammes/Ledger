@@ -7,7 +7,7 @@ using System.Windows.Data;
 using System.Windows.Media;
 
 using LedgerClient.ECL.DTO;
-
+using LedgerLib.HistoryEntities;
 using LedgerLib.Infrastructure;
 
 namespace LedgerClient.Infrastructure
@@ -134,7 +134,7 @@ namespace LedgerClient.Infrastructure
             {
                 return string.Empty;
             }
-            var plain = Tools.Locator.StringCypher.Decrypt(cypher, Tools.Locator.PasswordManager.Get(), salt);
+            var plain = Tools.Locator.StringCypher.Decrypt(cypher, Tools.Locator.PasswordManager.Get(Constants.LedgerPassword), salt);
             if (!obscure)
             {
                 return plain;
@@ -166,7 +166,7 @@ namespace LedgerClient.Infrastructure
             {
                 return value;
             }
-            var plain = Tools.Locator.StringCypher.Decrypt(v, Tools.Locator.PasswordManager.Get());
+            var plain = Tools.Locator.StringCypher.Decrypt(v, Tools.Locator.PasswordManager.Get(Constants.LedgerPassword));
             if (!obscure)
             {
                 return plain;
@@ -359,6 +359,30 @@ namespace LedgerClient.Infrastructure
             if (!(values[1] is AccountNumber an))
                 return string.Empty;
             return Tools.FormatAccountNumber(a, an);
+        }
+
+        public object[] ConvertBack(object value, Type[] t, object parm, CultureInfo lang)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    // convert from AccountHistory and accountnumberhistory to display format as above
+
+    public sealed class AccountHistoryToDisplayConverter : IMultiValueConverter
+    {
+        public object Convert(object[] values, Type t, object parm, CultureInfo lang)
+        {
+            if (values.Length != 2 || values.Any(x => x == DependencyProperty.UnsetValue))
+            {
+                return string.Empty;
+            }
+            if (!(values[0] is AccountHistoryEntity a) || !(values[1] is AccountNumberHistoryEntity an))
+            {
+                return string.Empty;
+            }
+            return Tools.FormatAccountNumber(a, an);
+            
         }
 
         public object[] ConvertBack(object value, Type[] t, object parm, CultureInfo lang)

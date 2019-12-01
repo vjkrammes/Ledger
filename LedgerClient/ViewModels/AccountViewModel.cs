@@ -125,8 +125,8 @@ namespace LedgerClient.ViewModels
                 {
                     SelectedType = Account.AccountType;
                     SelectedDueDateType = Account.DueDateType;
-                    Number = _locator.StringCypher.Decrypt(Account.AccountNumber.Number, _locator.PasswordManager.Get(),
-                        Account.AccountNumber.Salt);
+                    Number = _locator.StringCypher.Decrypt(Account.AccountNumber.Number, _locator.PasswordManager.Get
+                        (Constants.LedgerPassword), Account.AccountNumber.Salt);
                     Month = Account.Month;
                     Day = Account.Day;
                     IsPayable = Account.IsPayable;

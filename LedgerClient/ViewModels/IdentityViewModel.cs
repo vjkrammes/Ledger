@@ -6,6 +6,7 @@ using LedgerClient.ECL.DTO;
 using System.Windows;
 using LedgerClient.ECL.Interfaces;
 using System.Windows.Input;
+using LedgerLib.Infrastructure;
 
 namespace LedgerClient.ViewModels
 {
@@ -112,9 +113,11 @@ namespace LedgerClient.ViewModels
                 SetProperty(ref _identity, value);
                 Company = Identity.Company;
                 URL = string.IsNullOrEmpty(Identity.URL) ? Company?.URL ?? string.Empty : Identity.URL;
-                UserId = Tools.Locator.StringCypher.Decrypt(Identity.UserId, Tools.Locator.PasswordManager.Get(), Identity.UserSalt);
+                UserId = Tools.Locator.StringCypher.Decrypt(Identity.UserId, Tools.Locator.PasswordManager.Get(Constants.LedgerPassword), 
+                    Identity.UserSalt);
                 _savedUserId = UserId;
-                Password1 = Tools.Locator.StringCypher.Decrypt(Identity.Password, Tools.Locator.PasswordManager.Get(), Identity.PasswordSalt);
+                Password1 = Tools.Locator.StringCypher.Decrypt(Identity.Password, Tools.Locator.PasswordManager.Get(Constants.LedgerPassword), 
+                    Identity.PasswordSalt);
                 Password2 = Password1;
                 _editing = Identity.Id > 0;
             }
@@ -157,8 +160,8 @@ namespace LedgerClient.ViewModels
             }
             var cypher = Tools.Locator.StringCypher;
             Identity.URL = URL;
-            Identity.UserId = cypher.Encrypt(UserId, Tools.Locator.PasswordManager.Get(), Identity.UserSalt);
-            Identity.Password = cypher.Encrypt(Password1, Tools.Locator.PasswordManager.Get(), Identity.PasswordSalt);
+            Identity.UserId = cypher.Encrypt(UserId, Tools.Locator.PasswordManager.Get(Constants.LedgerPassword), Identity.UserSalt);
+            Identity.Password = cypher.Encrypt(Password1, Tools.Locator.PasswordManager.Get(Constants.LedgerPassword), Identity.PasswordSalt);
             base.OK();
         }
 

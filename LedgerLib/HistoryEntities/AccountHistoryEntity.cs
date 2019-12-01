@@ -1,5 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
-
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using LedgerLib.Infrastructure;
 
 namespace LedgerLib.HistoryEntities
@@ -18,5 +19,11 @@ namespace LedgerLib.HistoryEntities
         public int Month { get; set; }
         [Required]
         public int Day { get; set; }
+        
+        [ForeignKey("AccountTypeId")]
+        public AccountTypeHistoryEntity AccountType { get; set; }
+
+        [ForeignKey("AccountId")]
+        public IList<AccountNumberHistoryEntity> AccountNumbers { get; set; }
     }
 }

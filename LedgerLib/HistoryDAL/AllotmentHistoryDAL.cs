@@ -18,8 +18,13 @@ namespace LedgerLib.HistoryDAL
         {
             return pred switch
             {
-                null => _dbset.OrderByDescending(x => x.Date).AsNoTracking().ToList(),
-                _ => _dbset.Where(pred).OrderByDescending(x => x.Date).AsNoTracking().ToList()
+                null => _dbset
+                    .Include(x => x.Payee)
+                    .OrderByDescending(x => x.Date).AsNoTracking().ToList(),
+                _ => _dbset
+                    .Include(x => x.Payee)
+                    .Where(pred)
+                    .OrderByDescending(x => x.Date).AsNoTracking().ToList()
             };
         }
 

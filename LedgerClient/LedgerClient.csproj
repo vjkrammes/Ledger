@@ -40,6 +40,7 @@
     <None Remove="resources\coins-32.png" />
     <None Remove="resources\company-32.png" />
     <None Remove="resources\computer-32.png" />
+    <None Remove="resources\copy-32.png" />
     <None Remove="resources\dagger-32.png" />
     <None Remove="resources\device-32.png" />
     <None Remove="resources\dish-32.png" />
@@ -180,6 +181,7 @@
     <Resource Include="resources\coins-32.png" />
     <Resource Include="resources\company-32.png" />
     <Resource Include="resources\computer-32.png" />
+    <Resource Include="resources\copy-32.png" />
     <Resource Include="resources\dagger-32.png" />
     <Resource Include="resources\device-32.png" />
     <Resource Include="resources\dish-32.png" />

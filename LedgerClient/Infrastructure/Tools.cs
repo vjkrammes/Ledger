@@ -10,7 +10,7 @@ using System.Windows;
 using System.Windows.Media.Imaging;
 
 using LedgerClient.ECL.DTO;
-
+using LedgerLib.HistoryEntities;
 using LedgerLib.Infrastructure;
 using LedgerLib.Interfaces;
 
@@ -52,7 +52,23 @@ namespace LedgerClient.Infrastructure
             StringBuilder sb = new StringBuilder();
             sb.Append(acct.AccountType?.Description ?? "Unknown");
             sb.Append(" ");
-            string accountnumber = Locator.StringCypher.Decrypt(acctnum.Number, Locator.PasswordManager.Get(), acctnum.Salt);
+            string accountnumber = Locator.StringCypher.Decrypt(acctnum.Number, Locator.PasswordManager.Get(Constants.LedgerPassword), 
+                acctnum.Salt);
+            var numpart = accountnumber.Length < 4 ? accountnumber : accountnumber[^4..];
+            sb.Append(numpart);
+            return sb.ToString();
+        }
+
+        public static string FormatAccountNumber(AccountHistoryEntity acct, AccountNumberHistoryEntity acctnum)
+        {
+            if (acct is null || acctnum is null)
+            {
+                return "Unknown";
+            }
+            StringBuilder sb = new StringBuilder();
+            sb.Append(acct.AccountType?.Description ?? "Unknown");
+            sb.Append(" ");
+            string accountnumber = Locator.StringCypher.Decrypt(acctnum.Number, Locator.PasswordManager.Get(Constants.Ledger5Password));
             var numpart = accountnumber.Length < 4 ? accountnumber : accountnumber[^4..];
             sb.Append(numpart);
             return sb.ToString();

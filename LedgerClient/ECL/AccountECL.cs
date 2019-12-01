@@ -62,7 +62,7 @@ namespace LedgerClient.ECL
         public Account Create(Account account, string number)
         {
             var salt = Tools.GenerateSalt(Constants.SaltLength);
-            var num = Tools.Locator.StringCypher.Encrypt(number, Tools.Locator.PasswordManager.Get(), salt);
+            var num = Tools.Locator.StringCypher.Encrypt(number, Tools.Locator.PasswordManager.Get(Constants.LedgerPassword), salt);
             var accountentity = _mapper.Map<AccountEntity>(account);
             accountentity = Tools.Locator.AccountDAL.Create(accountentity, salt, num);
             return _mapper.Map<Account>(accountentity);
