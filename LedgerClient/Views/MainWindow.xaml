@@ -138,10 +138,10 @@
             <Button Command="{Binding HistoryCommand}" ToolTip="View History in a Ledger 5 database" ToolTipService.ShowOnDisabled="True">
                 <Image Source="/resources/script-32.png"/>
             </Button>
-            <Separator />
+            <!--Separator />
             <Button ToolTip="Reports and exports" ToolTipService.ShowOnDisabled="True">
                 <Image Source="/resources/graph-32.png"/>
-            </Button>
+            </Button-->
             <Button Command="{Binding BackupCommand}" ToolTip="Back up the database" ToolTipService.ShowOnDisabled="True">
                 <Image Source="/resources/backup-database-32.png"/>
             </Button>
