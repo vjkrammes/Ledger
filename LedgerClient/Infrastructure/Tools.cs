@@ -115,7 +115,7 @@ namespace LedgerClient.Infrastructure
             if (d < 1_000) return d.ToString("n0") + " bytes";
             if (d < 1_000_000) return Math.Round(d / 1_000, 2).ToString("n2") + " KB";
             if (d < 1_000_000_000) return Math.Round(d / 1_000_000, 2).ToString("n2") + " MB";
-            return Math.Round(d / 1_000_000_000, 1).ToString("n2") + " GB";
+            return Math.Round(d / 1_000_000_000, 2).ToString("n2") + " GB";
         }
 
         public static IEnumerable<string> GetImages(Assembly a)

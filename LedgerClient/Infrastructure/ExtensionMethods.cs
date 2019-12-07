@@ -54,6 +54,10 @@ namespace LedgerClient.Infrastructure
             {
                 return false;
             }
+            if (array1.Length != array2.Length)
+            {
+                return false;
+            }
             IEqualityComparer<T> comp = EqualityComparer<T>.Default;
             for (int i = 0; i < array1.Length; i++)
             {
