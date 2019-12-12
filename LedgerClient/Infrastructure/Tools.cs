@@ -158,7 +158,7 @@ namespace LedgerClient.Infrastructure
                         u = "/" + u;
                     }
                     string l = u.ToLower();
-                    if (l.Contains("databse", StringComparison.OrdinalIgnoreCase))
+                    if (l.Contains("database", StringComparison.OrdinalIgnoreCase))
                     {
                         continue;
                     }
