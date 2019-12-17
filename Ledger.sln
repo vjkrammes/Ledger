@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LedgerLib", "LedgerLib\Ledg
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ledger.Tests", "Ledger.Tests\Ledger.Tests.csproj", "{A8006A9D-E3D5-4333-99A1-5EAE6B96C9E1}"
 EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "LedgerSetup", "LedgerSetup\LedgerSetup.vdproj", "{B697D936-511A-4261-9A0A-F4D24F7D4FA3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -26,7 +28,9 @@ Global
 		{A8006A9D-E3D5-4333-99A1-5EAE6B96C9E1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{A8006A9D-E3D5-4333-99A1-5EAE6B96C9E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A8006A9D-E3D5-4333-99A1-5EAE6B96C9E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A8006A9D-E3D5-4333-99A1-5EAE6B96C9E1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B697D936-511A-4261-9A0A-F4D24F7D4FA3}.Debug|Any CPU.ActiveCfg = Debug
+		{B697D936-511A-4261-9A0A-F4D24F7D4FA3}.Release|Any CPU.ActiveCfg = Release
+		{B697D936-511A-4261-9A0A-F4D24F7D4FA3}.Release|Any CPU.Build.0 = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
