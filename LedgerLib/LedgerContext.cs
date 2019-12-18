@@ -112,8 +112,8 @@ namespace LedgerLib
                 CommandType = CommandType.Text,
                 Connection = connection
             };
-            command.Parameters.Add(new 
-                SqlParameter { ParameterName = "n", SqlDbType = SqlDbType.NVarChar, Value = config[Constants.DatabaseConfig] });
+            var dbname = config[Constants.DatabaseConfig] ?? Constants.DefaultDatabase;
+            command.Parameters.Add(new SqlParameter { ParameterName = "n", SqlDbType = SqlDbType.NVarChar, Value = dbname });
             command.Parameters.Add(new SqlParameter { ParameterName = "l", SqlDbType = SqlDbType.NVarChar, Value = filename });
             connection.Open();
             command.ExecuteNonQuery();
