@@ -105,7 +105,7 @@ namespace LedgerClient.Infrastructure
             {
                 return "Never";
             }
-            return dt.ToShortDateString() + $" {dt.Hour}:{dt.Minute}:{dt.Second}";
+            return dt.ToShortDateString() + $" {dt.Hour:00}:{dt.Minute:00}:{dt.Second:00}";
         }
 
         public object ConvertBack(object value, Type t, object parm, CultureInfo lang)
