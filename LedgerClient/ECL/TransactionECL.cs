@@ -52,9 +52,9 @@ namespace LedgerClient.ECL
 
         public Transaction Read(int id) => Get(x => x.Id == id).SingleOrDefault();
 
-        public decimal Total() => Get().Sum(x => x.Payment);
+        public decimal Total() => Tools.Locator.TransactionDAL.Total();
 
-        public decimal TotalForAccount(int aid) => Get(x => x.AccountId == aid).Sum(x => x.Payment);
+        public decimal TotalForAccount(int aid) => Tools.Locator.TransactionDAL.TotalForAccount(aid);
 
         public bool AccountHasTransactions(int aid) => GetForAccount(aid).Any();
     }

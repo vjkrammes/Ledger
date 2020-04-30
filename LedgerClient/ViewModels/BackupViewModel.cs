@@ -195,7 +195,7 @@ namespace LedgerClient.ViewModels
             {
                 Filename += @"\";
             }
-            Filename += _settings.ProductName + ".backup";
+            Filename += Constants.ProductName + ".backup";
             Directory = Path.GetDirectoryName(Filename);
             LoadFiles();
         }

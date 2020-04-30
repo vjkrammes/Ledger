@@ -792,14 +792,14 @@ namespace LedgerClient.ViewModels
         private void WindowLoaded()
         {
             ISettingsService settings = Tools.Locator.Settings;
-            WindowTitle = $"{settings.ProductName} Version {settings.ProductVersion:0.00}";
-            Banner = $"{settings.ProductName} {settings.ProductVersion:0.00} - Manage your Accounts and Identities";
-            ShortTitle = Tools.GetShortTitle(settings);
+            WindowTitle = $"{Constants.ProductName} Version {Constants.ProductVersion:0.00}";
+            Banner = $"{Constants.ProductName} {Constants.ProductVersion:0.00} - Manage your Accounts and Identities";
+            ShortTitle = Tools.GetShortTitle();
             StatusbarVisibility = settings.ShowStatusbar ? Visibility.Visible : Visibility.Collapsed;
             Tools.Locator.StatusbarViewModel.StatusbarVisibility = StatusbarVisibility;
             Authenticate(settings);
             LoadCompanies(false);
-            Tools.Locator.StatusbarViewModel.Update();
+            Tools.Locator.StatusbarViewModel.Update(SelectedAccount);
             OrphanedAccountNumbers = new ObservableCollection<int>(GetOrphanedAccountNumbers());
             if (OrphanedAccountNumbers.Any())
             {

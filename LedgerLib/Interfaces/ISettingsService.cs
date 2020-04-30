@@ -5,7 +5,9 @@ namespace LedgerLib.Interfaces
     public interface ISettingsService
     {
         Guid SystemId { get; }
+        [Obsolete]
         string ProductName { get; }
+        [Obsolete]
         double ProductVersion { get; }
 
         string Alt0 { get; set; }

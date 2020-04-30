@@ -31,7 +31,7 @@ namespace LedgerClient.ViewModels
         {
             var vm = Tools.Locator.PasswordViewModel;
             vm.Password2Visibility = Visibility.Visible;
-            vm.ShortHeader = Tools.GetShortTitle(settings);
+            vm.ShortHeader = Tools.GetShortTitle();
             if (DialogSupport.ShowDialog<PasswordWindow>(vm, Application.Current.MainWindow) != true)
             {
                 Environment.Exit(Constants.NoPasswordEntered);
@@ -48,7 +48,7 @@ namespace LedgerClient.ViewModels
             vm.Password2Visibility = Visibility.Collapsed;
             vm.Salt = settings.PasswordSalt;
             vm.Hash = settings.PasswordHash;
-            vm.ShortHeader = Tools.GetShortTitle(settings);
+            vm.ShortHeader = Tools.GetShortTitle();
             if (DialogSupport.ShowDialog<PasswordWindow>(vm, Application.Current.MainWindow) != true)
             {
                 Environment.Exit(Constants.NoPasswordEntered);
@@ -137,6 +137,7 @@ namespace LedgerClient.ViewModels
                     Environment.Exit(Constants.AccountsLoadFailed);
                 }
                 SelectedAccount = Accounts.Any() ? Accounts[0] : null;
+                Tools.Locator.StatusbarViewModel.Update(SelectedAccount);
             }
         }
 

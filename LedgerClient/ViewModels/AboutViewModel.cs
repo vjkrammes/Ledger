@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Text;
 using LedgerClient.Controls;
 using LedgerClient.Infrastructure;
+using LedgerLib.Infrastructure;
 using LedgerLib.Interfaces;
 
 namespace LedgerClient.ViewModels
@@ -65,12 +66,12 @@ namespace LedgerClient.ViewModels
         public AboutViewModel(ISettingsService settings)
         {
             _settings = settings;
-            ShortTitle = Tools.GetShortTitle(_settings);
+            ShortTitle = Tools.GetShortTitle();
             Credits = new ObservableDictionary<string, string>
             {
                 ["System Id"] = _settings.SystemId.ToString(),
-                ["Product"] = _settings.ProductName,
-                ["Version"] = _settings.ProductVersion.ToString("n2"),
+                ["Product"] = Constants.ProductName,
+                ["Version"] = Constants.ProductVersion.ToString("n2"),
                 ["Author"] = "V. James Krammes",
                 ["Company"] = GetCompanyFromAssembly(),
                 ["Copyright"] = GetCopyrightFromAssembly(),

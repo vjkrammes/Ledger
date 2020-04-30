@@ -1,4 +1,9 @@
-﻿using System;
+﻿using LedgerClient.ECL.DTO;
+
+using LedgerLib.HistoryEntities;
+using LedgerLib.Infrastructure;
+
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,18 +14,13 @@ using System.Text;
 using System.Windows;
 using System.Windows.Media.Imaging;
 
-using LedgerClient.ECL.DTO;
-using LedgerLib.HistoryEntities;
-using LedgerLib.Infrastructure;
-using LedgerLib.Interfaces;
-
 namespace LedgerClient.Infrastructure
 {
     public static class Tools
     {
-        public static Locator Locator { get => Application.Current.Resources[Constants.Locator] as Locator ?? new Locator(); }
+        public static Locator Locator => Application.Current.Resources[Constants.Locator] as Locator ?? new Locator();
 
-        public static string GetShortTitle(ISettingsService settings) => $"{settings.ProductName} {settings.ProductVersion:0.00}";
+        public static string GetShortTitle() => $"{Constants.ProductName} {Constants.ProductVersion:0.00}";
 
         public static string Hexify(byte[] array)
         {
@@ -28,9 +28,9 @@ namespace LedgerClient.Infrastructure
             {
                 throw new ArgumentNullException("array");
             }
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
             sb.Append($"[length={array.Length}]: 0x");
-            for (int i = 0; i < array.Length; i++)
+            for (var i = 0; i < array.Length; i++)
             {
                 sb.Append(array[i].ToString("x2"));
             }
@@ -39,7 +39,7 @@ namespace LedgerClient.Infrastructure
 
         public static void ConcurrencyError(string entity, string operation)
         {
-            string msg = $"The {entity} was changed by another user. The {operation} operation has been cancelled";
+            var msg = $"The {entity} was changed by another user. The {operation} operation has been cancelled";
             PopupManager.Popup(msg, "Concurrency Conflict", PopupButtons.Ok, PopupImage.Information);
         }
 
@@ -49,10 +49,10 @@ namespace LedgerClient.Infrastructure
             {
                 return "Unknown";
             }
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
             sb.Append(acct.AccountType?.Description ?? "Unknown");
             sb.Append(" ");
-            string accountnumber = Locator.StringCypher.Decrypt(acctnum.Number, Locator.PasswordManager.Get(Constants.LedgerPassword), 
+            var accountnumber = Locator.StringCypher.Decrypt(acctnum.Number, Locator.PasswordManager.Get(Constants.LedgerPassword),
                 acctnum.Salt);
             var numpart = accountnumber.Length < 4 ? accountnumber : accountnumber[^4..];
             sb.Append(numpart);
@@ -65,10 +65,10 @@ namespace LedgerClient.Infrastructure
             {
                 return "Unknown";
             }
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
             sb.Append(acct.AccountType?.Description ?? "Unknown");
             sb.Append(" ");
-            string accountnumber = Locator.StringCypher.Decrypt(acctnum.Number, Locator.PasswordManager.Get(Constants.Ledger5Password));
+            var accountnumber = Locator.StringCypher.Decrypt(acctnum.Number, Locator.PasswordManager.Get(Constants.Ledger5Password));
             var numpart = accountnumber.Length < 4 ? accountnumber : accountnumber[^4..];
             sb.Append(numpart);
             return sb.ToString();
@@ -76,7 +76,7 @@ namespace LedgerClient.Infrastructure
 
         public static byte[] GenerateSalt(int length)
         {
-            byte[] ret = new byte[length];
+            var ret = new byte[length];
             using var rng = new RNGCryptoServiceProvider();
             rng.GetBytes(ret);
             return ret;
@@ -100,7 +100,7 @@ namespace LedgerClient.Infrastructure
 
         public static BitmapImage CachedImage(Uri uri)
         {
-            BitmapImage ret = new BitmapImage();
+            var ret = new BitmapImage();
             ret.BeginInit();
             ret.UriSource = uri;
             ret.CacheOption = BitmapCacheOption.OnLoad;
@@ -112,16 +112,28 @@ namespace LedgerClient.Infrastructure
 
         public static string Normalize(double d)
         {
-            if (d < 1_000) return d.ToString("n0") + " bytes";
-            if (d < 1_000_000) return Math.Round(d / 1_000, 2).ToString("n2") + " KB";
-            if (d < 1_000_000_000) return Math.Round(d / 1_000_000, 2).ToString("n2") + " MB";
+            if (d < 1_000)
+            {
+                return d.ToString("n0") + " bytes";
+            }
+
+            if (d < 1_000_000)
+            {
+                return Math.Round(d / 1_000, 2).ToString("n2") + " KB";
+            }
+
+            if (d < 1_000_000_000)
+            {
+                return Math.Round(d / 1_000_000, 2).ToString("n2") + " MB";
+            }
+
             return Math.Round(d / 1_000_000_000, 2).ToString("n2") + " GB";
         }
 
         public static IEnumerable<string> GetImages(Assembly a)
         {
-            List<string> ret = new List<string>();
-            string[] resources = a.GetManifestResourceNames();
+            var ret = new List<string>();
+            var resources = a.GetManifestResourceNames();
             foreach (var r in resources)
             {
                 if (!r.Contains("g.resources"))
@@ -140,7 +152,7 @@ namespace LedgerClient.Infrastructure
                 }
                 var hashes = rs.Cast<DictionaryEntry>().ToList();
                 rs.Dispose();
-                List<string> keys = new List<string>();
+                var keys = new List<string>();
                 foreach (var hash in hashes)
                 {
                     if (!hash.Key.ToString().EndsWith("-32.png"))
@@ -152,12 +164,12 @@ namespace LedgerClient.Infrastructure
                 var uris = from k in keys orderby k select k;   // sort
                 foreach (var uri in uris)
                 {
-                    string u = uri;
+                    var u = uri;
                     if (!u.StartsWith("/"))
                     {
                         u = "/" + u;
                     }
-                    string l = u.ToLower();
+                    var l = u.ToLower();
                     if (l.Contains("database", StringComparison.OrdinalIgnoreCase))
                     {
                         continue;
