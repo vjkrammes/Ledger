@@ -160,6 +160,7 @@ namespace LedgerClient.ViewModels
                     PopupManager.Popup($"Failed to {op} Transactions", Constants.DBE, ex.Innermost(), PopupButtons.Ok, PopupImage.Error);
                     Environment.Exit(Constants.TransactionsLoadFailed);
                 }
+                Tools.Locator.StatusbarViewModel.Update(SelectedAccount);
             }
         }
 
