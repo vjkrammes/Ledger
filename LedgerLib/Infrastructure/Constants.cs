@@ -8,7 +8,7 @@ namespace LedgerLib.Infrastructure
     {
         // "Numbers"
 
-        public const double ProductVersion = 7.03;
+        public const double ProductVersion = 7.04;
 
         public const double MinumumIconHeight = 16.0;
         public const double DefaultIconHeight = 24.0;

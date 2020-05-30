@@ -234,6 +234,7 @@ namespace LedgerClient.ViewModels
                 return;
             }
             var vm = Tools.Locator.NumberHistoryViewModel;
+            vm.Company = SelectedCompany;
             vm.Account = SelectedAccount;
             DialogSupport.ShowDialog<NumberHistoryWindow>(vm, Application.Current.MainWindow);
         }
