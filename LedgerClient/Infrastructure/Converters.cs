@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Media;
@@ -381,8 +382,18 @@ namespace LedgerClient.Infrastructure
             {
                 return string.Empty;
             }
-            return Tools.FormatAccountNumber(a, an);
-            
+            try
+            {
+                return Tools.FormatAccountNumber(a, an);
+            }
+            catch (CryptographicException)
+            {
+                return "Decode failed (bad password)";
+            }
+            catch (Exception ex)
+            {
+                return "Decode failed (other)";
+            }            
         }
 
         public object[] ConvertBack(object value, Type[] t, object parm, CultureInfo lang)
