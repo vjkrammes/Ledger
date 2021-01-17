@@ -112,6 +112,19 @@ namespace LedgerClient.ViewModels
             }
         }
 
+        private RelayCommand _accountSummaryCommand;
+        public ICommand AccountSummaryCommand
+        {
+            get
+            {
+                if (_accountSummaryCommand is null)
+                {
+                    _accountSummaryCommand = new RelayCommand(parm => AccountSummaryClick(), parm => AccountsExist());
+                }
+                return _accountSummaryCommand;
+            }
+        }
+
         private RelayCommand _viewHistoryCommand;
         public ICommand ViewHistoryCommand
         {

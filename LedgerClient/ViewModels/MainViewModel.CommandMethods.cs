@@ -227,6 +227,18 @@ namespace LedgerClient.ViewModels
             Tools.Locator.StatusbarViewModel.Update(SelectedAccount);
         }
 
+        private static bool AccountsExist()
+        {
+            var dal = Tools.Locator.AccountDAL;
+            return dal.Count > 0;
+        }
+
+        private static void AccountSummaryClick()
+        {
+            var vm = Tools.Locator.AccountSummaryViewModel;
+            DialogSupport.ShowDialog<AccountSummaryWindow>(vm, Application.Current.MainWindow);
+        }
+
         private bool ViewHistoryCanClick() => 
             SelectedAccount != null && Tools.Locator.AccountNumberECL.AccountHasAccountNumbers(SelectedAccount.Id);
 

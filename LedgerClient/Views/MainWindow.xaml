@@ -128,6 +128,9 @@
             <Button Command="{Binding EditAccountCommand}" ToolTip="Edit the selected Account" ToolTipService.ShowOnDisabled="True">
                 <Image Source="/resources/edit-32.png"/>
             </Button>
+            <Button Command="{Binding AccountSummaryCommand}" ToolTip="Account Summary" ToolTipService.ShowOnDisabled="True">
+                <Image Source="/resources/info-32.png"/>
+            </Button>
             <Button Command="{Binding ViewHistoryCommand}" ToolTip="See Number History for this Account" ToolTipService.ShowOnDisabled="True">
                 <Image Source="/resources/inkwell-32.png"/>
             </Button>

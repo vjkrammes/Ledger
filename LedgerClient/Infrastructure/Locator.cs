@@ -91,6 +91,7 @@ namespace LedgerClient.Infrastructure
         {
             services.AddTransient<AboutViewModel>();
             services.AddTransient<AccountNumberViewModel>();
+            services.AddTransient<AccountSummaryViewModel>();
             services.AddTransient<AccountViewModel>();
             services.AddTransient<AccountTypeViewModel>();
             services.AddTransient<AllotmentViewModel>();
@@ -133,6 +134,7 @@ namespace LedgerClient.Infrastructure
 
         public AboutViewModel AboutViewModel => _provider.GetRequiredService<AboutViewModel>();
         public AccountNumberViewModel AccountNumberViewModel => _provider.GetRequiredService<AccountNumberViewModel>();
+        public AccountSummaryViewModel AccountSummaryViewModel => _provider.GetRequiredService<AccountSummaryViewModel>();
         public AccountTypeViewModel AccountTypeViewModel => _provider.GetRequiredService<AccountTypeViewModel>();
         public AccountViewModel AccountViewModel => _provider.GetRequiredService<AccountViewModel>();
         public AllotmentViewModel AllotmentViewModel => _provider.GetRequiredService<AllotmentViewModel>();
