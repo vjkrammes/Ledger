@@ -76,7 +76,7 @@ namespace LedgerClient.ViewModels
                 ["Copyright"] = GetCopyrightFromAssembly(),
                 ["Platform"] = "Windows Desktop",
                 ["Architecture"] = "Model - View - ViewModel (MVVM)",
-                [".NET Version"] = "Microsoft .NET Core 3.0",
+                [".NET Version"] = "Microsoft .NET 5",
                 ["Presentation"] = "Microsoft Windows Presentation Foundation (WPF)",
                 ["Database"] = "Microsoft SQL",
                 ["Database Access"] = "Microsoft Entity Framework Core",
