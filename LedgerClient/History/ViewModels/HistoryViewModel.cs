@@ -1,13 +1,13 @@
-﻿using System;
-using System.Collections.ObjectModel;
-using System.Windows.Input;
-
-using LedgerClient.History.Views;
+﻿using LedgerClient.History.Views;
 using LedgerClient.Infrastructure;
 
 using LedgerLib.HistoryEntities;
 using LedgerLib.Infrastructure;
 using LedgerLib.Interfaces;
+
+using System;
+using System.Collections.ObjectModel;
+using System.Windows.Input;
 
 namespace LedgerClient.History.ViewModels
 {
@@ -124,7 +124,7 @@ namespace LedgerClient.History.ViewModels
 
         #region Command Methods
 
-        private void WindowLoaded()
+        private static void WindowLoaded()
         {
         }
 

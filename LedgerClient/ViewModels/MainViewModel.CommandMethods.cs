@@ -1,26 +1,23 @@
-﻿using System;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Windows;
-using System.Windows.Media;
-using LedgerClient.ECL.DTO;
+﻿using LedgerClient.ECL.DTO;
 using LedgerClient.History.Views;
 using LedgerClient.Infrastructure;
 using LedgerClient.Views;
 
 using LedgerLib.Infrastructure;
-using LedgerLib.Interfaces;
 
 using Microsoft.EntityFrameworkCore;
+
+using System;
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Windows;
+using System.Windows.Media;
 
 namespace LedgerClient.ViewModels
 {
     public partial class MainViewModel
     {
-        public override void Cancel()
-        {
-            Application.Current.MainWindow.Close();
-        }
+        public override void Cancel() => Application.Current.MainWindow.Close();
 
         #region Company Methods
 
@@ -31,7 +28,7 @@ namespace LedgerClient.ViewModels
             {
                 return;
             }
-            Company c = vm.Company.Clone();
+            var c = vm.Company.Clone();
             c.Name = c.Name.Caseify();
             try
             {
@@ -48,9 +45,12 @@ namespace LedgerClient.ViewModels
                 PopupManager.Popup("Failed to add new Company", Constants.DBE, ex.Innermost(), PopupButtons.Ok, PopupImage.Error);
                 return;
             }
-            int ix = 0;
+            var ix = 0;
             while (ix < Companies.Count && Companies[ix] < c)
+            {
                 ix++;
+            }
+
             Companies.Insert(ix, c);
             SelectedCompany = c;
             Tools.Locator.StatusbarViewModel.Update(SelectedAccount);
@@ -79,7 +79,7 @@ namespace LedgerClient.ViewModels
                     return;
                 }
             }
-            Company c = vm.Company.Clone();
+            var c = vm.Company.Clone();
             c.Name = c.Name.Caseify();
             try
             {
@@ -98,9 +98,12 @@ namespace LedgerClient.ViewModels
             }
             Companies.Remove(SelectedCompany);
             SelectedCompany = null;
-            int ix = 0;
+            var ix = 0;
             while (ix < Companies.Count && Companies[ix] < c)
+            {
                 ix++;
+            }
+
             Companies.Insert(ix, c);
             SelectedCompany = c;
             Tools.Locator.StatusbarViewModel.Update(SelectedAccount);
@@ -114,7 +117,7 @@ namespace LedgerClient.ViewModels
             {
                 return;
             }
-            string msg = $"Delete Company '{SelectedCompany.Name}'? This action cannot be undone.";
+            var msg = $"Delete Company '{SelectedCompany.Name}'? This action cannot be undone.";
             if (PopupManager.Popup(msg, "Delete Company?", PopupButtons.YesNo, PopupImage.Question) != PopupResult.Yes)
             {
                 return;
@@ -162,7 +165,7 @@ namespace LedgerClient.ViewModels
             {
                 return;
             }
-            Account a = new Account
+            var a = new Account
             {
                 CompanyId = SelectedCompany.Id,
                 AccountTypeId = vm.SelectedType.Id,
@@ -203,7 +206,7 @@ namespace LedgerClient.ViewModels
                 LoadAccounts(); // account number may have changed
                 return;
             }
-            Account save = SelectedAccount.Clone();
+            var save = SelectedAccount.Clone();
             SelectedAccount.AccountTypeId = vm.SelectedType.Id;
             SelectedAccount.AccountType = vm.SelectedType;
             SelectedAccount.DueDateType = vm.SelectedDueDateType;
@@ -248,10 +251,10 @@ namespace LedgerClient.ViewModels
             {
                 return;
             }
-            int accountid = SelectedAccount.Id;
+            var accountid = SelectedAccount.Id;
             if (Tools.Locator.AccountNumberECL.AccountHasAccountNumbers(SelectedAccount.Id))
             {
-                string msg = "Delete this account? All Account Number history will be lost.";
+                var msg = "Delete this account? All Account Number history will be lost.";
                 if (PopupManager.Popup("Delete This Account?","Delete Account?",msg,PopupButtons.YesNo, PopupImage.Question) !=
                     PopupResult.Yes)
                 {
@@ -313,7 +316,7 @@ namespace LedgerClient.ViewModels
                 SelectedTransaction = null;
                 return;
             }
-            Transaction t = new Transaction
+            var t = new Transaction
             {
                 AccountId = SelectedAccount.Id,
                 Date = vm.Date ?? (default),
@@ -353,7 +356,7 @@ namespace LedgerClient.ViewModels
                 SelectedTransaction = null;
                 return;
             }
-            Transaction t = SelectedTransaction.Clone();
+            var t = SelectedTransaction.Clone();
             t.Date = vm.Date.Value;
             try
             {
@@ -393,7 +396,7 @@ namespace LedgerClient.ViewModels
                 SelectedTransaction = null;
                 return;
             }
-            if (string.IsNullOrEmpty(vm.Answer) || !decimal.TryParse(vm.Answer, out decimal newbalance))
+            if (string.IsNullOrEmpty(vm.Answer) || !decimal.TryParse(vm.Answer, out var newbalance))
             {
                 SelectedTransaction = null;
                 return;
@@ -404,7 +407,7 @@ namespace LedgerClient.ViewModels
                 SelectedTransaction = null;
                 return;
             }
-            Transaction t = SelectedTransaction.Clone();
+            var t = SelectedTransaction.Clone();
             t.Balance = newbalance;
             try
             {
@@ -444,12 +447,12 @@ namespace LedgerClient.ViewModels
                 SelectedTransaction = null;
                 return;
             }
-            if (string.IsNullOrEmpty(vm.Answer) || !decimal.TryParse(vm.Answer, out decimal newpayment))
+            if (string.IsNullOrEmpty(vm.Answer) || !decimal.TryParse(vm.Answer, out var newpayment))
             {
                 SelectedTransaction = null;
                 return;
             }
-            Transaction t = SelectedTransaction.Clone();
+            var t = SelectedTransaction.Clone();
             t.Payment = newpayment;
             try
             {
@@ -488,7 +491,7 @@ namespace LedgerClient.ViewModels
                 SelectedTransaction = null;
                 return;
             }
-            Transaction t = SelectedTransaction.Clone();
+            var t = SelectedTransaction.Clone();
             t.Reference = vm.Answer ?? string.Empty;
             try
             {
@@ -568,7 +571,7 @@ namespace LedgerClient.ViewModels
             Tools.Locator.StatusbarViewModel.LastCopyDate = DateTime.Now;
         }
 
-        private void ClearClipboardClick()
+        private static void ClearClipboardClick()
         {
             Clipboard.Clear();
             Tools.Locator.StatusbarViewModel.LastCopyDate = default;
@@ -586,7 +589,7 @@ namespace LedgerClient.ViewModels
             {
                 return;
             }
-            Identity i = vm.Identity.Clone();
+            var i = vm.Identity.Clone();
             try
             {
                 Tools.Locator.IdentityECL.Insert(i);
@@ -620,7 +623,7 @@ namespace LedgerClient.ViewModels
                 SelectedIdentity = null;
                 return;
             }
-            Identity i = vm.Identity.Clone();
+            var i = vm.Identity.Clone();
             try
             {
                 Tools.Locator.IdentityECL.Update(i);
@@ -653,7 +656,7 @@ namespace LedgerClient.ViewModels
             }
             var user = Tools.Locator.StringCypher.Decrypt(SelectedIdentity.UserId, Tools.Locator.PasswordManager.Get(Constants.LedgerPassword),
                 SelectedIdentity.UserSalt);
-            string msg = $"Delete Identity '{user}' from Company {SelectedIdentity.Company.Name}?";
+            var msg = $"Delete Identity '{user}' from Company {SelectedIdentity.Company.Name}?";
             if (PopupManager.Popup(msg, "Delete Identity?", PopupButtons.YesNo, PopupImage.Question) != PopupResult.Yes)
             {
                 SelectedIdentity = null;
@@ -686,7 +689,7 @@ namespace LedgerClient.ViewModels
 
         private void ManageAccountTypesClick()
         {
-            AccountTypeViewModel vm = Tools.Locator.AccountTypeViewModel;
+            var vm = Tools.Locator.AccountTypeViewModel;
             DialogSupport.ShowDialog<AccountTypeWindow>(vm, Application.Current.MainWindow);
             Tools.Locator.StatusbarViewModel.Update(SelectedAccount);
         }
@@ -742,7 +745,7 @@ namespace LedgerClient.ViewModels
 
         #region Ledger5 History Methods
 
-        private bool HistoryExists() => Tools.Locator.LedgerContext.DatabaseExists(Constants.DefaultHistoryDatabase) == true;
+        private static bool HistoryExists() => Tools.Locator.LedgerContext.DatabaseExists(Constants.DefaultHistoryDatabase) == true;
 
         private void HistoryClick()
         {
@@ -755,9 +758,9 @@ namespace LedgerClient.ViewModels
 
         #region Miscellaneous Methods
 
-        private void IconHeight(object parm)
+        private static void IconHeight(object parm)
         {
-            if (parm is string h && double.TryParse(h, out double height))
+            if (parm is string h && double.TryParse(h, out var height))
             {
                 Tools.Locator.Settings.IconHeight = height;
                 Application.Current.Resources[Constants.IconHeight] = height;
@@ -771,20 +774,14 @@ namespace LedgerClient.ViewModels
             Tools.Locator.StatusbarViewModel.StatusbarVisibility = StatusbarVisibility;
         }
 
-        private void BackupClick()
-        {
+        private static void BackupClick() => 
             DialogSupport.ShowDialog<BackupWindow>(Tools.Locator.BackupViewModel, Application.Current.MainWindow);
-        }
 
-        private void PalletteClick()
-        {
+        private static void PalletteClick() => 
             DialogSupport.ShowDialog<PalletteWindow>(Tools.Locator.PalletteViewModel, Application.Current.MainWindow);
-        }
 
-        private void AboutClick()
-        {
+        private static void AboutClick() => 
             DialogSupport.ShowDialog<AboutWindow>(Tools.Locator.AboutViewModel, Application.Current.MainWindow);
-        }
 
         #endregion
 
@@ -792,7 +789,7 @@ namespace LedgerClient.ViewModels
 
         private void WindowLoaded()
         {
-            ISettingsService settings = Tools.Locator.Settings;
+            var settings = Tools.Locator.Settings;
             WindowTitle = $"{Constants.ProductName} Version {Constants.ProductVersion:0.00}";
             Banner = $"{Constants.ProductName} {Constants.ProductVersion:0.00} - Manage your Accounts and Identities";
             ShortTitle = Tools.GetShortTitle();
@@ -804,7 +801,7 @@ namespace LedgerClient.ViewModels
             OrphanedAccountNumbers = new ObservableCollection<int>(GetOrphanedAccountNumbers());
             if (OrphanedAccountNumbers.Any())
             {
-                string msg = "Orphaned Account Numbers can be removed by using the button on the tool bar";
+                var msg = "Orphaned Account Numbers can be removed by using the button on the tool bar";
                 PopupManager.Popup("Orphaned Account Numbers Exist.", "Orphaned Account Numbers", msg, PopupButtons.Ok, 
                     PopupImage.Information);
             }

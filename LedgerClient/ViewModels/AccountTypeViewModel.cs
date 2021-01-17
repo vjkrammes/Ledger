@@ -1,16 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using LedgerClient.ECL.DTO;
+﻿using LedgerClient.ECL.DTO;
+using LedgerClient.ECL.Interfaces;
 using LedgerClient.Infrastructure;
 using LedgerClient.Views;
-using System.Collections.ObjectModel;
-using System.Windows.Input;
-using LedgerClient.ECL.Interfaces;
+
 using LedgerLib.Infrastructure;
-using System.Windows;
-using System.Windows.Media;
+
 using Microsoft.EntityFrameworkCore;
+
+using System;
+using System.Collections.ObjectModel;
+using System.Windows;
+using System.Windows.Input;
+using System.Windows.Media;
 
 namespace LedgerClient.ViewModels
 {
@@ -103,7 +104,7 @@ namespace LedgerClient.ViewModels
                 FocusRequested?.Invoke(this, EventArgs.Empty);
                 return;
             }
-            AccountType a = new AccountType
+            var a = new AccountType
             {
                 Description = Description.Caseify()
             };
@@ -122,9 +123,12 @@ namespace LedgerClient.ViewModels
                 FocusRequested?.Invoke(this, EventArgs.Empty);
                 return;
             }
-            int ix = 0;
+            var ix = 0;
             while (ix < Types.Count && Types[ix] < a)
+            {
                 ix++;
+            }
+
             Types.Insert(ix, a);
             SelectedType = a;
             SelectedType = null;
@@ -140,8 +144,8 @@ namespace LedgerClient.ViewModels
             {
                 return;
             }
-            string save = SelectedType.Description;
-            QAViewModel vm = Tools.Locator.QAViewModel;
+            var save = SelectedType.Description;
+            var vm = Tools.Locator.QAViewModel;
             vm.Question = "Description:";
             vm.Answer = SelectedType.Description;
             vm.AnswerRequired = true;
@@ -179,12 +183,15 @@ namespace LedgerClient.ViewModels
                 FocusRequested?.Invoke(this, EventArgs.Empty);
                 return;
             }
-            AccountType a = SelectedType;
+            var a = SelectedType;
             Types.Remove(SelectedType);
             SelectedType = null;
-            int ix = 0;
+            var ix = 0;
             while (ix < Types.Count && Types[ix] < a)
+            {
                 ix++;
+            }
+
             Types.Insert(ix, a);
             SelectedType = a;
             SelectedType = null;
@@ -239,7 +246,7 @@ namespace LedgerClient.ViewModels
             }
             catch (Exception ex)
             {
-                string op = reload ? "reload" : "load";
+                var op = reload ? "reload" : "load";
                 PopupManager.Popup($"Failed to {op} Account Types", Constants.DBE, ex.Innermost(), PopupButtons.Ok, PopupImage.Error);
                 Cancel();
                 return;

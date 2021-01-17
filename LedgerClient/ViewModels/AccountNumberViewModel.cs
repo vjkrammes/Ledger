@@ -1,10 +1,11 @@
-﻿using System.Windows;
-using System.Windows.Input;
-
-using LedgerClient.ECL.DTO;
+﻿using LedgerClient.ECL.DTO;
 using LedgerClient.Infrastructure;
 using LedgerClient.Interfaces;
+
 using LedgerLib.Infrastructure;
+
+using System.Windows;
+using System.Windows.Input;
 
 namespace LedgerClient.ViewModels
 {
@@ -88,9 +89,6 @@ namespace LedgerClient.ViewModels
 
         #endregion
 
-        public AccountNumberViewModel(IStringCypherService crypto)
-        {
-            _crypto = crypto;
-        }
+        public AccountNumberViewModel(IStringCypherService crypto) => _crypto = crypto;
     }
 }

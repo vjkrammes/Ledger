@@ -10,31 +10,24 @@ namespace LedgerClient.Infrastructure
     {
         private static readonly Capitalizer _capitalizer;
 
-        static ExtensionMethods()
-        {
-            _capitalizer = new Capitalizer();
-        }
+        static ExtensionMethods() => _capitalizer = new Capitalizer();
 
         public static string Capitalize(this string value) =>
             value.First().ToString().ToUpper() + string.Join(string.Empty, value.Skip(1));
 
         public static string Caseify(this string value) => _capitalizer.Transform(value);
 
-        public static string GetDescriptionFromEnumValue<T>(this T value) where T : Enum
-        {
-            return !(typeof(T)
+        public static string GetDescriptionFromEnumValue<T>(this T value) where T : Enum => 
+            typeof(T)
                 .GetField(value.ToString())
                 .GetCustomAttributes(typeof(DescriptionAttribute), false)
-                .SingleOrDefault() is DescriptionAttribute attr) ? value.ToString() : attr.Description;
-        }
+                .SingleOrDefault() is not DescriptionAttribute attr ? value.ToString() : attr.Description;
 
-        public static Uri GetIconFromEnumValue<T>(this T value) where T : Enum
-        {
-            return !(typeof(T)
+        public static Uri GetIconFromEnumValue<T>(this T value) where T : Enum => 
+            typeof(T)
                 .GetField(value.ToString())
                 .GetCustomAttributes(typeof(ExplorerIconAttribute), false)
-                .SingleOrDefault() is ExplorerIconAttribute attr) ? null : new Uri(attr.ExplorerIcon, UriKind.Relative);
-        }
+                .SingleOrDefault() is not ExplorerIconAttribute attr ? null : new Uri(attr.ExplorerIcon, UriKind.Relative);
 
         public static bool ArrayEquals<T>(this T[] array1, T[] array2)
         {
@@ -59,7 +52,7 @@ namespace LedgerClient.Infrastructure
                 return false;
             }
             IEqualityComparer<T> comp = EqualityComparer<T>.Default;
-            for (int i = 0; i < array1.Length; i++)
+            for (var i = 0; i < array1.Length; i++)
             {
                 if (!comp.Equals(array1[i], array2[i]))
                 {
@@ -71,8 +64,8 @@ namespace LedgerClient.Infrastructure
 
         public static T[] ArrayCopy<T>(this T[] source)
         {
-            T[] ret = new T[source.Length];
-            for (int i = 0; i < source.Length; i++)
+            var ret = new T[source.Length];
+            for (var i = 0; i < source.Length; i++)
             {
                 ret[i] = source[i];
             }
@@ -101,14 +94,14 @@ namespace LedgerClient.Infrastructure
         }
 
         public static bool Contains(this string source, string pattern, StringComparison comp) =>
-            source.IndexOf(pattern, comp) >= 0;
+            source.Contains(pattern, comp);
 
         public static bool Matches(this string s1, string s2, StringComparison comp = StringComparison.OrdinalIgnoreCase) =>
             s1.Equals(s2, comp);
 
         public static List<string> ToList(this StringCollection coll)
         {
-            List<string> ret = new List<string>();
+            var ret = new List<string>();
             foreach (var c in coll)
             {
                 ret.Add(c);
@@ -116,9 +109,6 @@ namespace LedgerClient.Infrastructure
             return ret;
         }
 
-        public static void Resort<T, U>(this List<T> coll, Func<T, U> pred) where U : IComparable<U>
-        {
-            coll.Sort((x, y) => pred.Invoke(x).CompareTo(pred.Invoke(y)));
-        }
+        public static void Resort<T, U>(this List<T> coll, Func<T, U> pred) where U : IComparable<U> => coll.Sort((x, y) => pred.Invoke(x).CompareTo(pred.Invoke(y)));
     }
 }

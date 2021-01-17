@@ -26,7 +26,7 @@ namespace LedgerClient.Infrastructure
         {
             if (array is null)
             {
-                throw new ArgumentNullException("array");
+                throw new ArgumentNullException(nameof(array));
             }
             var sb = new StringBuilder();
             sb.Append($"[length={array.Length}]: 0x");
@@ -51,7 +51,7 @@ namespace LedgerClient.Infrastructure
             }
             var sb = new StringBuilder();
             sb.Append(acct.AccountType?.Description ?? "Unknown");
-            sb.Append(" ");
+            sb.Append(' ');
             var accountnumber = Locator.StringCypher.Decrypt(acctnum.Number, Locator.PasswordManager.Get(Constants.LedgerPassword),
                 acctnum.Salt);
             var numpart = accountnumber.Length < 4 ? accountnumber : accountnumber[^4..];
@@ -67,7 +67,7 @@ namespace LedgerClient.Infrastructure
             }
             var sb = new StringBuilder();
             sb.Append(acct.AccountType?.Description ?? "Unknown");
-            sb.Append(" ");
+            sb.Append(' ');
             var accountnumber = Locator.StringCypher.Decrypt(acctnum.Number, Locator.PasswordManager.Get(Constants.Ledger5Password));
             var numpart = accountnumber.Length < 4 ? accountnumber : accountnumber[^4..];
             sb.Append(numpart);

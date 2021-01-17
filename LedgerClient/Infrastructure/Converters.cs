@@ -1,4 +1,9 @@
-﻿using System;
+﻿using LedgerClient.ECL.DTO;
+
+using LedgerLib.HistoryEntities;
+using LedgerLib.Infrastructure;
+
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -6,10 +11,6 @@ using System.Security.Cryptography;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Media;
-
-using LedgerClient.ECL.DTO;
-using LedgerLib.HistoryEntities;
-using LedgerLib.Infrastructure;
 
 namespace LedgerClient.Infrastructure
 {
@@ -22,17 +23,14 @@ namespace LedgerClient.Infrastructure
 
         public object Convert(object value, Type t, object parm, CultureInfo lang)
         {
-            if (!(value is ExplorerItemType v))
+            if (value is not ExplorerItemType v)
             {
                 return null;
             }
             return v.GetIconFromEnumValue();
         }
 
-        public object ConvertBack(object value, Type t, object parm, CultureInfo lang)
-        {
-            return DependencyProperty.UnsetValue;
-        }
+        public object ConvertBack(object value, Type t, object parm, CultureInfo lang) => DependencyProperty.UnsetValue;
     }
 
     // convert from bool to its inverse
@@ -41,15 +39,9 @@ namespace LedgerClient.Infrastructure
     public sealed class BoolToInverseConverter : IValueConverter
     {
 
-        public object Convert(object value, Type t, object parm, CultureInfo lang)
-        {
-            return !(bool)value;
-        }
+        public object Convert(object value, Type t, object parm, CultureInfo lang) => !(bool)value;
 
-        public object ConvertBack(object value, Type t, object parm, CultureInfo lang)
-        {
-            return DependencyProperty.UnsetValue;
-        }
+        public object ConvertBack(object value, Type t, object parm, CultureInfo lang) => DependencyProperty.UnsetValue;
     }
 
     // convert from DueDateType to display
@@ -60,17 +52,14 @@ namespace LedgerClient.Infrastructure
 
         public object Convert(object value, Type t, object parm, CultureInfo lang)
         {
-            if (!(value is DueDateType ddt))
+            if (value is not DueDateType ddt)
             {
                 return string.Empty;
             }
             return ddt.GetDescriptionFromEnumValue();
         }
 
-        public object ConvertBack(object value, Type t, object parm, CultureInfo lang)
-        {
-            return DependencyProperty.UnsetValue;
-        }
+        public object ConvertBack(object value, Type t, object parm, CultureInfo lang) => DependencyProperty.UnsetValue;
     }
 
     // convert from object to URI where if null, return null else return checkmark
@@ -79,15 +68,9 @@ namespace LedgerClient.Infrastructure
     public sealed class ObjectToCheckmarkConverter : IValueConverter
     {
 
-        public object Convert(object value, Type t, object parm, CultureInfo lang)
-        {
-            return value == null ? null : new Uri(Constants.Checkmark, UriKind.Relative);
-        }
+        public object Convert(object value, Type t, object parm, CultureInfo lang) => value == null ? null : new Uri(Constants.Checkmark, UriKind.Relative);
 
-        public object ConvertBack(object value, Type t, object parm, CultureInfo lang)
-        {
-            return DependencyProperty.UnsetValue;
-        }
+        public object ConvertBack(object value, Type t, object parm, CultureInfo lang) => DependencyProperty.UnsetValue;
     }
 
     // convert from DateTime to either "Never" if default, or a compressed date/time string
@@ -98,7 +81,7 @@ namespace LedgerClient.Infrastructure
 
         public object Convert(object value, Type t, object parm, CultureInfo lang)
         {
-            if (!(value is DateTime dt))
+            if (value is not DateTime dt)
             {
                 return string.Empty;
             }
@@ -109,10 +92,7 @@ namespace LedgerClient.Infrastructure
             return dt.ToShortDateString() + $" {dt.Hour:00}:{dt.Minute:00}:{dt.Second:00}";
         }
 
-        public object ConvertBack(object value, Type t, object parm, CultureInfo lang)
-        {
-            return DependencyProperty.UnsetValue;
-        }
+        public object ConvertBack(object value, Type t, object parm, CultureInfo lang) => DependencyProperty.UnsetValue;
     }
 
     // convert from encrypted string + salt to plaintext string, parm is true to obscure all but the first 3 letters
@@ -126,12 +106,12 @@ namespace LedgerClient.Infrastructure
             {
                 return string.Empty;
             }
-            bool obscure = false;
-            if (parm is bool)
+            var obscure = false;
+            if (parm is bool obs)
             {
-                obscure = (bool)parm;
+                obscure = obs;
             }
-            if (!(values[0] is string cypher) || !(values[1] is byte[] salt))
+            if (values[0] is not string cypher || values[1] is not byte[] salt)
             {
                 return string.Empty;
             }
@@ -143,10 +123,7 @@ namespace LedgerClient.Infrastructure
             return plain[..3] + new string('*', plain.Length - 3);
         }
 
-        public object[] ConvertBack(object value, Type[] t, object parm, CultureInfo lang)
-        {
-            throw new NotImplementedException();
-        }
+        public object[] ConvertBack(object value, Type[] t, object parm, CultureInfo lang) => throw new NotImplementedException();
     }
 
     // convert from encrypted string to plaintext string, parm is true to obscure all but the first 3 letters
@@ -158,12 +135,12 @@ namespace LedgerClient.Infrastructure
 
         public object Convert(object value, Type t, object parm, CultureInfo lang)
         {
-            bool obscure = false;
+            var obscure = false;
             if (parm is string)
             {
                 obscure = (bool)parm;
             }
-            if (!(value is string v))
+            if (value is not string v)
             {
                 return value;
             }
@@ -175,10 +152,7 @@ namespace LedgerClient.Infrastructure
             return plain[..3] + new string('*', plain.Length - 3);
         }
 
-        public object ConvertBack(object value, Type t, object parm, CultureInfo lang)
-        {
-            return DependencyProperty.UnsetValue;
-        }
+        public object ConvertBack(object value, Type t, object parm, CultureInfo lang) => DependencyProperty.UnsetValue;
     }
 
     // convert from Visibility to its inverse (hidden => vis, vis => hidden)
@@ -189,17 +163,14 @@ namespace LedgerClient.Infrastructure
 
         public object Convert(object value, Type t, object parm, CultureInfo lang)
         {
-            if (!(value is Visibility v))
+            if (value is not Visibility v)
             {
                 return Visibility.Visible;
             }
             return v == Visibility.Visible ? Visibility.Hidden : Visibility.Visible;
         }
 
-        public object ConvertBack(object value, Type t, object parm, CultureInfo lang)
-        {
-            return DependencyProperty.UnsetValue;
-        }
+        public object ConvertBack(object value, Type t, object parm, CultureInfo lang) => DependencyProperty.UnsetValue;
     }
 
     // convert from bool (ShowPassword) to string for button text
@@ -215,17 +186,14 @@ namespace LedgerClient.Infrastructure
 
         public object Convert(object value, Type t, object parm, CultureInfo lang)
         {
-            if (!(value is bool v))
+            if (value is not bool v)
             {
                 return string.Empty;
             }
             return _texts[v];
         }
 
-        public object ConvertBack(object value, Type t, object parm, CultureInfo lang)
-        {
-            return DependencyProperty.UnsetValue;
-        }
+        public object ConvertBack(object value, Type t, object parm, CultureInfo lang) => DependencyProperty.UnsetValue;
     }
     
     // convert from Statusbar visibility to text for context menu
@@ -236,8 +204,11 @@ namespace LedgerClient.Infrastructure
 
         public object Convert(object value, Type t, object parm, CultureInfo lang)
         {
-            if (!(value is Visibility v))
+            if (value is not Visibility v)
+            {
                 return "??";
+            }
+
             return v switch
             {
                 Visibility.Visible => "Hide Status Bar",
@@ -246,10 +217,7 @@ namespace LedgerClient.Infrastructure
             };
         }
 
-        public object ConvertBack(object value, Type t, object parm, CultureInfo lang)
-        {
-            return DependencyProperty.UnsetValue;
-        }
+        public object ConvertBack(object value, Type t, object parm, CultureInfo lang) => DependencyProperty.UnsetValue;
     }
 
     // convert from visibility to icon for context menu
@@ -260,7 +228,7 @@ namespace LedgerClient.Infrastructure
 
         public object Convert(object value, Type t, object parm, CultureInfo lang)
         {
-            if (!(value is Visibility v))
+            if (value is not Visibility v)
             {
                 return null;
             }
@@ -271,10 +239,7 @@ namespace LedgerClient.Infrastructure
             };
         }
 
-        public object ConvertBack(object value, Type t, object parm, CultureInfo lang)
-        {
-            return DependencyProperty.UnsetValue;
-        }
+        public object ConvertBack(object value, Type t, object parm, CultureInfo lang) => DependencyProperty.UnsetValue;
     }
 
     // convert from bool to checkmark uri
@@ -285,15 +250,15 @@ namespace LedgerClient.Infrastructure
 
         public object Convert(object value, Type t, object parm, CultureInfo lang)
         {
-            if (!(value is bool v) || !v)
+            if (value is not bool v || !v)
+            {
                 return null;
+            }
+
             return new Uri(Constants.Checkmark, UriKind.Relative);
         }
 
-        public object ConvertBack(object value, Type t, object parm, CultureInfo lang)
-        {
-            return DependencyProperty.UnsetValue;
-        }
+        public object ConvertBack(object value, Type t, object parm, CultureInfo lang) => DependencyProperty.UnsetValue;
     }
 
     // convert to/from string and decimal
@@ -304,20 +269,32 @@ namespace LedgerClient.Infrastructure
 
         public object Convert(object value, Type t, object parm, CultureInfo lang)
         {
-            if (!(value is decimal d) || d == 0)
+            if (value is not decimal d || d == 0)
+            {
                 return string.Empty;
+            }
+
             return d.ToString("c2");
         }
 
         public object ConvertBack(object value, Type t, object parm, CultureInfo lang)
         {
-            if (!(value is string v) || string.IsNullOrEmpty(v))
+            if (value is not string v || string.IsNullOrEmpty(v))
+            {
                 return 0M;
-            string val = v;
+            }
+
+            var val = v;
             if (v.EndsWith("."))
+            {
                 val = v.TrimEnd('.');
-            if (!decimal.TryParse(val, out decimal d))
+            }
+
+            if (!decimal.TryParse(val, out var d))
+            {
                 return 0M;
+            }
+
             return d;
         }
     }
@@ -330,19 +307,25 @@ namespace LedgerClient.Infrastructure
 
         public object Convert(object value, Type t, object parm, CultureInfo lang)
         {
-            if (!(value is DateTime d))
+            if (value is not DateTime d)
+            {
                 return string.Empty;
+            }
+
             if (d == default)
+            {
                 return "Initial";
+            }
+
             if (d == DateTime.MaxValue)
+            {
                 return "Current";
+            }
+
             return d.ToShortDateString();
         }
 
-        public object ConvertBack(object value, Type t, object parm, CultureInfo lang)
-        {
-            return DependencyProperty.UnsetValue;
-        }
+        public object ConvertBack(object value, Type t, object parm, CultureInfo lang) => DependencyProperty.UnsetValue;
     }
 
     // convert from account and accountnumber to display format which is <account-type-description> + last 4 digits of account number
@@ -354,18 +337,24 @@ namespace LedgerClient.Infrastructure
         public object Convert(object[] values, Type t, object parm, CultureInfo lang)
         {
             if (values.Length != 2 || values.Any(x => x == DependencyProperty.UnsetValue))
+            {
                 return string.Empty;
-            if (!(values[0] is Account a))
+            }
+
+            if (values[0] is not Account a)
+            {
                 return string.Empty;
-            if (!(values[1] is AccountNumber an))
+            }
+
+            if (values[1] is not AccountNumber an)
+            {
                 return string.Empty;
+            }
+
             return Tools.FormatAccountNumber(a, an);
         }
 
-        public object[] ConvertBack(object value, Type[] t, object parm, CultureInfo lang)
-        {
-            throw new NotImplementedException();
-        }
+        public object[] ConvertBack(object value, Type[] t, object parm, CultureInfo lang) => throw new NotImplementedException();
     }
 
     // convert from AccountHistory and accountnumberhistory to display format as above
@@ -378,7 +367,7 @@ namespace LedgerClient.Infrastructure
             {
                 return string.Empty;
             }
-            if (!(values[0] is AccountHistoryEntity a) || !(values[1] is AccountNumberHistoryEntity an))
+            if (values[0] is not AccountHistoryEntity a || values[1] is not AccountNumberHistoryEntity an)
             {
                 return string.Empty;
             }
@@ -390,16 +379,13 @@ namespace LedgerClient.Infrastructure
             {
                 return "Decode failed (bad password)";
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return "Decode failed (other)";
             }            
         }
 
-        public object[] ConvertBack(object value, Type[] t, object parm, CultureInfo lang)
-        {
-            throw new NotImplementedException();
-        }
+        public object[] ConvertBack(object value, Type[] t, object parm, CultureInfo lang) => throw new NotImplementedException();
     }
 
     // convert from int to display where <= 0 == string.empty
@@ -410,7 +396,7 @@ namespace LedgerClient.Infrastructure
 
         public object Convert(object value, Type t, object parm, CultureInfo lang)
         {
-            if (!(value is int v) || v <= 0)
+            if (value is not int v || v <= 0)
             {
                 return string.Empty;
             }
@@ -419,7 +405,7 @@ namespace LedgerClient.Infrastructure
 
         public object ConvertBack(object value, Type t, object parm, CultureInfo lang)
         {
-            if (!(value is string v) || !int.TryParse(v, out int val))
+            if (value is not string v || !int.TryParse(v, out var val))
             {
                 return 0;
             }
@@ -439,12 +425,12 @@ namespace LedgerClient.Infrastructure
 
         public object Convert(object value, Type t, object parm, CultureInfo lang)
         {
-            int which = 0;
-            if (parm is int)
+            var which = 0;
+            if (parm is int w)
             {
-                which = (int)parm;
+                which = w;
             }
-            if (!(value is string phone) || phone.Length != 10)
+            if (value is not string phone || phone.Length != 10)
             {
                 return value;
             }
@@ -461,11 +447,11 @@ namespace LedgerClient.Infrastructure
 
         public object ConvertBack(object value, Type t, object parm, CultureInfo lang)
         {
-            if (!(value is string phone))
+            if (value is not string phone)
             {
                 return value;
             }
-            string ret = phone.Replace("-", "").Replace("(", "").Replace(")", "").TrimStart('1');
+            var ret = phone.Replace("-", "").Replace("(", "").Replace(")", "").TrimStart('1');
             return ret.Length == 10 ? ret : phone;
         }
     }
@@ -478,17 +464,14 @@ namespace LedgerClient.Infrastructure
 
         public object Convert(object value, Type t, object parm, CultureInfo lang)
         {
-            if (!(value is string v) || string.IsNullOrEmpty(v))
+            if (value is not string v || string.IsNullOrEmpty(v))
             {
                 return null;
             }
             return v;
         }
 
-        public object ConvertBack(object value, Type t, object parm, CultureInfo lang)
-        {
-            return DependencyProperty.UnsetValue;
-        }
+        public object ConvertBack(object value, Type t, object parm, CultureInfo lang) => DependencyProperty.UnsetValue;
     }
 
     // convert from string with CR/LF to string without CR/LF
@@ -499,17 +482,14 @@ namespace LedgerClient.Infrastructure
 
         public object Convert(object value, Type t, object parm, CultureInfo lang)
         {
-            if (!(value is string v))
+            if (value is not string v)
             {
                 return value;
             }
             return v.Replace("\r\n", " ");
         }
 
-        public object ConvertBack(object value, Type t, object parm, CultureInfo lang)
-        {
-            return DependencyProperty.UnsetValue;
-        }
+        public object ConvertBack(object value, Type t, object parm, CultureInfo lang) => DependencyProperty.UnsetValue;
     }
 
     // convert from decimal to foreground color wher < 0 == red, 0 == black, > 0 == green
@@ -520,17 +500,14 @@ namespace LedgerClient.Infrastructure
 
         public object Convert(object value, Type t, object parm, CultureInfo lang)
         {
-            if (!(value is decimal d) || d == 0M)
+            if (value is not decimal d || d == 0M)
             {
                 return Brushes.Black;
             }
             return d < 0M ? Brushes.Red : Brushes.Green;
         }
 
-        public object ConvertBack(object value, Type t, object parm, CultureInfo lang)
-        {
-            return DependencyProperty.UnsetValue;
-        }
+        public object ConvertBack(object value, Type t, object parm, CultureInfo lang) => DependencyProperty.UnsetValue;
     }
 
     // convert from string to Uri where Urikind is in parm: 'r', 'a', or 'ra'
@@ -541,7 +518,7 @@ namespace LedgerClient.Infrastructure
 
         public object Convert(object value, Type t, object parm, CultureInfo lang)
         {
-            UriKind kind = UriKind.Relative;
+            var kind = UriKind.Relative;
             if (parm is string k)
             {
                 switch (k.ToLower())
@@ -554,17 +531,14 @@ namespace LedgerClient.Infrastructure
                         break;
                 }
             }
-            if (!(value is string uri) || string.IsNullOrEmpty(uri))
+            if (value is not string uri || string.IsNullOrEmpty(uri))
             {
                 return null;
             }
             return new Uri(uri, kind);
         }
 
-        public object ConvertBack(object value, Type t, object parm, CultureInfo lang)
-        {
-            return DependencyProperty.UnsetValue;
-        }
+        public object ConvertBack(object value, Type t, object parm, CultureInfo lang) => DependencyProperty.UnsetValue;
     }
 
     // convert from full path to header and back
@@ -575,7 +549,7 @@ namespace LedgerClient.Infrastructure
 
         public object Convert(object value, Type t, object parm, CultureInfo lang)
         {
-            if (!(value is string uri))
+            if (value is not string uri)
             {
                 return value;
             }
@@ -584,7 +558,7 @@ namespace LedgerClient.Infrastructure
 
         public object ConvertBack(object value, Type t, object parm, CultureInfo lang)
         {
-            if (!(value is string header))
+            if (value is not string header)
             {
                 return value;
             }
@@ -602,12 +576,12 @@ namespace LedgerClient.Infrastructure
             {
                 return null;
             }
-            if (!(values[0] is double v1) || !(values[1] is double v2))
+            if (values[0] is not double v1 || values[1] is not double v2)
             {
                 return null;
             }
-            string p1 = Tools.Normalize(v1);
-            string p2 = Tools.Normalize(v2);
+            var p1 = Tools.Normalize(v1);
+            var p2 = Tools.Normalize(v2);
             if (v2 == double.MaxValue)
             {
                 return $"{p1} used";
@@ -615,10 +589,7 @@ namespace LedgerClient.Infrastructure
             return $"{p1} used out of {p2}";
         }
 
-        public object[] ConvertBack(object value, Type[] t, object parm, CultureInfo lang)
-        {
-            throw new NotImplementedException();
-        }
+        public object[] ConvertBack(object value, Type[] t, object parm, CultureInfo lang) => throw new NotImplementedException();
     }
 
     // convert from double to solidcolorbrush where <= 0.75 == green, <= 0.9 == yellow, else red
@@ -629,17 +600,14 @@ namespace LedgerClient.Infrastructure
 
         public object Convert(object value, Type t, object parm, CultureInfo lang)
         {
-            if (!(value is double v))
+            if (value is not double v)
             {
                 return Brushes.Black;
             }
             return v <= 0.75 ? Brushes.Green : v <= 0.9 ? Brushes.Yellow : Brushes.Red;
         }
 
-        public object ConvertBack(object value, Type t, object parm, CultureInfo lang)
-        {
-            return DependencyProperty.UnsetValue;
-        }
+        public object ConvertBack(object value, Type t, object parm, CultureInfo lang) => DependencyProperty.UnsetValue;
     }
 
     // convert from PasswordStrength to description
@@ -650,17 +618,14 @@ namespace LedgerClient.Infrastructure
 
         public object Convert(object value, Type t, object parm, CultureInfo lang)
         {
-            if (!(value is PasswordStrength ps))
+            if (value is not PasswordStrength ps)
             {
                 return null;
             }
             return ps.GetDescriptionFromEnumValue();
         }
 
-        public object ConvertBack(object value, Type t, object parm, CultureInfo lang)
-        {
-            return DependencyProperty.UnsetValue;
-        }
+        public object ConvertBack(object value, Type t, object parm, CultureInfo lang) => DependencyProperty.UnsetValue;
     }
 
     // convert from PasswordStrength to foreground color
@@ -671,7 +636,7 @@ namespace LedgerClient.Infrastructure
 
         public object Convert(object value, Type t, object parm, CultureInfo lang)
         {
-            if (!(value is PasswordStrength ps))
+            if (value is not PasswordStrength ps)
             {
                 return Brushes.Black;
             }
@@ -686,10 +651,7 @@ namespace LedgerClient.Infrastructure
             };
         }
 
-        public object ConvertBack(object value, Type t, object parm, CultureInfo lang)
-        {
-            return DependencyProperty.UnsetValue;
-        }
+        public object ConvertBack(object value, Type t, object parm, CultureInfo lang) => DependencyProperty.UnsetValue;
     }
 
     // convert from bool to visibility where true == visible else collapsed, inverted with parm
@@ -700,12 +662,12 @@ namespace LedgerClient.Infrastructure
 
         public object Convert(object value, Type t, object parm, CultureInfo lang)
         {
-            bool invert = false;
-            if (parm is bool)
+            var invert = false;
+            if (parm is bool i)
             {
-                invert = (bool)parm;
+                invert = i;
             }
-            if (!(value is bool v))
+            if (value is not bool v)
             {
                 return Visibility.Visible;
             }
@@ -716,10 +678,7 @@ namespace LedgerClient.Infrastructure
             return v ? Visibility.Visible : Visibility.Collapsed;
         }
 
-        public object ConvertBack(object value, Type t, object parm, CultureInfo lang)
-        {
-            return DependencyProperty.UnsetValue;
-        }
+        public object ConvertBack(object value, Type t, object parm, CultureInfo lang) => DependencyProperty.UnsetValue;
     }
 
     // convert from int (count) to visibility where 0 == visible else collapsed, inverted with parm
@@ -730,12 +689,12 @@ namespace LedgerClient.Infrastructure
 
         public object Convert(object value, Type t, object parm, CultureInfo lang)
         {
-            bool invert = false;
-            if (parm is bool)
+            var invert = false;
+            if (parm is bool i)
             {
-                invert = (bool)parm;
+                invert = i;
             }
-            if (!(value is int v))
+            if (value is not int v)
             {
                 return Visibility.Visible;
             }
@@ -746,10 +705,7 @@ namespace LedgerClient.Infrastructure
             return v == 0 ? Visibility.Visible : Visibility.Collapsed;
         }
 
-        public object ConvertBack(object value, Type t, object parm, CultureInfo lang)
-        {
-            return DependencyProperty.UnsetValue;
-        }
+        public object ConvertBack(object value, Type t, object parm, CultureInfo lang) => DependencyProperty.UnsetValue;
     }
 
     // convert from int (count) to enabled, where 0 = false else true, inverted with parm
@@ -760,12 +716,12 @@ namespace LedgerClient.Infrastructure
 
         public object Convert(object value, Type t, object parm, CultureInfo lang)
         {
-            bool invert = false;
-            if (parm is bool)
+            var invert = false;
+            if (parm is bool i)
             {
-                invert = (bool)parm;
+                invert = i;
             }
-            if (!(value is int v))
+            if (value is not int v)
             {
                 return false;
             }
@@ -776,9 +732,6 @@ namespace LedgerClient.Infrastructure
             return v != 0;
         }
 
-        public object ConvertBack(object value, Type t, object parm, CultureInfo lang)
-        {
-            return DependencyProperty.UnsetValue;
-        }
+        public object ConvertBack(object value, Type t, object parm, CultureInfo lang) => DependencyProperty.UnsetValue;
     }
 }

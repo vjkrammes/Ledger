@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-
-using LedgerLib.Entities;
+﻿using LedgerLib.Entities;
 using LedgerLib.Interfaces;
 
 using Microsoft.EntityFrameworkCore;
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
 
 namespace LedgerLib
 {
@@ -22,29 +22,27 @@ namespace LedgerLib
 
         public void DeleteAll(int pid)
         {
-            var allotments = _dbset.Where(x => x.PoolId == pid);
+            var allotments = DbSet.Where(x => x.PoolId == pid);
             if (allotments.Any())
             {
-                _dbset.RemoveRange(allotments);
-                _context.SaveChanges();
+                DbSet.RemoveRange(allotments);
+                Context.SaveChanges();
             }
         }
 
-        public override IEnumerable<AllotmentEntity> Get(Expression<Func<AllotmentEntity, bool>> pred = null)
-        {
-            return pred switch
+        public override IEnumerable<AllotmentEntity> Get(Expression<Func<AllotmentEntity, bool>> pred = null) => 
+            pred switch
             {
-                null => _dbset
+                null => DbSet
                         .Include(x => x.Company)
                         .OrderByDescending(x => x.Date)
                         .AsNoTracking().ToList(),
-                _ => _dbset
+                _ => DbSet
                         .Include(x => x.Company)
                         .Where(pred)
                         .OrderByDescending(x => x.Date)
                         .AsNoTracking().ToList()
             };
-        }
 
         public IEnumerable<AllotmentEntity> GetForPool(int pid) => Get(x => x.PoolId == pid);
 

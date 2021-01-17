@@ -1,7 +1,8 @@
-﻿using System;
+﻿using LedgerClient.Infrastructure;
 
-using LedgerClient.Infrastructure;
 using LedgerLib.Infrastructure;
+
+using System;
 
 namespace LedgerClient.ECL.DTO
 {
@@ -63,7 +64,7 @@ namespace LedgerClient.ECL.DTO
             set => SetProperty(ref _rowVersion, value);
         }
 
-        public Company _company;
+        private Company _company;
         public Company Company
         {
             get => _company;
@@ -98,14 +99,14 @@ namespace LedgerClient.ECL.DTO
 
         public override bool Equals(object obj)
         {
-            if (!(obj is Identity i))
+            if (obj is not Identity i)
             {
                 return false;
             }
             return i.Id == Id;
         }
 
-        public bool Equals(Identity i) => i is null ? false : i.Id == Id;
+        public bool Equals(Identity i) => i is not null && i.Id == Id;
 
         public override int GetHashCode() => Id;
 

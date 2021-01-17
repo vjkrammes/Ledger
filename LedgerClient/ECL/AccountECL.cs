@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-
-using AutoMapper;
+﻿using AutoMapper;
 
 using LedgerClient.ECL.DTO;
 using LedgerClient.ECL.Interfaces;
@@ -11,6 +6,11 @@ using LedgerClient.Infrastructure;
 
 using LedgerLib.Entities;
 using LedgerLib.Infrastructure;
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
 
 namespace LedgerClient.ECL
 {
@@ -20,11 +20,11 @@ namespace LedgerClient.ECL
 
         public AccountECL(IMapper mapper) => _mapper = mapper;
 
-        public int Count { get => Tools.Locator.AccountDAL.Count; }
+        public int Count => Tools.Locator.AccountDAL.Count;
 
         public void Insert(Account dto)
         {
-            AccountEntity entity = _mapper.Map<AccountEntity>(dto);
+            var entity = _mapper.Map<AccountEntity>(dto);
             Tools.Locator.AccountDAL.Insert(entity);
             dto.Id = entity.Id;
             dto.RowVersion = entity.RowVersion.ArrayCopy();
@@ -32,14 +32,14 @@ namespace LedgerClient.ECL
 
         public void Update(Account dto)
         {
-            AccountEntity entity = _mapper.Map<AccountEntity>(dto);
+            var entity = _mapper.Map<AccountEntity>(dto);
             Tools.Locator.AccountDAL.Update(entity);
             dto.RowVersion = entity.RowVersion.ArrayCopy();
         }
 
         public void Delete(Account dto)
         {
-            AccountEntity entity = _mapper.Map<AccountEntity>(dto);
+            var entity = _mapper.Map<AccountEntity>(dto);
             Tools.Locator.AccountDAL.Delete(entity);
         }
 

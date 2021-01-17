@@ -1,8 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using LedgerClient.Infrastructure;
+
+using System.Collections.Generic;
 using System.IO;
-using System.Text;
-using LedgerClient.Infrastructure;
 
 namespace LedgerClient.Models
 {
@@ -224,11 +223,11 @@ namespace LedgerClient.Models
 
         #region Factory Methods
 
-        public static ExplorerItem Placeholder { get => new ExplorerItem { Type = ExplorerItemType.Placeholder }; }
+        public static ExplorerItem Placeholder => new ExplorerItem { Type = ExplorerItemType.Placeholder };
 
         public static IEnumerable<ExplorerItem> Directories(IEnumerable<DirectoryInfo> directories, bool includefiles = true)
         {
-            List<ExplorerItem> ret = new List<ExplorerItem>();
+            var ret = new List<ExplorerItem>();
             foreach (var directory in directories)
             {
                 ret.Add(new ExplorerItem(directory, includefiles));
@@ -238,7 +237,7 @@ namespace LedgerClient.Models
 
         public static IEnumerable<ExplorerItem> Files(IEnumerable<FileInfo> files, bool includefiles = true)
         {
-            List<ExplorerItem> ret = new List<ExplorerItem>();
+            var ret = new List<ExplorerItem>();
             foreach (var file in files)
             {
                 ret.Add(new ExplorerItem(file, includefiles));
@@ -248,7 +247,7 @@ namespace LedgerClient.Models
 
         public static IEnumerable<ExplorerItem> Drives(IEnumerable<DriveInfo> drives, bool includefiles = true)
         {
-            List<ExplorerItem> ret = new List<ExplorerItem>();
+            var ret = new List<ExplorerItem>();
             foreach (var drive in drives)
             {
                 ret.Add(new ExplorerItem(drive, includefiles));

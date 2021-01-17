@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-
-using LedgerLib.Entities;
+﻿using LedgerLib.Entities;
 using LedgerLib.Interfaces;
 
 using Microsoft.EntityFrameworkCore;
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
 
 namespace LedgerLib
 {
@@ -14,19 +14,17 @@ namespace LedgerLib
     {
         public CompanyDAL(LedgerContext context) : base(context) { }
 
-        public override IEnumerable<CompanyEntity> Get(Expression<Func<CompanyEntity, bool>> pred = null)
-        {
-            return pred switch
+        public override IEnumerable<CompanyEntity> Get(Expression<Func<CompanyEntity, bool>> pred = null) => 
+            pred switch
             {
-                null => _dbset
+                null => DbSet
                         .OrderBy(x => x.Name)
                         .AsNoTracking().ToList(),
-                _ => _dbset
+                _ => DbSet
                         .Where(pred)
                         .OrderBy(x => x.Name)
                         .AsNoTracking().ToList()
             };
-        }
 
         public IEnumerable<CompanyEntity> GetPayees() => Get(x => x.IsPayee);
 

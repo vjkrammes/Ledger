@@ -1,12 +1,12 @@
-﻿using System.Data;
-using System.Linq;
-
-using LedgerLib.Entities;
+﻿using LedgerLib.Entities;
 using LedgerLib.Infrastructure;
 using LedgerLib.Models;
 
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+
+using System.Data;
+using System.Linq;
 
 namespace LedgerLib
 {
@@ -30,21 +30,15 @@ namespace LedgerLib
 
         #region Constructors
 
-        public LedgerContext(DbContextOptions<LedgerContext> options) : base(options)
-        {
-            _connectionString = CSBuilder.Build();
-        }
+        public LedgerContext(DbContextOptions<LedgerContext> options) : base(options) => _connectionString = CSBuilder.Build();
 
-        public LedgerContext() : base()
-        {
-            _connectionString = CSBuilder.Build();
-        }
+        public LedgerContext() : base() => _connectionString = CSBuilder.Build();
 
         #endregion
 
         #region Public Methods / Properties
 
-        public SettingsEntity GetSettings { get => SystemSettings.FirstOrDefault(); }
+        public SettingsEntity GetSettings => SystemSettings.FirstOrDefault();
 
         public void Seed()
         {
@@ -58,7 +52,7 @@ namespace LedgerLib
         public DatabaseInfo DatabaseInfo()
         {
             var conn = Database.GetDbConnection();
-            if (!(conn is SqlConnection connection))
+            if (conn is not SqlConnection connection)
             {
                 return new DatabaseInfo();
             }
@@ -79,7 +73,7 @@ namespace LedgerLib
         public bool? DatabaseExists(string dbname)
         {
             var conn = Database.GetDbConnection();
-            if (!(conn is SqlConnection connection))
+            if (conn is not SqlConnection connection)
             {
                 return null;
             }
@@ -92,7 +86,7 @@ namespace LedgerLib
             connection.Open();
             var resultobject = command.ExecuteScalar();
             connection.Close();
-            if (!(resultobject is short dbid))
+            if (resultobject is not short dbid)
             {
                 return null;
             }
@@ -103,7 +97,7 @@ namespace LedgerLib
         {
             var config = ConfigurationFactory.Create();
             var conn = Database.GetDbConnection();
-            if (!(conn is SqlConnection connection))
+            if (conn is not SqlConnection connection)
             {
                 return;
             }

@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Data;
-using System.Linq;
-using LedgerLib.HistoryEntities;
+﻿using LedgerLib.HistoryEntities;
 using LedgerLib.Infrastructure;
-using LedgerLib.Models;
-using Microsoft.Data.SqlClient;
+
 using Microsoft.EntityFrameworkCore;
 
 namespace LedgerLib
@@ -29,15 +23,9 @@ namespace LedgerLib
 
         #region Constructors
 
-        public HistoryContext(DbContextOptions<HistoryContext> options) : base(options)
-        {
-            _connectionString = CSBuilder.BuildHistory();
-        }
+        public HistoryContext(DbContextOptions<HistoryContext> options) : base(options) => _connectionString = CSBuilder.BuildHistory();
 
-        public HistoryContext() : base()
-        {
-            _connectionString = CSBuilder.BuildHistory();
-        }
+        public HistoryContext() : base() => _connectionString = CSBuilder.BuildHistory();
 
         #endregion
 

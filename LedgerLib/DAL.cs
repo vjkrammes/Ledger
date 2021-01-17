@@ -1,68 +1,68 @@
-﻿using System;
+﻿using LedgerLib.Interfaces;
+
+using Microsoft.EntityFrameworkCore;
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 
-using LedgerLib.Interfaces;
-
-using Microsoft.EntityFrameworkCore;
-
 namespace LedgerLib
 {
     public class DAL<TEntity, TContext> : IDAL<TEntity> where TEntity : class, new() where TContext : DbContext
     {
-        protected readonly TContext _context;
-        protected readonly DbSet<TEntity> _dbset;
+        private readonly TContext _context;
+        private readonly DbSet<TEntity> _dbSet;
+
+        protected TContext Context => _context;
+        protected DbSet<TEntity> DbSet => _dbSet;
 
         public DAL(TContext context)
         {
             _context = context;
-            _dbset = null;
-            Type dbtype = typeof(DbSet<>).MakeGenericType(typeof(TEntity));
+            _dbSet = null;
+            var dbtype = typeof(DbSet<>).MakeGenericType(typeof(TEntity));
             foreach (var prop in typeof(TContext).GetProperties(BindingFlags.Public | BindingFlags.Instance))
             {
                 if (prop.PropertyType == dbtype)
                 {
-                    _dbset = prop.GetValue(_context) as DbSet<TEntity>;
+                    _dbSet = prop.GetValue(Context) as DbSet<TEntity>;
                     break;
                 }
             }
-            if (_dbset is null)
+            if (DbSet is null)
             {
                 throw new MissingMemberException("DbSet not found");
             }
         }
 
-        public virtual int Count { get => _dbset.Count(); }
+        public virtual int Count => DbSet.Count();
 
         public virtual void Insert(TEntity entity)
         {
-            _dbset.Add(entity);
-            _context.SaveChanges();
+            DbSet.Add(entity);
+            Context.SaveChanges();
         }
 
         public virtual void Update(TEntity entity)
         {
-            _context.Attach(entity);
-            _context.Entry(entity).State = EntityState.Modified;
-            _context.SaveChanges();
+            Context.Attach(entity);
+            Context.Entry(entity).State = EntityState.Modified;
+            Context.SaveChanges();
         }
 
         public virtual void Delete(TEntity entity)
         {
-            _context.Attach(entity);
-            _dbset.Remove(entity);
-            _context.SaveChanges();
+            Context.Attach(entity);
+            DbSet.Remove(entity);
+            Context.SaveChanges();
         }
 
-        public virtual IEnumerable<TEntity> Get(Expression<Func<TEntity, bool>> pred = null)
+        public virtual IEnumerable<TEntity> Get(Expression<Func<TEntity, bool>> pred = null) => pred switch
         {
-            return pred switch
-            {
-                null => _dbset.AsNoTracking().ToList(),
-                _ => _dbset.Where(pred).AsNoTracking().ToList()
-            };
-        }
+            null => DbSet.AsNoTracking().ToList(),
+            _ => DbSet.Where(pred).AsNoTracking().ToList()
+        };
     }
 }

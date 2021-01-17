@@ -1,10 +1,7 @@
-﻿using System;
+﻿using LedgerClient.Views;
+
+using System;
 using System.Windows;
-using System.Collections.Generic;
-using System.Text;
-using LedgerClient.Infrastructure;
-using LedgerClient.ViewModels;
-using LedgerClient.Views;
 
 namespace LedgerClient.Infrastructure
 {

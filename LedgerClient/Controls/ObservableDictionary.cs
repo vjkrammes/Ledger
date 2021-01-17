@@ -1,21 +1,18 @@
-﻿using System;
+﻿using LedgerLib.Infrastructure;
+
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
 
-using LedgerLib.Infrastructure;
-
 namespace LedgerClient.Controls
 {
     public class ObservableDictionary<TKey, TValue> : IDictionary<TKey, TValue>, INotifyCollectionChanged, INotifyPropertyChanged
     {
         private IDictionary<TKey, TValue> _dictionary;
-        protected IDictionary<TKey, TValue> Dictionary
-        {
-            get => _dictionary;
-        }
+        protected IDictionary<TKey, TValue> Dictionary => _dictionary;
 
         #region Constructors
 
@@ -35,13 +32,13 @@ namespace LedgerClient.Controls
 
         public bool ContainsKey(TKey key) => Dictionary.ContainsKey(key);
 
-        public ICollection<TKey> Keys { get => Dictionary.Keys; }
+        public ICollection<TKey> Keys => Dictionary.Keys;
 
         public bool Remove(TKey key)
         {
             if (key is null)
             {
-                throw new ArgumentNullException("key");
+                throw new ArgumentNullException(nameof(key));
             }
             //Dictionary.TryGetValue(key, out TValue value);
             var removed = Dictionary.Remove(key);
@@ -54,7 +51,7 @@ namespace LedgerClient.Controls
 
         public bool TryGetValue(TKey key, out TValue value) => Dictionary.TryGetValue(key, out value);
 
-        public ICollection<TValue> Values { get => Dictionary.Values; }
+        public ICollection<TValue> Values => Dictionary.Values;
 
         public TValue this[TKey key]
         {
@@ -81,9 +78,9 @@ namespace LedgerClient.Controls
 
         public void CopyTo(KeyValuePair<TKey, TValue>[] kvps, int index) => Dictionary.CopyTo(kvps, index);
 
-        public int Count { get => Dictionary.Count; }
+        public int Count => Dictionary.Count;
 
-        public bool IsReadOnly { get => Dictionary.IsReadOnly; }
+        public bool IsReadOnly => Dictionary.IsReadOnly;
 
         public bool Remove(KeyValuePair<TKey, TValue> kvp) => Remove(kvp.Key);
 
@@ -117,7 +114,7 @@ namespace LedgerClient.Controls
         {
             if (items is null)
             {
-                throw new ArgumentNullException("items");
+                throw new ArgumentNullException(nameof(items));
             }
             if (items.Any())
             {
@@ -147,9 +144,9 @@ namespace LedgerClient.Controls
         {
             if (key is null)
             {
-                throw new ArgumentNullException("key");
+                throw new ArgumentNullException(nameof(key));
             }
-            if (Dictionary.TryGetValue(key, out TValue item))
+            if (Dictionary.TryGetValue(key, out var item))
             {
                 if (add)
                 {

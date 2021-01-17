@@ -1,25 +1,28 @@
-﻿using System;
+﻿using LedgerLib.Interfaces;
+
+using Microsoft.EntityFrameworkCore;
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 
-using LedgerLib.Interfaces;
-
-using Microsoft.EntityFrameworkCore;
-
 namespace LedgerLib.HistoryDAL
 {
     public class HistoryDAL<TEntity, TContext> : IHistoryDAL<TEntity> where TEntity : class, new() where TContext : DbContext
     {
-        protected readonly TContext _context;
-        protected readonly DbSet<TEntity> _dbset;
+        private readonly TContext _context;
+        private readonly DbSet<TEntity> _dbset;
+
+        protected TContext Context => _context;
+        protected DbSet<TEntity> DbSet => _dbset;
 
         public HistoryDAL(TContext context)
         {
             _context = context;
             _dbset = null;
-            Type dbtype = typeof(DbSet<>).MakeGenericType(typeof(TEntity));
+            var dbtype = typeof(DbSet<>).MakeGenericType(typeof(TEntity));
             foreach (var prop in typeof(TContext).GetProperties(BindingFlags.Public | BindingFlags.Instance))
             {
                 if (prop.PropertyType == dbtype)
@@ -34,15 +37,12 @@ namespace LedgerLib.HistoryDAL
             }
         }
 
-        public virtual int Count { get => _dbset.Count(); }
+        public virtual int Count => _dbset.Count();
 
-        public virtual IEnumerable<TEntity> Get(Expression<Func<TEntity, bool>> pred = null)
+        public virtual IEnumerable<TEntity> Get(Expression<Func<TEntity, bool>> pred = null) => pred switch
         {
-            return pred switch
-            {
-                null => _dbset.AsNoTracking().ToList(),
-                _ => _dbset.OrderBy(pred).AsNoTracking().ToList()
-            };
-        }
+            null => _dbset.AsNoTracking().ToList(),
+            _ => _dbset.OrderBy(pred).AsNoTracking().ToList()
+        };
     }
 }

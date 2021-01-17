@@ -1,6 +1,6 @@
-﻿using System;
+﻿using LedgerClient.Infrastructure;
 
-using LedgerClient.Infrastructure;
+using System;
 
 namespace LedgerClient.ECL.DTO
 {
@@ -45,14 +45,14 @@ namespace LedgerClient.ECL.DTO
 
         public override bool Equals(object obj)
         {
-            if (!(obj is AccountType a))
+            if (obj is not AccountType a)
             {
                 return false;
             }
             return a.Id == Id;
         }
 
-        public bool Equals(AccountType a) => a is null ? false : a.Id == Id;
+        public bool Equals(AccountType a) => a is not null && a.Id == Id;
 
         public override int GetHashCode() => Id;
 

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Windows;
-
-using AutoMapper;
+﻿using AutoMapper;
 
 using LedgerClient.ECL;
 using LedgerClient.ECL.DTO;
@@ -20,6 +17,9 @@ using LedgerLib.Interfaces;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
+using System;
+using System.Windows;
+
 namespace LedgerClient.Infrastructure
 {
     //
@@ -34,9 +34,9 @@ namespace LedgerClient.Infrastructure
 
         #region Initializers
 
-        private void InitializeMapper(IServiceCollection services)
+        private static void InitializeMapper(IServiceCollection services)
         {
-            MapperConfiguration config = new MapperConfiguration(cfg =>
+            var config = new MapperConfiguration(cfg =>
             {
                 cfg.CreateMap<AccountEntity, Account>().ReverseMap();
                 cfg.CreateMap<AccountNumberEntity, AccountNumber>().ReverseMap();
@@ -47,11 +47,11 @@ namespace LedgerClient.Infrastructure
                 cfg.CreateMap<PoolEntity, Pool>().ReverseMap();
                 cfg.CreateMap<TransactionEntity, Transaction>().ReverseMap();
             });
-            Mapper mapper = new Mapper(config);
+            var mapper = new Mapper(config);
             services.AddSingleton<IMapper>(mapper);
         }
 
-        private void InitializeDAL(IServiceCollection services)
+        private static void InitializeDAL(IServiceCollection services)
         {
             services.AddTransient<IAccountDAL, AccountDAL>();
             services.AddTransient<IAccountNumberDAL, AccountNumberDAL>();
@@ -64,7 +64,7 @@ namespace LedgerClient.Infrastructure
             services.AddTransient<ITransactionDAL, TransactionDAL>();
         }
 
-        private void InitializeHistoryDAL(IServiceCollection services)
+        private static void InitializeHistoryDAL(IServiceCollection services)
         {
             services.AddTransient<IAccountHistoryDAL, AccountHistoryDAL>();
             services.AddTransient<IAccountNumberHistoryDAL, AccountNumberHistoryDAL>();
@@ -75,7 +75,7 @@ namespace LedgerClient.Infrastructure
             services.AddTransient<ITransactionHistoryDAL, TransactionHistoryDAL>();
         }
 
-        private void InitializeECL(IServiceCollection services)
+        private static void InitializeECL(IServiceCollection services)
         {
             services.AddTransient<IAccountECL, AccountECL>();
             services.AddTransient<IAccountNumberECL, AccountNumberECL>();
@@ -87,7 +87,7 @@ namespace LedgerClient.Infrastructure
             services.AddTransient<ITransactionECL, TransactionECL>();
         }
 
-        private void InitializeViewModels(IServiceCollection services)
+        private static void InitializeViewModels(IServiceCollection services)
         {
             services.AddTransient<AboutViewModel>();
             services.AddTransient<AccountNumberViewModel>();
@@ -110,7 +110,7 @@ namespace LedgerClient.Infrastructure
             services.AddTransient<TransactionViewModel>();
         }
 
-        private void InitializeHistoryViewModels(ServiceCollection services)
+        private static void InitializeHistoryViewModels(ServiceCollection services)
         {
             services.AddTransient<HistoryViewModel>();
             services.AddTransient<Ledger5PasswordViewModel>();
@@ -120,82 +120,82 @@ namespace LedgerClient.Infrastructure
 
         #region Properties
 
-        public IConfiguration Configuration { get => _provider.GetRequiredService<IConfiguration>(); }
-        public IExplorerService ExplorerService { get => _provider.GetRequiredService<IExplorerService>(); }
-        public IPasswordManager PasswordManager { get => _provider.GetRequiredService<IPasswordManager>(); }
-        public IPoolRecalculator PoolRecalculator { get => _provider.GetRequiredService<IPoolRecalculator>(); }
-        public IServiceProvider Provider { get => _provider; }
-        public ISettingsService Settings { get => _provider.GetRequiredService<ISettingsService>(); }
-        public IStringCypherService StringCypher { get => _provider.GetRequiredService<IStringCypherService>(); }
-        public LedgerContext LedgerContext { get => _provider.GetRequiredService<LedgerContext>(); }
+        public IConfiguration Configuration => _provider.GetRequiredService<IConfiguration>();
+        public IExplorerService ExplorerService => _provider.GetRequiredService<IExplorerService>();
+        public IPasswordManager PasswordManager => _provider.GetRequiredService<IPasswordManager>();
+        public IPoolRecalculator PoolRecalculator => _provider.GetRequiredService<IPoolRecalculator>();
+        public IServiceProvider Provider => _provider;
+        public ISettingsService Settings => _provider.GetRequiredService<ISettingsService>();
+        public IStringCypherService StringCypher => _provider.GetRequiredService<IStringCypherService>();
+        public LedgerContext LedgerContext => _provider.GetRequiredService<LedgerContext>();
 
         #region ViewModels
 
-        public AboutViewModel AboutViewModel { get => _provider.GetRequiredService<AboutViewModel>(); }
-        public AccountNumberViewModel AccountNumberViewModel { get => _provider.GetRequiredService<AccountNumberViewModel>(); }
-        public AccountTypeViewModel AccountTypeViewModel { get => _provider.GetRequiredService<AccountTypeViewModel>(); }
-        public AccountViewModel AccountViewModel { get => _provider.GetRequiredService<AccountViewModel>(); }
-        public AllotmentViewModel AllotmentViewModel { get => _provider.GetRequiredService<AllotmentViewModel>(); }
-        public BackupViewModel BackupViewModel { get => _provider.GetRequiredService<BackupViewModel>(); }
-        public CompanyViewModel CompanyViewModel { get => _provider.GetRequiredService<CompanyViewModel>(); }
-        public DateViewModel DateViewModel { get => _provider.GetRequiredService<DateViewModel>(); }
-        public ExplorerViewModel ExplorerViewModel { get => _provider.GetRequiredService<ExplorerViewModel>(); }
-        public IdentityViewModel IdentityViewModel { get => _provider.GetRequiredService<IdentityViewModel>(); }
-        public MainViewModel MainViewModel { get => _provider.GetRequiredService<MainViewModel>(); }
-        public NumberHistoryViewModel NumberHistoryViewModel { get => _provider.GetRequiredService<NumberHistoryViewModel>(); }
-        public PalletteViewModel PalletteViewModel { get => _provider.GetRequiredService<PalletteViewModel>(); }
-        public PasswordViewModel PasswordViewModel { get => _provider.GetRequiredService<PasswordViewModel>(); }
-        public PoolViewModel PoolViewModel { get => _provider.GetRequiredService<PoolViewModel>(); }
-        public PopupViewModel PopupViewModel { get => _provider.GetRequiredService<PopupViewModel>(); }
-        public QAViewModel QAViewModel { get => _provider.GetRequiredService<QAViewModel>(); }
-        public StatusbarViewModel StatusbarViewModel { get => _provider.GetRequiredService<StatusbarViewModel>(); }
-        public TransactionViewModel TransactionViewModel { get => _provider.GetRequiredService<TransactionViewModel>(); }
+        public AboutViewModel AboutViewModel => _provider.GetRequiredService<AboutViewModel>();
+        public AccountNumberViewModel AccountNumberViewModel => _provider.GetRequiredService<AccountNumberViewModel>();
+        public AccountTypeViewModel AccountTypeViewModel => _provider.GetRequiredService<AccountTypeViewModel>();
+        public AccountViewModel AccountViewModel => _provider.GetRequiredService<AccountViewModel>();
+        public AllotmentViewModel AllotmentViewModel => _provider.GetRequiredService<AllotmentViewModel>();
+        public BackupViewModel BackupViewModel => _provider.GetRequiredService<BackupViewModel>();
+        public CompanyViewModel CompanyViewModel => _provider.GetRequiredService<CompanyViewModel>();
+        public DateViewModel DateViewModel => _provider.GetRequiredService<DateViewModel>();
+        public ExplorerViewModel ExplorerViewModel => _provider.GetRequiredService<ExplorerViewModel>();
+        public IdentityViewModel IdentityViewModel => _provider.GetRequiredService<IdentityViewModel>();
+        public MainViewModel MainViewModel => _provider.GetRequiredService<MainViewModel>();
+        public NumberHistoryViewModel NumberHistoryViewModel => _provider.GetRequiredService<NumberHistoryViewModel>();
+        public PalletteViewModel PalletteViewModel => _provider.GetRequiredService<PalletteViewModel>();
+        public PasswordViewModel PasswordViewModel => _provider.GetRequiredService<PasswordViewModel>();
+        public PoolViewModel PoolViewModel => _provider.GetRequiredService<PoolViewModel>();
+        public PopupViewModel PopupViewModel => _provider.GetRequiredService<PopupViewModel>();
+        public QAViewModel QAViewModel => _provider.GetRequiredService<QAViewModel>();
+        public StatusbarViewModel StatusbarViewModel => _provider.GetRequiredService<StatusbarViewModel>();
+        public TransactionViewModel TransactionViewModel => _provider.GetRequiredService<TransactionViewModel>();
 
         #endregion
 
         #region History View Models
 
-        public HistoryViewModel HistoryViewModel { get => _provider.GetRequiredService<HistoryViewModel>(); }
-        public Ledger5PasswordViewModel Ledger5PasswordViewModel { get => _provider.GetRequiredService<Ledger5PasswordViewModel>(); }
+        public HistoryViewModel HistoryViewModel => _provider.GetRequiredService<HistoryViewModel>();
+        public Ledger5PasswordViewModel Ledger5PasswordViewModel => _provider.GetRequiredService<Ledger5PasswordViewModel>();
 
         #endregion
 
         #region DALs (Data Access Layer, interface to/from Entity Framework for database access)
 
-        public IAccountDAL AccountDAL { get => _provider.GetRequiredService<IAccountDAL>(); }
-        public IAccountNumberDAL AccountNumberDAL { get => _provider.GetRequiredService<IAccountNumberDAL>(); }
-        public IAccountTypeDAL AccountTypeDAL { get => _provider.GetRequiredService<IAccountTypeDAL>(); }
-        public IAllotmentDAL AllotmentDAL { get => _provider.GetRequiredService<IAllotmentDAL>(); }
-        public ICompanyDAL CompanyDAL { get => _provider.GetRequiredService<ICompanyDAL>(); }
-        public IIdentityDAL IdentityDAL { get => _provider.GetRequiredService<IIdentityDAL>(); }
-        public IPoolDAL PoolDAL { get => _provider.GetRequiredService<IPoolDAL>(); }
-        public ISettingsDAL SettingsDAL { get => _provider.GetRequiredService<ISettingsDAL>(); }
-        public ITransactionDAL TransactionDAL { get => _provider.GetRequiredService<ITransactionDAL>(); }
+        public IAccountDAL AccountDAL => _provider.GetRequiredService<IAccountDAL>();
+        public IAccountNumberDAL AccountNumberDAL => _provider.GetRequiredService<IAccountNumberDAL>();
+        public IAccountTypeDAL AccountTypeDAL => _provider.GetRequiredService<IAccountTypeDAL>();
+        public IAllotmentDAL AllotmentDAL => _provider.GetRequiredService<IAllotmentDAL>();
+        public ICompanyDAL CompanyDAL => _provider.GetRequiredService<ICompanyDAL>();
+        public IIdentityDAL IdentityDAL => _provider.GetRequiredService<IIdentityDAL>();
+        public IPoolDAL PoolDAL => _provider.GetRequiredService<IPoolDAL>();
+        public ISettingsDAL SettingsDAL => _provider.GetRequiredService<ISettingsDAL>();
+        public ITransactionDAL TransactionDAL => _provider.GetRequiredService<ITransactionDAL>();
 
         #endregion
 
         #region History DALs
 
-        public IAccountHistoryDAL AccountHistoryDAL { get => _provider.GetRequiredService<IAccountHistoryDAL>(); }
-        public IAccountNumberHistoryDAL AccountNumberHistoryDAL { get => _provider.GetRequiredService<IAccountNumberHistoryDAL>(); }
-        public IAccountTypeHistoryDAL AccountTypeHistoryDAL { get => _provider.GetRequiredService<IAccountTypeHistoryDAL>(); }
-        public IAllotmentHistoryDAL AllotmentHistoryDAL { get => _provider.GetRequiredService<IAllotmentHistoryDAL>(); }
-        public IPayeeHistoryDAL PayeeHistoryDAL { get => _provider.GetRequiredService<IPayeeHistoryDAL>(); }
-        public IPoolHistoryDAL PoolHistoryDAL { get => _provider.GetRequiredService<IPoolHistoryDAL>(); }
-        public ITransactionHistoryDAL TransactionHistoryDAL { get => _provider.GetRequiredService<ITransactionHistoryDAL>(); }
+        public IAccountHistoryDAL AccountHistoryDAL => _provider.GetRequiredService<IAccountHistoryDAL>();
+        public IAccountNumberHistoryDAL AccountNumberHistoryDAL => _provider.GetRequiredService<IAccountNumberHistoryDAL>();
+        public IAccountTypeHistoryDAL AccountTypeHistoryDAL => _provider.GetRequiredService<IAccountTypeHistoryDAL>();
+        public IAllotmentHistoryDAL AllotmentHistoryDAL => _provider.GetRequiredService<IAllotmentHistoryDAL>();
+        public IPayeeHistoryDAL PayeeHistoryDAL => _provider.GetRequiredService<IPayeeHistoryDAL>();
+        public IPoolHistoryDAL PoolHistoryDAL => _provider.GetRequiredService<IPoolHistoryDAL>();
+        public ITransactionHistoryDAL TransactionHistoryDAL => _provider.GetRequiredService<ITransactionHistoryDAL>();
 
         #endregion
 
         #region ECLs (Entity Conversion Layer, translates between Entity objects and Observable Data Transfer Objects / Models)
 
-        public IAccountECL AccountECL { get => _provider.GetRequiredService<IAccountECL>(); }
-        public IAccountNumberECL AccountNumberECL { get => _provider.GetRequiredService<IAccountNumberECL>(); }
-        public IAccountTypeECL AccountTypeECL { get => _provider.GetRequiredService<IAccountTypeECL>(); }
-        public IAllotmentECL AllotmentECL { get => _provider.GetRequiredService<IAllotmentECL>(); }
-        public ICompanyECL CompanyECL { get => _provider.GetRequiredService<ICompanyECL>(); }
-        public IIdentityECL IdentityECL { get => _provider.GetRequiredService<IIdentityECL>(); }
-        public IPoolECL PoolECL { get => _provider.GetRequiredService<IPoolECL>(); }
-        public ITransactionECL TransactionECL { get => _provider.GetRequiredService<ITransactionECL>(); }
+        public IAccountECL AccountECL => _provider.GetRequiredService<IAccountECL>();
+        public IAccountNumberECL AccountNumberECL => _provider.GetRequiredService<IAccountNumberECL>();
+        public IAccountTypeECL AccountTypeECL => _provider.GetRequiredService<IAccountTypeECL>();
+        public IAllotmentECL AllotmentECL => _provider.GetRequiredService<IAllotmentECL>();
+        public ICompanyECL CompanyECL => _provider.GetRequiredService<ICompanyECL>();
+        public IIdentityECL IdentityECL => _provider.GetRequiredService<IIdentityECL>();
+        public IPoolECL PoolECL => _provider.GetRequiredService<IPoolECL>();
+        public ITransactionECL TransactionECL => _provider.GetRequiredService<ITransactionECL>();
 
         #endregion
 
@@ -207,7 +207,7 @@ namespace LedgerClient.Infrastructure
             {
                 if (!_initialized)
                 {
-                    ServiceCollection services = new ServiceCollection();
+                    var services = new ServiceCollection();
 
                     services.AddDbContext<LedgerContext>(ServiceLifetime.Transient);
                     services.AddDbContext<HistoryContext>(ServiceLifetime.Transient);

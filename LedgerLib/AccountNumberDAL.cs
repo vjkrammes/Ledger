@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-
-using LedgerLib.Entities;
+﻿using LedgerLib.Entities;
 using LedgerLib.Interfaces;
 
 using Microsoft.EntityFrameworkCore;
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
 
 namespace LedgerLib
 {
@@ -16,24 +16,22 @@ namespace LedgerLib
 
         public void DeleteForAccount(int aid)
         {
-            var numbers = _dbset.Where(x => x.AccountId == aid).ToList();
-            _dbset.RemoveRange(numbers);
-            _context.SaveChanges();
+            var numbers = DbSet.Where(x => x.AccountId == aid).ToList();
+            DbSet.RemoveRange(numbers);
+            Context.SaveChanges();
         }
 
-        public override IEnumerable<AccountNumberEntity> Get(Expression<Func<AccountNumberEntity, bool>> pred = null)
-        {
-            return pred switch
+        public override IEnumerable<AccountNumberEntity> Get(Expression<Func<AccountNumberEntity, bool>> pred = null) => 
+            pred switch
             {
-                null => _dbset
+                null => DbSet
                         .OrderByDescending(x => x.StopDate)
                         .AsNoTracking().ToList(),
-                _ => _dbset
+                _ => DbSet
                         .Where(pred)
                         .OrderByDescending(x => x.StopDate)
                         .AsNoTracking().ToList()
             };
-        }
 
         public IEnumerable<AccountNumberEntity> GetForAccount(int aid) => Get(x => x.AccountId == aid);
 
@@ -41,7 +39,7 @@ namespace LedgerLib
 
         public AccountNumberEntity Current(int aid)
         {
-            DateTime now = DateTime.Now;
+            var now = DateTime.Now;
             return Get(x => x.AccountId == aid && now >= x.StartDate && now <= x.StopDate).SingleOrDefault();
         }
 

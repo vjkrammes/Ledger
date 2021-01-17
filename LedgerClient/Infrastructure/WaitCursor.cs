@@ -3,7 +3,7 @@ using System.Windows.Input;
 
 namespace LedgerClient.Infrastructure
 {
-    public class WaitCursor : IDisposable
+    public sealed class WaitCursor : IDisposable
     {
         private readonly Cursor _cursor;
 
@@ -13,9 +13,6 @@ namespace LedgerClient.Infrastructure
             Mouse.OverrideCursor = Cursors.Wait;
         }
 
-        public void Dispose()
-        {
-            Mouse.OverrideCursor = _cursor;
-        }
+        public void Dispose() => Mouse.OverrideCursor = _cursor;
     }
 }

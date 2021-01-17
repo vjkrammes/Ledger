@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Windows.Input;
-using System.Windows;
-using System.Linq;
-using System.Collections.ObjectModel;
-using LedgerClient.Infrastructure;
-using LedgerClient.ECL.DTO;
+﻿using LedgerClient.Infrastructure;
+
+using System;
 
 namespace LedgerClient.ViewModels
 {
@@ -50,9 +44,6 @@ namespace LedgerClient.ViewModels
 
         #endregion
 
-        public TransactionViewModel()
-        {
-            Date = DateTime.Now;
-        }
+        public TransactionViewModel() => Date = DateTime.Now;
     }
 }

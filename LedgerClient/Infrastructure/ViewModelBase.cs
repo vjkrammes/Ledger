@@ -5,7 +5,7 @@ using System.Windows.Input;
 
 namespace LedgerClient.Infrastructure
 {
-    public class ViewModelBase : INotifyPropertyChanged
+    public abstract class ViewModelBase : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -41,44 +41,39 @@ namespace LedgerClient.Infrastructure
 
         #region Command Methods
 
-        public bool AlwaysCanExecute() => true;
+        public static bool AlwaysCanExecute() => true;
 
-        public virtual void Cancel()
-        {
-            DialogResult = false;
-        }
+        public virtual void Cancel() => DialogResult = false;
 
         public virtual bool OkCanExecute() => true;
 
-        public virtual void OK()
-        {
-            DialogResult = true;
-        }
+        public virtual void OK() => DialogResult = true;
 
         #endregion
 
         #region DialogResult stuff
 
-        private bool? dialogResult;
+        private bool? _dialogResult;
         public bool? DialogResult
         {
-            get { return dialogResult; }
-            set { SetProperty(ref dialogResult, value); }
+            get => _dialogResult;
+            set => SetProperty(ref _dialogResult, value);
         }
 
         #endregion
 
         #region PropertyChanged methods
 
-        protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
+        protected void OnPropertyChanged([CallerMemberName] string propertyName = null) => 
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
 
         protected bool SetProperty<T>(ref T storage, T value, [CallerMemberName] string propertyName = "")
         {
             if (EqualityComparer<T>.Default.Equals(storage, value))
+            {
                 return false;
+            }
+
             storage = value;
             OnPropertyChanged(propertyName);
             return true;

@@ -1,15 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-
-using AutoMapper;
+﻿using AutoMapper;
 
 using LedgerClient.ECL.DTO;
 using LedgerClient.ECL.Interfaces;
 using LedgerClient.Infrastructure;
 
 using LedgerLib.Entities;
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
 
 namespace LedgerClient.ECL
 {
@@ -19,11 +19,11 @@ namespace LedgerClient.ECL
 
         public PoolECL(IMapper mapper) => _mapper = mapper;
 
-        public int Count { get => Tools.Locator.PoolDAL.Count; }
+        public int Count => Tools.Locator.PoolDAL.Count;
 
         public void Insert(Pool dto)
         {
-            PoolEntity entity = _mapper.Map<PoolEntity>(dto);
+            var entity = _mapper.Map<PoolEntity>(dto);
             Tools.Locator.PoolDAL.Insert(entity);
             dto.Id = entity.Id;
             dto.RowVersion = entity.RowVersion.ArrayCopy();
@@ -31,14 +31,14 @@ namespace LedgerClient.ECL
 
         public void Update(Pool dto)
         {
-            PoolEntity entity = _mapper.Map<PoolEntity>(dto);
+            var entity = _mapper.Map<PoolEntity>(dto);
             Tools.Locator.PoolDAL.Update(entity);
             dto.RowVersion = entity.RowVersion.ArrayCopy();
         }
 
         public void Delete(Pool dto)
         {
-            PoolEntity entity = _mapper.Map<PoolEntity>(dto);
+            var entity = _mapper.Map<PoolEntity>(dto);
             Tools.Locator.PoolDAL.Delete(entity);
         }
 

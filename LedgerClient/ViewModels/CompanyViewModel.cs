@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using LedgerClient.ECL.DTO;
+﻿using LedgerClient.ECL.DTO;
 using LedgerClient.Infrastructure;
+
+using System;
 
 namespace LedgerClient.ViewModels
 {
@@ -66,9 +65,6 @@ namespace LedgerClient.ViewModels
 
         #endregion
 
-        public CompanyViewModel()
-        {
-            Company = new Company();
-        }
+        public CompanyViewModel() => Company = new Company();
     }
 }

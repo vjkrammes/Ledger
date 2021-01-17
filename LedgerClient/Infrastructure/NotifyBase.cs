@@ -4,14 +4,12 @@ using System.Runtime.CompilerServices;
 
 namespace LedgerClient.Infrastructure
 {
-    public class NotifyBase : INotifyPropertyChanged
+    public abstract class NotifyBase : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
-        protected virtual void OnPropertyChanged([CallerMemberName] string property = null)
-        {
+        protected virtual void OnPropertyChanged([CallerMemberName] string property = null) => 
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(property));
-        }
 
         protected virtual bool SetProperty<T>(ref T storage, T value, [CallerMemberName] string property = "")
         {

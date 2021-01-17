@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using LedgerClient.Controls;
+﻿using LedgerClient.Controls;
 using LedgerClient.Infrastructure;
+
 using LedgerLib.Infrastructure;
 using LedgerLib.Interfaces;
+
+using System.Linq;
+using System.Reflection;
 
 namespace LedgerClient.ViewModels
 {
@@ -42,7 +41,7 @@ namespace LedgerClient.ViewModels
         private string GetCopyrightFromAssembly()
         {
             var assem = GetType().Assembly;
-            object[] attributes = assem.GetCustomAttributes(typeof(AssemblyCopyrightAttribute), true);
+            var attributes = assem.GetCustomAttributes(typeof(AssemblyCopyrightAttribute), true);
             if (attributes != null && attributes.Any())
             {
                 return ((AssemblyCopyrightAttribute)attributes[0]).Copyright;
@@ -53,7 +52,7 @@ namespace LedgerClient.ViewModels
         private string GetCompanyFromAssembly()
         {
             var assem = GetType().Assembly;
-            object[] attributes = assem.GetCustomAttributes(typeof(AssemblyCompanyAttribute), true);
+            var attributes = assem.GetCustomAttributes(typeof(AssemblyCompanyAttribute), true);
             if (attributes != null && attributes.Any())
             {
                 return ((AssemblyCompanyAttribute)attributes[0]).Company;

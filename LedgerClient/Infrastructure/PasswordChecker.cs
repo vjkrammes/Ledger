@@ -1,8 +1,7 @@
-﻿using System;
+﻿using LedgerClient.Models;
+
 using System.Collections.Generic;
-using System.Text;
 using System.Linq;
-using LedgerClient.Models;
 
 namespace LedgerClient.Infrastructure
 {
@@ -10,20 +9,38 @@ namespace LedgerClient.Infrastructure
     {
         public static PasswordStrength GetPasswordStrength(string password)
         {
-            int score = 0;
+            var score = 0;
             if (string.IsNullOrEmpty(password) || string.IsNullOrEmpty(password.Trim()))
+            {
                 return PasswordStrength.Blank;
+            }
+
             if (!HasMinimumLength(password, 5))
+            {
                 return PasswordStrength.VeryWeak;
+            }
+
             score++;
             if (HasMinimumLength(password, 8))
+            {
                 score++;
+            }
+
             if (HasUppercaseLetter(password) && HasLowercaseLetter(password))
+            {
                 score++;
+            }
+
             if (HasDigit(password))
+            {
                 score++;
+            }
+
             if (HasSpecialCharacter(password))
+            {
                 score++;
+            }
+
             return (PasswordStrength)score;
         }
 
@@ -42,17 +59,35 @@ namespace LedgerClient.Infrastructure
         public static bool IsValidPassword(string password, int minlen, int minunique, bool specials, bool lowers, bool uppers, bool digits)
         {
             if (!HasMinimumLength(password, minlen))
+            {
                 return false;
+            }
+
             if (!HasMinimumUniqueCharacters(password, minunique))
+            {
                 return false;
+            }
+
             if (specials && !HasSpecialCharacter(password))
+            {
                 return false;
+            }
+
             if (lowers && !HasLowercaseLetter(password))
+            {
                 return false;
+            }
+
             if (uppers && !HasUppercaseLetter(password))
+            {
                 return false;
+            }
+
             if (digits && !HasDigit(password))
+            {
                 return false;
+            }
+
             return true;
         }
 

@@ -3,18 +3,19 @@ using System.ComponentModel.DataAnnotations;
 
 namespace LedgerLib.Infrastructure
 {
+    [AttributeUsage(AttributeTargets.Field, AllowMultiple = false, Inherited = false)]
     public sealed class DescriptionAttribute : Attribute
     {
         private readonly string _description;
         public DescriptionAttribute(string description) => _description = description;
-        public string Description { get => _description; }
+        public string Description => _description;
     }
 
     public sealed class NonNegativeAttribute : ValidationAttribute
     {
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
-            bool valid = false;
+            var valid = false;
             switch (value)
             {
                 case int ival:
@@ -53,7 +54,7 @@ namespace LedgerLib.Infrastructure
     {
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
-            bool valid = false;
+            var valid = false;
             switch (value)
             {
                 case int ival:

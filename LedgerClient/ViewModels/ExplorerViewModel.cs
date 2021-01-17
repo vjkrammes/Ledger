@@ -1,9 +1,10 @@
-﻿using System.Collections.ObjectModel;
-using System.Windows.Input;
-
-using LedgerClient.Infrastructure;
+﻿using LedgerClient.Infrastructure;
 using LedgerClient.Interfaces;
 using LedgerClient.Models;
+
+using System;
+using System.Collections.ObjectModel;
+using System.Windows.Input;
 
 namespace LedgerClient.ViewModels
 {
@@ -45,7 +46,7 @@ namespace LedgerClient.ViewModels
                 SetProperty(ref _rootItem, value);
                 if (RootItem is null)
                 {
-                    Root = new ReadOnlyCollection<ExplorerItem>(new ExplorerItem[] { });
+                    Root = new ReadOnlyCollection<ExplorerItem>(Array.Empty<ExplorerItem>());
                 }
                 else
                 {
@@ -123,9 +124,6 @@ namespace LedgerClient.ViewModels
 
         #endregion
 
-        public ExplorerViewModel(IExplorerService explorer)
-        {
-            _explorer = explorer;
-        }
+        public ExplorerViewModel(IExplorerService explorer) => _explorer = explorer;
     }
 }

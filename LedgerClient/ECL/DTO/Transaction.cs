@@ -1,6 +1,6 @@
-﻿using System;
+﻿using LedgerClient.Infrastructure;
 
-using LedgerClient.Infrastructure;
+using System;
 
 namespace LedgerClient.ECL.DTO
 {
@@ -13,7 +13,7 @@ namespace LedgerClient.ECL.DTO
             set => SetProperty(ref _id, value);
         }
 
-        public int _accountId;
+        private int _accountId;
         public int AccountId
         {
             get => _accountId;
@@ -79,14 +79,14 @@ namespace LedgerClient.ECL.DTO
 
         public override bool Equals(object obj)
         {
-            if (!(obj is Transaction t))
+            if (obj is not Transaction t)
             {
                 return false;
             }
             return t.Id == Id;
         }
 
-        public bool Equals(Transaction t) => t is null ? false : t.Id == Id;
+        public bool Equals(Transaction t) => t is not null && t.Id == Id;
 
         public override int GetHashCode() => Id;
 

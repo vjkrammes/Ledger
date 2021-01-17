@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-
-using LedgerLib.HistoryEntities;
+﻿using LedgerLib.HistoryEntities;
 using LedgerLib.Interfaces;
 
 using Microsoft.EntityFrameworkCore;
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
 
 namespace LedgerLib.HistoryDAL
 {
@@ -15,21 +15,19 @@ namespace LedgerLib.HistoryDAL
 
         public AccountHistoryDAL(HistoryContext context) : base(context) { }
 
-        public override IEnumerable<AccountHistoryEntity> Get(Expression<Func<AccountHistoryEntity, bool>> pred = null)
-        {
-            return pred switch
+        public override IEnumerable<AccountHistoryEntity> Get(Expression<Func<AccountHistoryEntity, bool>> pred = null) => 
+            pred switch
             {
-                null => _dbset
+                null => DbSet
                     .Include(x => x.AccountType)
                     .Include(x => x.AccountNumbers)
                     .AsNoTracking().ToList(),
-                _ => _dbset
+                _ => DbSet
                     .Include(x => x.AccountType)
                     .Include(x => x.AccountNumbers)
                     .Where(pred)
                     .AsNoTracking().ToList()
             };
-        }
 
         public IEnumerable<AccountHistoryEntity> GetForPayee(int pid) => Get(x => x.PayeeId == pid);
 

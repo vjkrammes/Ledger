@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-
-using LedgerLib.Entities;
+﻿using LedgerLib.Entities;
 using LedgerLib.Interfaces;
 
 using Microsoft.EntityFrameworkCore;
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
 
 namespace LedgerLib
 {
@@ -14,27 +14,25 @@ namespace LedgerLib
     {
         public TransactionDAL(LedgerContext context) : base(context) { }
 
-        public override IEnumerable<TransactionEntity> Get(Expression<Func<TransactionEntity, bool>> pred = null)
-        {
-            return pred switch
+        public override IEnumerable<TransactionEntity> Get(Expression<Func<TransactionEntity, bool>> pred = null) => 
+            pred switch
             {
-                null => _dbset
+                null => DbSet
                         .OrderByDescending(x => x.Date)
                         .AsNoTracking().ToList(),
-                _ => _dbset
+                _ => DbSet
                         .Where(pred)
                         .OrderByDescending(x => x.Date)
                         .AsNoTracking().ToList()
             };
-        }
 
         public IEnumerable<TransactionEntity> GetForAccount(int aid) => Get(x => x.AccountId == aid);
 
         public TransactionEntity Read(int id) => Get(x => x.Id == id).SingleOrDefault();
 
-        public decimal Total() => _dbset.Sum(x => x.Payment);
+        public decimal Total() => DbSet.Sum(x => x.Payment);
 
-        public decimal TotalForAccount(int aid) => _dbset.Where(x => x.AccountId == aid).Sum(x => x.Payment);
+        public decimal TotalForAccount(int aid) => DbSet.Where(x => x.AccountId == aid).Sum(x => x.Payment);
 
         public bool AccountHasTransactions(int aid) => GetForAccount(aid).Any();
     }

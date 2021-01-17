@@ -1,11 +1,11 @@
-﻿using System;
+﻿using LedgerClient.Interfaces;
+
+using LedgerLib.Infrastructure;
+
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-
-using LedgerClient.Interfaces;
-
-using LedgerLib.Infrastructure;
 
 namespace LedgerClient.Infrastructure
 {
@@ -13,7 +13,7 @@ namespace LedgerClient.Infrastructure
     {
         public IEnumerable<FileInfo> GetFiles(string path)
         {
-            List<FileInfo> ret = new List<FileInfo>();
+            var ret = new List<FileInfo>();
             try
             {
                 var files = Directory.GetFiles(path, "*.*");
@@ -40,7 +40,7 @@ namespace LedgerClient.Infrastructure
 
         public IEnumerable<DirectoryInfo> GetDirectories(string path)
         {
-            List<DirectoryInfo> ret = new List<DirectoryInfo>();
+            var ret = new List<DirectoryInfo>();
             try
             {
                 var directories = Directory.GetDirectories(path);

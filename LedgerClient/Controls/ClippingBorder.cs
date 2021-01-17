@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -41,7 +39,7 @@ namespace LedgerClient.Controls
 
         protected virtual void OnApplyChildClip()
         {
-            UIElement child = Child;
+            var child = Child;
             if (child != null)
             {
                 _clipRectangle.RadiusX = _clipRectangle.RadiusY = Math.Max(0.0, CornerRadius.TopLeft - (BorderThickness.Left * 0.5));

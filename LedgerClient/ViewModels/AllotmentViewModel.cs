@@ -1,16 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Windows.Input;
-using LedgerClient.ECL.DTO;
+﻿using LedgerClient.ECL.DTO;
 using LedgerClient.ECL.Interfaces;
 using LedgerClient.Infrastructure;
-using LedgerClient.Interfaces;
-using LedgerClient.Views;
+
 using LedgerLib.Infrastructure;
+
 using Microsoft.EntityFrameworkCore;
+
+using System;
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Windows.Input;
 
 namespace LedgerClient.ViewModels
 {
@@ -190,14 +189,14 @@ namespace LedgerClient.ViewModels
             }
             if (Pool.Balance - Amount < 0M)
             {
-                string msg = "Adding this allotment will reduce the Balance of this Pool to less than zero. Continue?";
+                var msg = "Adding this allotment will reduce the Balance of this Pool to less than zero. Continue?";
                 if (PopupManager.Popup("Continue with negative balance?", "Negative Balance", msg, PopupButtons.YesNo, PopupImage.Question)
                     != PopupResult.Yes)
                 {
                     return;
                 }
             }
-            Allotment a = new Allotment
+            var a = new Allotment
             {
                 PoolId = Pool.Id,
                 CompanyId = SelectedCompany.Id,
@@ -220,7 +219,7 @@ namespace LedgerClient.ViewModels
                 PopupManager.Popup("Failed to add new Allotment", Constants.DBE, ex.Innermost(), PopupButtons.Ok, PopupImage.Error);
                 return;
             }
-            int ix = 0;
+            var ix = 0;
             while (ix < Allotments.Count && Allotments[ix] > a)
             {
                 ix++;
@@ -251,7 +250,7 @@ namespace LedgerClient.ViewModels
             {
                 return;
             }
-            Allotment a = SelectedAllotment.Clone();
+            var a = SelectedAllotment.Clone();
             a.CompanyId = SelectedCompany.Id;
             a.Company = SelectedCompany;
             a.Date = Date ?? (default);
@@ -277,7 +276,7 @@ namespace LedgerClient.ViewModels
             }
             Allotments.Remove(SelectedAllotment);
             SelectedAllotment = null;
-            int ix = 0;
+            var ix = 0;
             while (ix < Allotments.Count && Allotments[ix] > a)
             {
                 ix++;
@@ -451,7 +450,7 @@ namespace LedgerClient.ViewModels
             }
             catch (Exception ex)
             {
-                string op = reload ? Constants.Reload : Constants.Load;
+                var op = reload ? Constants.Reload : Constants.Load;
                 PopupManager.Popup($"Failed to {op} Allotments", Constants.DBE, ex.Innermost(), PopupButtons.Ok, PopupImage.Error);
                 Cancel();
                 return;

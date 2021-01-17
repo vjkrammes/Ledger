@@ -1,6 +1,8 @@
-﻿using System.Windows.Input;
-using LedgerClient.Infrastructure;
+﻿using LedgerClient.Infrastructure;
+
 using LedgerLib.Infrastructure;
+
+using System.Windows.Input;
 
 namespace LedgerClient.History.ViewModels
 {

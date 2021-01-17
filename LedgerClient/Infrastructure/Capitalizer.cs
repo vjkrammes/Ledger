@@ -1,7 +1,7 @@
-﻿using System;
-using System.Text;
+﻿using Humanizer;
 
-using Humanizer;
+using System;
+using System.Text;
 
 namespace LedgerClient.Infrastructure
 {
@@ -9,12 +9,12 @@ namespace LedgerClient.Infrastructure
     {
         public string Transform(string value)
         {
-            string[] parts = value.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-            StringBuilder sb = new StringBuilder();
+            var parts = value.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+            var sb = new StringBuilder();
             foreach (var part in parts)
             {
                 sb.Append(part.Capitalize());
-                sb.Append(" ");
+                sb.Append(' ');
             }
             return sb.ToString().TrimEnd(' ');
         }

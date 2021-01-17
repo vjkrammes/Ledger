@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using LedgerClient.Interfaces;
+
+using System.Collections.Generic;
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
-
-using LedgerClient.Interfaces;
 
 namespace LedgerClient.Infrastructure
 {
@@ -17,22 +17,22 @@ namespace LedgerClient.Infrastructure
         {
             _key = new byte[256 / 8];
             _iv = new byte[128 / 8];
-            using RNGCryptoServiceProvider rng = new RNGCryptoServiceProvider();
+            using var rng = new RNGCryptoServiceProvider();
             rng.GetBytes(_key);
             rng.GetBytes(_iv);
         }
 
         public void Set(string pw, int index)
         {
-            byte[] pwbytes = Encoding.UTF8.GetBytes(pw);
-            using RijndaelManaged key = new RijndaelManaged()
+            var pwbytes = Encoding.UTF8.GetBytes(pw);
+            using var key = new RijndaelManaged()
             {
                 Mode = CipherMode.CBC,
                 BlockSize = 128
             };
-            using ICryptoTransform encryptor = key.CreateEncryptor(_key, _iv);
-            using MemoryStream ms = new MemoryStream();
-            using CryptoStream cs = new CryptoStream(ms, encryptor, CryptoStreamMode.Write);
+            using var encryptor = key.CreateEncryptor(_key, _iv);
+            using var ms = new MemoryStream();
+            using var cs = new CryptoStream(ms, encryptor, CryptoStreamMode.Write);
             cs.Write(pwbytes, 0, pwbytes.Length);
             cs.FlushFinalBlock();
             _passwords[index] = ms.ToArray();
@@ -44,16 +44,16 @@ namespace LedgerClient.Infrastructure
             {
                 return string.Empty;
             }
-            using RijndaelManaged key = new RijndaelManaged()
+            using var key = new RijndaelManaged()
             {
                 Mode = CipherMode.CBC,
                 BlockSize = 128
             };
-            using ICryptoTransform decryptor = key.CreateDecryptor(_key, _iv);
-            using MemoryStream ms = new MemoryStream(_passwords[index]);
-            using CryptoStream cs = new CryptoStream(ms, decryptor, CryptoStreamMode.Read);
-            byte[] ptbytes = new byte[_passwords[index].Length];
-            int dbc = cs.Read(ptbytes, 0, ptbytes.Length);
+            using var decryptor = key.CreateDecryptor(_key, _iv);
+            using var ms = new MemoryStream(_passwords[index]);
+            using var cs = new CryptoStream(ms, decryptor, CryptoStreamMode.Read);
+            var ptbytes = new byte[_passwords[index].Length];
+            var dbc = cs.Read(ptbytes, 0, ptbytes.Length);
             return Encoding.UTF8.GetString(ptbytes, 0, dbc);
         }
     }

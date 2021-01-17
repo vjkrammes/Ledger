@@ -1,15 +1,16 @@
-﻿using System;
+﻿using LedgerClient.ECL.DTO;
+using LedgerClient.Infrastructure;
+using LedgerClient.Views;
+
+using LedgerLib.Infrastructure;
+using LedgerLib.Interfaces;
+
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Windows;
-using LedgerClient.ECL.DTO;
-using LedgerClient.ECL.Interfaces;
-using LedgerClient.Infrastructure;
-using LedgerClient.Views;
-using LedgerLib.Infrastructure;
-using LedgerLib.Interfaces;
 
 namespace LedgerClient.ViewModels
 {
@@ -27,7 +28,7 @@ namespace LedgerClient.ViewModels
             }
         }
 
-        private void CreateNewPassword(ISettingsService settings)
+        private static void CreateNewPassword(ISettingsService settings)
         {
             var vm = Tools.Locator.PasswordViewModel;
             vm.Password2Visibility = Visibility.Visible;
@@ -62,7 +63,7 @@ namespace LedgerClient.ViewModels
             }
         }
 
-        private bool CompanyCanBeDeleted(int cid)
+        private static bool CompanyCanBeDeleted(int cid)
         {
             if (Tools.Locator.IdentityECL.CompanyHasIdentities(cid))
             {
@@ -88,7 +89,7 @@ namespace LedgerClient.ViewModels
             }
             catch (Exception ex)
             {
-                string op = reload ? Constants.Reload : Constants.Load;
+                var op = reload ? Constants.Reload : Constants.Load;
                 PopupManager.Popup($"Failed to {op} Companies", Constants.DBE, ex.Innermost(), PopupButtons.Ok, PopupImage.Error);
                 Environment.Exit(Constants.CompaniesLoadFailed);
             }
@@ -110,7 +111,7 @@ namespace LedgerClient.ViewModels
                 }
                 catch (Exception ex)
                 {
-                    string op = reload ? Constants.Reload : Constants.Load;
+                    var op = reload ? Constants.Reload : Constants.Load;
                     PopupManager.Popup($"Failed to {op} Identities", Constants.DBE, ex.Innermost(), PopupButtons.Ok, PopupImage.Error);
                     Environment.Exit(Constants.IdentitiesLoadFailed);
                 }
@@ -132,7 +133,7 @@ namespace LedgerClient.ViewModels
                 }
                 catch (Exception ex)
                 {
-                    string op = reload ? Constants.Reload : Constants.Load;
+                    var op = reload ? Constants.Reload : Constants.Load;
                     PopupManager.Popup($"Failed to {op} Accounts", Constants.DBE, ex.Innermost(), PopupButtons.Ok, PopupImage.Error);
                     Environment.Exit(Constants.AccountsLoadFailed);
                 }
@@ -156,7 +157,7 @@ namespace LedgerClient.ViewModels
                 }
                 catch (Exception ex)
                 {
-                    string op = reload ? Constants.Reload : Constants.Load;
+                    var op = reload ? Constants.Reload : Constants.Load;
                     PopupManager.Popup($"Failed to {op} Transactions", Constants.DBE, ex.Innermost(), PopupButtons.Ok, PopupImage.Error);
                     Environment.Exit(Constants.TransactionsLoadFailed);
                 }
@@ -164,10 +165,10 @@ namespace LedgerClient.ViewModels
             }
         }
 
-        private IEnumerable<int> GetOrphanedAccountNumbers()
+        private static IEnumerable<int> GetOrphanedAccountNumbers()
         {
-            List<int> ret = new List<int>();
-            IAccountECL ecl = Tools.Locator.AccountECL;
+            var ret = new List<int>();
+            var ecl = Tools.Locator.AccountECL;
             var ids = (from a in Tools.Locator.LedgerContext.AccountNumbers select a.AccountId).Distinct().ToList();
             foreach (var id in ids)
             {
@@ -181,7 +182,7 @@ namespace LedgerClient.ViewModels
 
         private void AddTransaction(Transaction t)
         {
-            int ix = 0;
+            var ix = 0;
             while (ix < Transactions.Count && Transactions[ix] > t)
             {
                 ix++;
@@ -191,8 +192,8 @@ namespace LedgerClient.ViewModels
             SelectedTransaction = null;
         }
 
-        private bool ValidateMoney(string value) => decimal.TryParse(value, out decimal _);
+        private bool ValidateMoney(string value) => decimal.TryParse(value, out var _);
 
-        private bool ValidateDate(DateTime? value) => value.HasValue ? value.Value.Date <= DateTime.Now.Date : false;
+        private bool ValidateDate(DateTime? value) => value.HasValue && value.Value.Date <= DateTime.Now.Date;
     }
 }

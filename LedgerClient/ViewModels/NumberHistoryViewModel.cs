@@ -1,13 +1,13 @@
-﻿using System;
-using System.Collections.ObjectModel;
-using System.Windows.Input;
-
-using LedgerClient.ECL.DTO;
+﻿using LedgerClient.ECL.DTO;
 using LedgerClient.ECL.Interfaces;
 using LedgerClient.Infrastructure;
 using LedgerClient.Views;
 
 using LedgerLib.Infrastructure;
+
+using System;
+using System.Collections.ObjectModel;
+using System.Windows.Input;
 
 namespace LedgerClient.ViewModels
 {
@@ -125,9 +125,6 @@ namespace LedgerClient.ViewModels
 
         #endregion
 
-        public NumberHistoryViewModel(IAccountNumberECL anecl)
-        {
-            _anECL = anecl;
-        }
+        public NumberHistoryViewModel(IAccountNumberECL anecl) => _anECL = anecl;
     }
 }

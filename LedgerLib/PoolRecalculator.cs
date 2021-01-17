@@ -1,6 +1,6 @@
-﻿using System.Linq;
+﻿using LedgerLib.Interfaces;
 
-using LedgerLib.Interfaces;
+using System.Linq;
 
 namespace LedgerLib
 {

@@ -119,14 +119,14 @@ namespace LedgerClient.ECL.DTO
 
         public override bool Equals(object obj)
         {
-            if (!(obj is Account a))
+            if (obj is not Account a)
             {
                 return false;
             }
             return a.Id == Id;
         }
 
-        public bool Equals(Account a) => a is null ? false : a.Id == Id;
+        public bool Equals(Account a) => a is not null && a.Id == Id;
 
         public override int GetHashCode() => Id;
 

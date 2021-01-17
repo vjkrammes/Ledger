@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Windows;
-using LedgerClient.ECL.DTO;
-using LedgerClient.ECL.Interfaces;
+﻿using LedgerClient.ECL.DTO;
 using LedgerClient.Infrastructure;
+
 using LedgerLib;
+
+using System;
+using System.Windows;
 
 namespace LedgerClient.ViewModels
 {
@@ -120,7 +119,7 @@ namespace LedgerClient.ViewModels
 
         public void Update(Account selectedAccount = null)
         {
-            ITransactionECL trans = Tools.Locator.TransactionECL;
+            var trans = Tools.Locator.TransactionECL;
             AccountCount = Tools.Locator.AccountECL.Count;
             AccountNumberCount = Tools.Locator.AccountNumberECL.Count;
             AccountTypeCount = Tools.Locator.AccountTypeECL.Count;
@@ -136,9 +135,6 @@ namespace LedgerClient.ViewModels
             HowFull = DatabaseSize / Quota;
         }
 
-        public StatusbarViewModel(LedgerContext context)
-        {
-            _context = context;
-        }
+        public StatusbarViewModel(LedgerContext context) => _context = context;
     }
 }

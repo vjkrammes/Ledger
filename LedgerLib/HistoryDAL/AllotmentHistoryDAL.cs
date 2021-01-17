@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-
-using LedgerLib.HistoryEntities;
+﻿using LedgerLib.HistoryEntities;
 using LedgerLib.Interfaces;
 
 using Microsoft.EntityFrameworkCore;
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
 
 namespace LedgerLib.HistoryDAL
 {
@@ -14,19 +14,17 @@ namespace LedgerLib.HistoryDAL
     {
         public AllotmentHistoryDAL(HistoryContext context) : base(context) { }
 
-        public override IEnumerable<AllotmentHistoryEntity> Get(Expression<Func<AllotmentHistoryEntity, bool>> pred = null)
-        {
-            return pred switch
+        public override IEnumerable<AllotmentHistoryEntity> Get(Expression<Func<AllotmentHistoryEntity, bool>> pred = null) => 
+            pred switch
             {
-                null => _dbset
+                null => DbSet
                     .Include(x => x.Payee)
                     .OrderByDescending(x => x.Date).AsNoTracking().ToList(),
-                _ => _dbset
+                _ => DbSet
                     .Include(x => x.Payee)
                     .Where(pred)
                     .OrderByDescending(x => x.Date).AsNoTracking().ToList()
             };
-        }
 
         public IEnumerable<AllotmentHistoryEntity> GetForPool(int pid) => Get(x => x.PoolId == pid);
 

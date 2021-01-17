@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Windows.Input;
-
-using LedgerClient.ECL.DTO;
+﻿using LedgerClient.ECL.DTO;
 using LedgerClient.ECL.Interfaces;
 using LedgerClient.Infrastructure;
 using LedgerClient.Views;
@@ -11,6 +6,11 @@ using LedgerClient.Views;
 using LedgerLib.Infrastructure;
 
 using Microsoft.EntityFrameworkCore;
+
+using System;
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Windows.Input;
 
 namespace LedgerClient.ViewModels
 {
@@ -76,7 +76,7 @@ namespace LedgerClient.ViewModels
 
         #region Commands
 
-        public RelayCommand _addCommand;
+        private RelayCommand _addCommand;
         public ICommand AddCommand
         {
             get
@@ -173,7 +173,7 @@ namespace LedgerClient.ViewModels
                 FocusRequested?.Invoke(this, EventArgs.Empty);
                 return;
             }
-            Pool p = new Pool
+            var p = new Pool
             {
                 Name = Name.Caseify(),
                 Date = Date ?? (default),
@@ -197,7 +197,7 @@ namespace LedgerClient.ViewModels
                 FocusRequested?.Invoke(this, EventArgs.Empty);
                 return;
             }
-            int ix = 0;
+            var ix = 0;
             while (ix < Pools.Count && Pools[ix] < p)
             {
                 ix++;
@@ -212,10 +212,10 @@ namespace LedgerClient.ViewModels
 
         private void SaveChangesClick()
         {
-            decimal diff = Amount - SelectedPool.Amount;
+            var diff = Amount - SelectedPool.Amount;
             if (SelectedPool.Balance + diff < 0M && SelectedPool.Balance >= 0M)
             {
-                string msg = $"Adjusting the Amount to {Amount:c2} will create a negative Balance. Continue?";
+                var msg = $"Adjusting the Amount to {Amount:c2} will create a negative Balance. Continue?";
                 if (PopupManager.Popup("Balance will be negative", "Negative Balance", msg, PopupButtons.YesNo, PopupImage.Question) !=
                     PopupResult.Yes)
                 {
@@ -233,7 +233,7 @@ namespace LedgerClient.ViewModels
                     return;
                 }
             }
-            Pool p = SelectedPool.Clone();
+            var p = SelectedPool.Clone();
             p.Name = Name.Caseify();
             p.Date = Date ?? (default);
             p.Amount = Amount;
@@ -252,7 +252,7 @@ namespace LedgerClient.ViewModels
             }
             Pools.Remove(SelectedPool);
             SelectedPool = null;
-            int ix = 0;
+            var ix = 0;
             while (ix < Pools.Count && Pools[ix] < p)
             {
                 ix++;
@@ -264,10 +264,7 @@ namespace LedgerClient.ViewModels
 
         private bool IsEditing() => _editing;
 
-        private void CancelChangesClick()
-        {
-            Clear();
-        }
+        private void CancelChangesClick() => Clear();
 
         private bool PoolsExist() => Pools.Any();
 
@@ -350,7 +347,7 @@ namespace LedgerClient.ViewModels
             }
             catch (Exception ex)
             {
-                string op = reload ? Constants.Reload : Constants.Load;
+                var op = reload ? Constants.Reload : Constants.Load;
                 PopupManager.Popup($"Failed to {op} Pools", Constants.DBE, ex.Innermost(), PopupButtons.Ok, PopupImage.Error);
                 Cancel();
                 return;

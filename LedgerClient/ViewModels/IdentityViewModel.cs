@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using LedgerClient.Infrastructure;
-using LedgerClient.ECL.DTO;
-using System.Windows;
+﻿using LedgerClient.ECL.DTO;
 using LedgerClient.ECL.Interfaces;
-using System.Windows.Input;
+using LedgerClient.Infrastructure;
+
 using LedgerLib.Infrastructure;
+
+using System.Windows;
+using System.Windows.Input;
 
 namespace LedgerClient.ViewModels
 {
@@ -104,7 +103,7 @@ namespace LedgerClient.ViewModels
             set => SetProperty(ref _password2Visibility, value);
         }
 
-        public Identity _identity;
+        private Identity _identity;
         public Identity Identity
         {
             get => _identity;
@@ -171,11 +170,8 @@ namespace LedgerClient.ViewModels
 
         #region Utility Methods
 
-        private void Duplicate()
-        {
-            PopupManager.Popup($"An Identity with the user name '{UserId}' already exists for this company", "Duplicate Identity",
+        private void Duplicate() => PopupManager.Popup($"An Identity with the user name '{UserId}' already exists for this company", "Duplicate Identity",
                 PopupButtons.Ok, PopupImage.Stop);
-        }
 
         #endregion
 

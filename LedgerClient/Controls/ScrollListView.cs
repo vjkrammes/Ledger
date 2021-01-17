@@ -4,10 +4,7 @@ namespace LedgerClient.Controls
 {
     public class ScrollListView : ListView
     {
-        public ScrollListView() : base()
-        {
-            SelectionChanged += Scroll;
-        }
+        public ScrollListView() : base() => SelectionChanged += Scroll;
 
         private void Scroll(object sender, SelectionChangedEventArgs e)
         {

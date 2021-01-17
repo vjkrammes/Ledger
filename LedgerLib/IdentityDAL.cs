@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-
-using LedgerLib.Entities;
+﻿using LedgerLib.Entities;
 using LedgerLib.Interfaces;
 
 using Microsoft.EntityFrameworkCore;
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
 
 namespace LedgerLib
 {
@@ -20,19 +20,17 @@ namespace LedgerLib
             base.Insert(entity);
         }
 
-        public override IEnumerable<IdentityEntity> Get(Expression<Func<IdentityEntity, bool>> pred = null)
-        {
-            return pred switch
+        public override IEnumerable<IdentityEntity> Get(Expression<Func<IdentityEntity, bool>> pred = null) => 
+            pred switch
             {
-                null => _dbset
+                null => DbSet
                         .Include(x => x.Company)
                         .AsNoTracking().ToList(),
-                _ => _dbset
+                _ => DbSet
                         .Include(x => x.Company)
                         .Where(pred)
                         .AsNoTracking().ToList()
             };
-        }
 
         public IEnumerable<IdentityEntity> GetForCompany(int cid) => Get(x => x.CompanyId == cid);
 

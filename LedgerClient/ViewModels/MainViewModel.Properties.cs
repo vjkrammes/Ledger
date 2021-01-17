@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using LedgerClient.ECL.DTO;
+
 using System.Collections.ObjectModel;
-using System.Text;
 using System.Windows;
-using LedgerClient.ECL.DTO;
 
 namespace LedgerClient.ViewModels
 {

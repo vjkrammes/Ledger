@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Windows.Input;
-using LedgerClient.Infrastructure;
+﻿using LedgerClient.Infrastructure;
+
 using LedgerLib.Interfaces;
+
+using System.Collections.Generic;
+using System.Windows.Input;
 
 namespace LedgerClient.ViewModels
 {
@@ -15,43 +15,43 @@ namespace LedgerClient.ViewModels
         private List<string> _colorNames;
         public List<string> ColorNames
         {
-            get { return _colorNames; }
-            set { SetProperty(ref _colorNames, value); }
+            get => _colorNames;
+            set => SetProperty(ref _colorNames, value);
         }
 
         private string _borderColor;
         public string BorderColor
         {
-            get { return _borderColor; }
-            set { SetProperty(ref _borderColor, value); }
+            get => _borderColor;
+            set => SetProperty(ref _borderColor, value);
         }
 
         private string _backgroundColor;
         public string BackgroundColor
         {
-            get { return _backgroundColor; }
-            set { SetProperty(ref _backgroundColor, value); }
+            get => _backgroundColor;
+            set => SetProperty(ref _backgroundColor, value);
         }
 
         private string _foregroundColor;
         public string ForegroundColor
         {
-            get { return _foregroundColor; }
-            set { SetProperty(ref _foregroundColor, value); }
+            get => _foregroundColor;
+            set => SetProperty(ref _foregroundColor, value);
         }
 
         private string _alt0Color;
         public string Alt0Color
         {
-            get { return _alt0Color; }
-            set { SetProperty(ref _alt0Color, value); }
+            get => _alt0Color;
+            set => SetProperty(ref _alt0Color, value);
         }
 
         private string _alt1Color;
         public string Alt1Color
         {
-            get { return _alt1Color; }
-            set { SetProperty(ref _alt1Color, value); }
+            get => _alt1Color;
+            set => SetProperty(ref _alt1Color, value);
         }
 
         private readonly ISettingsService _settings;

@@ -1,17 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Linq;
-using System.Windows;
-using System.Windows.Input;
-using System.Collections.ObjectModel;
-using System.IO;
-using LedgerClient.Infrastructure;
-using LedgerLib.Interfaces;
+﻿using LedgerClient.Infrastructure;
+using LedgerClient.Views;
+
 using LedgerLib;
 using LedgerLib.Infrastructure;
-using LedgerClient.Views;
+using LedgerLib.Interfaces;
+
 using Microsoft.Extensions.Configuration;
+
+using System;
+using System.Collections.ObjectModel;
+using System.IO;
+using System.Windows.Input;
 
 namespace LedgerClient.ViewModels
 {
@@ -141,7 +140,7 @@ namespace LedgerClient.ViewModels
             {
                 return;
             }
-            string msg = $"Delete backup file '{SelectedFile.FullName}'? Action cannot be undone.";
+            var msg = $"Delete backup file '{SelectedFile.FullName}'? Action cannot be undone.";
             if (PopupManager.Popup("Delete Backup File?", "Delete File?", msg, PopupButtons.YesNo, PopupImage.Question) != PopupResult.Yes)
             {
                 SelectedFile = null;
@@ -166,7 +165,7 @@ namespace LedgerClient.ViewModels
 
         private void LoadFiles()
         {
-            string[] files = System.IO.Directory.GetFiles(Directory, "*.backup");
+            var files = System.IO.Directory.GetFiles(Directory, "*.backup");
             Files = new ObservableCollection<FileInfo>();
             foreach (var file in files)
             {
@@ -181,7 +180,7 @@ namespace LedgerClient.ViewModels
             _settings = settings;
             _context = context;
             _config = config;
-            string bd = _settings.BackupDirectory;
+            var bd = _settings.BackupDirectory;
             if (string.IsNullOrEmpty(bd))
             {
                 Filename = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);

@@ -23,7 +23,7 @@ namespace LedgerClient.Infrastructure
             {
                 element.Drop += (s, a) =>
                 {
-                    ICommand command = GetDropBehaviour(element);
+                    var command = GetDropBehaviour(element);
                     if (command != null)
                     {
                         if (command.CanExecute(a.Data))
@@ -52,7 +52,7 @@ namespace LedgerClient.Infrastructure
             {
                 element.MouseLeftButtonUp += (s, a) =>
                 {
-                    ICommand command = GetMouseLeftButtonUpBehaviour(element);
+                    var command = GetMouseLeftButtonUpBehaviour(element);
                     if (command != null)
                     {
                         if (command.CanExecute(a))
@@ -81,7 +81,7 @@ namespace LedgerClient.Infrastructure
             {
                 control.MouseDoubleClick += (s, a) =>
                 {
-                    ICommand command = GetMouseDoubleClickBehaviour(control);
+                    var command = GetMouseDoubleClickBehaviour(control);
                     if (command != null)
                     {
                         if (command.CanExecute(a))
@@ -110,7 +110,7 @@ namespace LedgerClient.Infrastructure
             {
                 w.Loaded += (s, a) =>
                 {
-                    ICommand command = GetWindowLoadedBehaviour(w);
+                    var command = GetWindowLoadedBehaviour(w);
                     if (command != null)
                     {
                         if (command.CanExecute(a))
@@ -139,7 +139,7 @@ namespace LedgerClient.Infrastructure
             {
                 w.Closed += (s, a) =>
                 {
-                    ICommand command = GetWindowClosedBehaviour(w);
+                    var command = GetWindowClosedBehaviour(w);
                     if (command != null)
                     {
                         if (command.CanExecute(a))

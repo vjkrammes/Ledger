@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-
-using LedgerLib.Entities;
+﻿using LedgerLib.Entities;
 using LedgerLib.Interfaces;
 
 using Microsoft.EntityFrameworkCore;
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
 
 namespace LedgerLib
 {
@@ -16,15 +16,15 @@ namespace LedgerLib
 
         public AccountEntity Create(AccountEntity account, byte[] salt, string number)
         {
-            using var transaction = _context.Database.BeginTransaction();
+            using var transaction = Context.Database.BeginTransaction();
             if (account.Id <= 0)                // insert account and create new accountnumber
             {
                 var at = account.AccountType;
                 account.AccountType = null;
-                _dbset.Add(account);
-                _context.SaveChanges();
+                DbSet.Add(account);
+                Context.SaveChanges();
                 account.AccountType = at;
-                AccountNumberEntity an = new AccountNumberEntity
+                var an = new AccountNumberEntity
                 {
                     AccountId = account.Id,
                     StartDate = default,
@@ -32,15 +32,15 @@ namespace LedgerLib
                     Salt = salt,
                     Number = number
                 };
-                _context.AccountNumbers.Add(an);
-                _context.SaveChanges();
+                Context.AccountNumbers.Add(an);
+                Context.SaveChanges();
                 account.AccountNumber = an;
             }
             else                                // update existing accountnumber and create a new one
             {
-                AccountNumberEntity an = account.AccountNumber;
+                var an = account.AccountNumber;
                 an.StopDate = DateTime.Now;
-                _context.AccountNumbers.Update(an);
+                Context.AccountNumbers.Update(an);
                 an = new AccountNumberEntity
                 {
                     AccountId = account.Id,
@@ -49,8 +49,8 @@ namespace LedgerLib
                     Salt = salt,
                     Number = number
                 };
-                _context.AccountNumbers.Add(an);
-                _context.SaveChanges();
+                Context.AccountNumbers.Add(an);
+                Context.SaveChanges();
                 account.AccountNumber = an;
             }
             transaction.Commit();
@@ -59,20 +59,20 @@ namespace LedgerLib
 
         public override IEnumerable<AccountEntity> Get(Expression<Func<AccountEntity, bool>> pred = null)
         {
-            List<AccountEntity> entities = pred switch
+            var entities = pred switch
             {
-                null => _dbset
+                null => DbSet
                         .Include(x => x.AccountType)
                         .AsNoTracking().ToList(),
-                _ => _dbset
+                _ => DbSet
                         .Include(x => x.AccountType)
                         .Where(pred)
                         .AsNoTracking().ToList()
             };
-            DateTime now = DateTime.Now;
+            var now = DateTime.Now;
             foreach (var entity in entities)
             {
-                entity.AccountNumber = _context.AccountNumbers
+                entity.AccountNumber = Context.AccountNumbers
                     .Where(x => x.AccountId == entity.Id && now >= x.StartDate && now <= x.StopDate).SingleOrDefault();
             }
             return entities;

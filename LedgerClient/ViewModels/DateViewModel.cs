@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using LedgerClient.Infrastructure;
+
+using System;
 using System.Windows.Media;
-using LedgerClient.Infrastructure;
 
 namespace LedgerClient.ViewModels
 {
@@ -35,7 +34,7 @@ namespace LedgerClient.ViewModels
 
         #endregion
 
-        public override bool OkCanExecute() => Validator is null ? true : Validator(Date);
+        public override bool OkCanExecute() => Validator is null || Validator(Date);
 
         public DateViewModel()
         {

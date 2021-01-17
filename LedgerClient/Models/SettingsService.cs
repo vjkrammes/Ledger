@@ -1,10 +1,10 @@
-﻿using System;
-
-using LedgerClient.Infrastructure;
+﻿using LedgerClient.Infrastructure;
 
 using LedgerLib;
 using LedgerLib.Entities;
 using LedgerLib.Interfaces;
+
+using System;
 
 namespace LedgerClient.Models
 {
@@ -12,21 +12,15 @@ namespace LedgerClient.Models
     {
         private readonly SettingsEntity _settings;
 
-        public SettingsService(LedgerContext context)
-        {
-            _settings = context.GetSettings;
-        }
+        public SettingsService(LedgerContext context) => _settings = context.GetSettings;
 
-        private void Persist()
-        {
-            Tools.Locator.SettingsDAL.Update(_settings);
-        }
+        private void Persist() => Tools.Locator.SettingsDAL.Update(_settings);
 
-        public Guid SystemId { get => _settings.SystemId; }
+        public Guid SystemId => _settings.SystemId;
 
-        public string ProductName { get => _settings.ProductName; }
+        public string ProductName => _settings.ProductName;
 
-        public double ProductVersion { get => _settings.ProductVersion; }
+        public double ProductVersion => _settings.ProductVersion;
 
         public string Alt0
         {
@@ -164,7 +158,10 @@ namespace LedgerClient.Models
             {
                 var prop = _settings.GetType().GetProperty(key);
                 if (prop is null)
+                {
                     return null;
+                }
+
                 return prop.GetValue(_settings);
             }
         }

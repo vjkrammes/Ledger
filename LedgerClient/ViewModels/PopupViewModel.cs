@@ -1,8 +1,8 @@
-﻿using System;
+﻿using LedgerClient.Infrastructure;
+
+using System;
 using System.Windows;
 using System.Windows.Input;
-
-using LedgerClient.Infrastructure;
 
 namespace LedgerClient.ViewModels
 {
@@ -14,43 +14,43 @@ namespace LedgerClient.ViewModels
         private PopupResult _result;
         public PopupResult Result
         {
-            get { return _result; }
-            set { SetProperty(ref _result, value); }
+            get => _result;
+            set => SetProperty(ref _result, value);
         }
 
         private Uri _windowIcon;
         public Uri WindowIcon
         {
-            get { return _windowIcon; }
-            set { SetProperty(ref _windowIcon, value); }
+            get => _windowIcon;
+            set => SetProperty(ref _windowIcon, value);
         }
 
         private string _title;
         public string Title
         {
-            get { return _title; }
-            set { SetProperty(ref _title, value); }
+            get => _title;
+            set => SetProperty(ref _title, value);
         }
 
         private string _majorText;
         public string MajorText
         {
-            get { return _majorText; }
-            set { SetProperty(ref _majorText, value); }
+            get => _majorText;
+            set => SetProperty(ref _majorText, value);
         }
 
         private string _minorText;
         public string MinorText
         {
-            get { return _minorText; }
-            set { SetProperty(ref _minorText, value); }
+            get => _minorText;
+            set => SetProperty(ref _minorText, value);
         }
 
         private Uri _icon;
         public Uri Icon
         {
-            get { return _icon; }
-            set { SetProperty(ref _icon, value); }
+            get => _icon;
+            set => SetProperty(ref _icon, value);
         }
 
         private double _maxWidth;
@@ -63,155 +63,155 @@ namespace LedgerClient.ViewModels
         private GridLength _yesWidth;
         public GridLength YesWidth
         {
-            get { return _yesWidth; }
-            set { SetProperty(ref _yesWidth, value); }
+            get => _yesWidth;
+            set => SetProperty(ref _yesWidth, value);
         }
 
         private Uri _yesIcon;
         public Uri YesIcon
         {
-            get { return _yesIcon; }
-            set { SetProperty(ref _yesIcon, value); }
+            get => _yesIcon;
+            set => SetProperty(ref _yesIcon, value);
         }
 
         private string _yesText;
         public string YesText
         {
-            get { return _yesText; }
-            set { SetProperty(ref _yesText, value); }
+            get => _yesText;
+            set => SetProperty(ref _yesText, value);
         }
 
         private bool _yesDefault;
         public bool YesDefault
         {
-            get { return _yesDefault; }
-            set { SetProperty(ref _yesDefault, value); }
+            get => _yesDefault;
+            set => SetProperty(ref _yesDefault, value);
         }
 
         private GridLength _noWidth;
         public GridLength NoWidth
         {
-            get { return _noWidth; }
-            set { SetProperty(ref _noWidth, value); }
+            get => _noWidth;
+            set => SetProperty(ref _noWidth, value);
         }
 
         private Uri _noIcon;
         public Uri NoIcon
         {
-            get { return _noIcon; }
-            set { SetProperty(ref _noIcon, value); }
+            get => _noIcon;
+            set => SetProperty(ref _noIcon, value);
         }
 
         private string _noText;
         public string NoText
         {
-            get { return _noText; }
-            set { SetProperty(ref _noText, value); }
+            get => _noText;
+            set => SetProperty(ref _noText, value);
         }
 
         private bool _noCancel;
         public bool NoCancel
         {
-            get { return _noCancel; }
-            set { SetProperty(ref _noCancel, value); }
+            get => _noCancel;
+            set => SetProperty(ref _noCancel, value);
         }
 
         private GridLength _okWidth;
         public GridLength OkWidth
         {
-            get { return _okWidth; }
-            set { SetProperty(ref _okWidth, value); }
+            get => _okWidth;
+            set => SetProperty(ref _okWidth, value);
         }
 
         private Uri _okIcon;
         public Uri OkIcon
         {
-            get { return _okIcon; }
-            set { SetProperty(ref _okIcon, value); }
+            get => _okIcon;
+            set => SetProperty(ref _okIcon, value);
         }
 
         private string _okText;
         public string OkText
         {
-            get { return _okText; }
-            set { SetProperty(ref _okText, value); }
+            get => _okText;
+            set => SetProperty(ref _okText, value);
         }
 
         private bool _okDefault;
         public bool OkDefault
         {
-            get { return _okDefault; }
-            set { SetProperty(ref _okDefault, value); }
+            get => _okDefault;
+            set => SetProperty(ref _okDefault, value);
         }
 
         private bool _okCancel;
         public bool OkCancel
         {
-            get { return _okCancel; }
-            set { SetProperty(ref _okCancel, value); }
+            get => _okCancel;
+            set => SetProperty(ref _okCancel, value);
         }
 
         private GridLength _cancelWidth;
         public GridLength Cancelwidth
         {
-            get { return _cancelWidth; }
-            set { SetProperty(ref _cancelWidth, value); }
+            get => _cancelWidth;
+            set => SetProperty(ref _cancelWidth, value);
         }
 
         private Uri _cancelIcon;
         public Uri CancelIcon
         {
-            get { return _cancelIcon; }
-            set { SetProperty(ref _cancelIcon, value); }
+            get => _cancelIcon;
+            set => SetProperty(ref _cancelIcon, value);
         }
 
         private string _cancelText;
         public string CancelText
         {
-            get { return _cancelText; }
-            set { SetProperty(ref _cancelText, value); }
+            get => _cancelText;
+            set => SetProperty(ref _cancelText, value);
         }
 
         private bool _cancelCancel;
         public bool CancelCancel
         {
-            get { return _cancelCancel; }
-            set { SetProperty(ref _cancelCancel, value); }
+            get => _cancelCancel;
+            set => SetProperty(ref _cancelCancel, value);
         }
 
         private Visibility _iconVisibility;
         public Visibility IconVisibility
         {
-            get { return _iconVisibility; }
-            set { SetProperty(ref _iconVisibility, value); }
+            get => _iconVisibility;
+            set => SetProperty(ref _iconVisibility, value);
         }
 
         private Visibility _minorVisibility;
         public Visibility MinorVisibility
         {
-            get { return _minorVisibility; }
-            set { SetProperty(ref _minorVisibility, value); }
+            get => _minorVisibility;
+            set => SetProperty(ref _minorVisibility, value);
         }
 
         private double _buttonWidth;
         public double ButtonWidth
         {
-            get { return _buttonWidth; }
-            set { SetProperty(ref _buttonWidth, value); }
+            get => _buttonWidth;
+            set => SetProperty(ref _buttonWidth, value);
         }
 
         private double _majorFontSize;
         public double MajorFontSize
         {
-            get { return _majorFontSize; }
-            set { SetProperty(ref _majorFontSize, value); }
+            get => _majorFontSize;
+            set => SetProperty(ref _majorFontSize, value);
         }
 
         private double _minorFontSize;
         public double MinorFontSize
         {
-            get { return _minorFontSize; }
-            set { SetProperty(ref _minorFontSize, value); }
+            get => _minorFontSize;
+            set => SetProperty(ref _minorFontSize, value);
         }
 
         #endregion
@@ -294,9 +294,14 @@ namespace LedgerClient.ViewModels
             MinorText = minor;
             MaxWidth = maxwidth;
             if (string.IsNullOrEmpty(MinorText))
+            {
                 MinorVisibility = Visibility.Collapsed;
+            }
             else
+            {
                 MinorVisibility = Visibility.Visible;
+            }
+
             Icon = icon;
             if (Icon == null)
             {

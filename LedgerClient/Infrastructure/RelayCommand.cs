@@ -9,15 +9,15 @@ namespace LedgerClient.Infrastructure
         private readonly Action<object> _execute;
         private readonly Predicate<object> _canExecute;
 
-        public RelayCommand(Action<object> ex) : this(ex, null) { }
-        public RelayCommand(Action<object> ex, Predicate<object> ce)
+        public RelayCommand(Action<object> execute) : this(execute, null) { }
+        public RelayCommand(Action<object> execute, Predicate<object> ce)
         {
-            _execute = ex ?? throw new ArgumentNullException("execute");
+            _execute = execute ?? throw new ArgumentNullException(nameof(execute));
             _canExecute = ce;
         }
 
         [DebuggerStepThrough]
-        public bool CanExecute(object parm) => _canExecute == null ? true : _canExecute(parm);
+        public bool CanExecute(object parm) => _canExecute == null || _canExecute(parm);
 
         public event EventHandler CanExecuteChanged
         {

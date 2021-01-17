@@ -36,7 +36,7 @@ namespace LedgerLib.Models
             Unused = Parse(dataset.Tables[1].Rows[0][3] as string);
         }
 
-        private static readonly Dictionary<string, double> multipliers = new Dictionary<string, double>
+        private static readonly Dictionary<string, double> _multipliers = new Dictionary<string, double>
         {
             ["KB"] = 1_000.0,
             ["MB"] = 1_000_000.0,
@@ -44,24 +44,30 @@ namespace LedgerLib.Models
             ["TB"] = 1_000_000_000_000.0
         };
 
-        private double Parse(string spec)
+        private static double Parse(string spec)
         {
             double ret = 0;
 
             if (string.IsNullOrEmpty(spec))
+            {
                 return 0;
-            string[] parts = spec.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+            }
+
+            var parts = spec.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
             if (parts.Length == 1)
             {
-                double.TryParse(spec, out ret);
+                if (!double.TryParse(spec, out ret))
+                {
+                    ret = 0;
+                }
             }
             else if (parts.Length == 2)
             {
-                if (double.TryParse(parts[0], out double d))
+                if (double.TryParse(parts[0], out var d))
                 {
-                    if (multipliers.ContainsKey(parts[1]))
+                    if (_multipliers.ContainsKey(parts[1]))
                     {
-                        d *= multipliers[parts[1]];
+                        d *= _multipliers[parts[1]];
                     }
                     ret = d;
                 }
