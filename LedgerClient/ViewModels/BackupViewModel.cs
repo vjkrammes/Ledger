@@ -165,11 +165,18 @@ namespace LedgerClient.ViewModels
 
         private void LoadFiles()
         {
-            var files = System.IO.Directory.GetFiles(Directory, "*.backup");
             Files = new ObservableCollection<FileInfo>();
-            foreach (var file in files)
+            try
             {
-                Files.Add(new FileInfo(file));
+                var files = System.IO.Directory.GetFiles(Directory, "*.backup");
+                foreach (var file in files)
+                {
+                    Files.Add(new FileInfo(file));
+                }
+            }
+            catch
+            {
+                Directory = string.Empty;
             }
         }
 
